@@ -25,6 +25,6 @@ public class Advantages {
     @Column(name = "desc")
     private String description;
 
-    @Column(name = "img")
+    @Column(name = "image")
     private String img;
 }

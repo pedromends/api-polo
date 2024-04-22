@@ -19,7 +19,7 @@ public class Capacitation {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "differential")
+    @Column(name = "title")
     private String title;
 
     @Column(name = "subtitle")

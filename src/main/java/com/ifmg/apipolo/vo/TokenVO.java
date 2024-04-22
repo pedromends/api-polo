@@ -18,7 +18,7 @@ public class TokenVO {
     private String tokenType;
     private String confirmedAt;
     private String expiresAt;
-    private String course;
+    private String expired;
     private String user;
 
     public TokenVO(Token token) {
@@ -27,7 +27,7 @@ public class TokenVO {
         this.tokenType = token.getTokenType();
         this.confirmedAt = token.getConfirmedAt();
         this.expiresAt = token.getExpiresAt();
-        this.course = token.getCourse();
+        this.expired = token.getExpired();
         this.user = token.getUser();
     }
 }

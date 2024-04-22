@@ -16,7 +16,7 @@ public class MainNewController {
     MainNewService mainNewService;
 
     @GetMapping("/list")
-    public ResponseEntity<Object> listCapacitations()  {
+    public ResponseEntity<Object> listMainNews()  {
         return new ResponseEntity<>(mainNewService.list(), HttpStatus.OK);
     }
 }

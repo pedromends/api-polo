@@ -32,7 +32,7 @@ public class Token {
     private String expiresAt;
 
     @Column(name = "expired")
-    private String course;
+    private String expired;
 
     @Column(name = "user")
     private String user;

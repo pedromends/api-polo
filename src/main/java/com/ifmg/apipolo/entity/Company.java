@@ -31,6 +31,9 @@ public class Company {
     @Column(name = "accordion_id")
     private String accordionId;
 
+    @Column(name = "header_name")
+    private String headerName;
+
     @Column(name = "header_body")
     private String headerBody;
 
