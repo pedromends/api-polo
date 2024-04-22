@@ -7,36 +7,30 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "news_card", schema = "ifmg")
+@Table(name = "researcher", schema = "ifmg")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class NewsCard {
+public class Talent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "tip")
-    private String tip;
-
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "date")
-    private String date;
-
-    @Column(name = "read")
-    private String read;
-
     @Column(name = "image")
     private String image;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "profession")
+    private String profession;
+
+    @Column(name = "details")
+    private String details;
+
     @Column(name = "link_to")
     private String linkTo;
-
-    @Column(name = "attr_1")
-    private String attr1;
 }

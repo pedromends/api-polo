@@ -1,4 +1,7 @@
 package com.ifmg.apipolo.repository;
 
-public class ResearcherRepository {
+import com.ifmg.apipolo.entity.Researcher;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ResearcherRepository extends JpaRepository<Researcher, Long> {
 }

@@ -1,6 +1,7 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.AdvantagesService;
+import com.ifmg.apipolo.service.TalentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;

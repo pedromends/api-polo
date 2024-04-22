@@ -1,4 +1,8 @@
 package com.ifmg.apipolo.repository;
 
-public class TokenRepository {
+import com.ifmg.apipolo.entity.Talent;
+import com.ifmg.apipolo.entity.Token;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TokenRepository extends JpaRepository<Token, Long> {
 }

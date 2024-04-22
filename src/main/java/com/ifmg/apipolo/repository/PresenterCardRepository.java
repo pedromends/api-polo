@@ -1,4 +1,7 @@
 package com.ifmg.apipolo.repository;
 
-public class PresenterCardRepository {
+import com.ifmg.apipolo.entity.PresenterCard;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PresenterCardRepository extends JpaRepository<PresenterCard, Long> {
 }

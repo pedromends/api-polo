@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "researcher", schema = "ifmg")
+@Table(name = "token", schema = "ifmg")
 @Getter
 @Setter
 @ToString

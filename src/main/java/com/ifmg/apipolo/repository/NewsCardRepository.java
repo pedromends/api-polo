@@ -1,4 +1,7 @@
 package com.ifmg.apipolo.repository;
 
-public class NewsCardRepository {
+import com.ifmg.apipolo.entity.NewsCard;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface NewsCardRepository extends JpaRepository<NewsCard, Long> {
 }

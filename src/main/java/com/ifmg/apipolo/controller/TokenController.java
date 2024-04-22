@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/advantages")
+@RequestMapping("/token")
 public class TokenController {
     @Autowired
     TokenService tokenService;
