@@ -17,6 +17,7 @@ public class CompanyVO {
     private String modalName;
     private String accordionId;
     private String headerBody;
+    private String headerName;
     private String resume;
     private String coorName;
     private String situation;
@@ -32,6 +33,7 @@ public class CompanyVO {
         this.modalName = company.getModalName();
         this.accordionId = company.getAccordionId();
         this.headerBody = company.getHeaderBody();
+        this.headerName = company.getHeaderName();
         this.resume = company.getResume();
         this.coorName = company.getCoorName();
         this.situation = company.getSituation();
