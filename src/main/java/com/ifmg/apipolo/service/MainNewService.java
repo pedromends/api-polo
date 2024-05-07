@@ -2,7 +2,7 @@ package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.MainNewCard;
 import com.ifmg.apipolo.repository.MainNewRepository;
-import com.ifmg.apipolo.vo.MainNewVO;
+import com.ifmg.apipolo.vo.MainNewCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ public class MainNewService {
     @Autowired
     private MainNewRepository mainNewRepository;
 
-    public Optional<MainNewVO> list(){
+    public Optional<MainNewCardVO> list(){
 
         Optional<MainNewCard> mainNew = mainNewRepository.findById(Long.valueOf(1));
-        MainNewVO mainNewVO = new MainNewVO(mainNew.get());
+        MainNewCardVO mainNewCardVO = new MainNewCardVO(mainNew.get());
 
-        return Optional.of(mainNewVO);
+        return Optional.of(mainNewCardVO);
     }
 }

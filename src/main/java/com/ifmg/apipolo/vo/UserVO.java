@@ -21,7 +21,6 @@ public class UserVO {
     private String password;
     private String locked;
     private String enabled;
-    private String image;
 
     public UserVO(User user) {
         this.id = user.getId();
@@ -33,6 +32,5 @@ public class UserVO {
         this.password = user.getPassword();
         this.locked = user.getLocked();
         this.enabled = user.getEnabled();
-        this.image = user.getImage();
     }
 }

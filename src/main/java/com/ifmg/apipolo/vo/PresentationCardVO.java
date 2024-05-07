@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PresenterCardVO {
+public class PresentationCardVO {
 
     private Long id;
     private String num;
     private String text;
 
-    public PresenterCardVO(PresentationCard presentationCard) {
+    public PresentationCardVO(PresentationCard presentationCard) {
         this.id = presentationCard.getId();
         this.num = presentationCard.getNum();
         this.text = presentationCard.getText();

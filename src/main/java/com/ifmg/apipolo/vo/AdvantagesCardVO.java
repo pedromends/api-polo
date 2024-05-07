@@ -3,6 +3,7 @@ package com.ifmg.apipolo.vo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ifmg.apipolo.entity.AdvantagesCard;
+import com.ifmg.apipolo.entity.Image;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AdvantagesVO {
+public class AdvantagesCardVO {
     private Long id;
     private String differential;
     private String description;
-    private String img;
+    private Image img;
 
-    public AdvantagesVO(AdvantagesCard adv) {
+    public AdvantagesCardVO(AdvantagesCard adv) {
         this.id = adv.getId();
         this.differential = adv.getDifferential();
         this.description = adv.getDescription();

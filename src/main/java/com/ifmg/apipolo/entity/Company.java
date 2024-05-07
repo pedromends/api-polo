@@ -26,17 +26,17 @@ public class Company {
     @Column(name = "nome")
     private String name;
 
-    @Column(name = "modal_name")
-    private String modalName;
-
-    @Column(name = "accordion_id")
-    private String accordionId;
-
-    @Column(name = "header_name")
-    private String headerName;
-
-    @Column(name = "header_body")
-    private String headerBody;
+//    @Column(name = "modal_name")
+//    private String modalName;
+//
+//    @Column(name = "accordion_id")
+//    private String accordionId;
+//
+//    @Column(name = "header_name")
+//    private String headerName;
+//
+//    @Column(name = "header_body")
+//    private String headerBody;
 
     @Column(name = "classificacao")
     private String classification;

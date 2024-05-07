@@ -2,8 +2,7 @@ package com.ifmg.apipolo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import com.ifmg.apipolo.entity.Image;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,15 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImageVO {
+public class PositionVO {
     private Long id;
-    private String name;
-    private String code;
-    private String attr1;
-
-    public ImageVO(Image image) {
-        this.id = image.getId();
-        this.name = image.getName();
-        this.code = image.getCode();
-    }
+    private String description;
 }

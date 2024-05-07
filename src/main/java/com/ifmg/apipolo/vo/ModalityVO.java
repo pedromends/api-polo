@@ -2,8 +2,7 @@ package com.ifmg.apipolo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import com.ifmg.apipolo.entity.Image;
+import com.ifmg.apipolo.entity.Modality;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,15 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImageVO {
+public class ModalityVO {
     private Long id;
     private String name;
-    private String code;
-    private String attr1;
+    private String mincompany;
+    private String embrapii_max;
 
-    public ImageVO(Image image) {
-        this.id = image.getId();
-        this.name = image.getName();
-        this.code = image.getCode();
+    public ModalityVO(Modality modality) {
+        this.id = modality.getId();
+        this.name = modality.getName();
+        this.mincompany = modality.getMincompany();
+        this.embrapii_max = modality.getEmbrapii_max();
     }
 }

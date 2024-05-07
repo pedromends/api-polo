@@ -2,7 +2,7 @@ package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.CapacitationCard;
 import com.ifmg.apipolo.repository.CapacitationRepository;
-import com.ifmg.apipolo.vo.CapacitationVO;
+import com.ifmg.apipolo.vo.CapacitationCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +15,13 @@ public class CapacitationService {
     @Autowired
     private CapacitationRepository capacitationRepository;
 
-    public List<CapacitationVO> list(){
+    public List<CapacitationCardVO> list(){
 
-        List<CapacitationVO> listVO = new ArrayList<>();
+        List<CapacitationCardVO> listVO = new ArrayList<>();
         List<CapacitationCard> list = capacitationRepository.findAll();
 
         for(CapacitationCard capacitationCard : list)
-            listVO.add(new CapacitationVO(capacitationCard));
+            listVO.add(new CapacitationCardVO(capacitationCard));
 
         return listVO;
     }

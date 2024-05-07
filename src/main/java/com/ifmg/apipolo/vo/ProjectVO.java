@@ -2,8 +2,8 @@ package com.ifmg.apipolo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import com.ifmg.apipolo.entity.Image;
+import com.ifmg.apipolo.entity.Modality;
+import com.ifmg.apipolo.entity.Researcher;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImageVO {
-    private Long id;
-    private String name;
-    private String code;
-    private String attr1;
+public class ProjectVO {
 
-    public ImageVO(Image image) {
-        this.id = image.getId();
-        this.name = image.getName();
-        this.code = image.getCode();
-    }
+    private Long id;
+    private Modality modality;
+    private Researcher researcher;
+    private String name;
+    private String resume;
+    private String coordinator;
+    private String situation;
+    private String value;
+    private String team;
 }

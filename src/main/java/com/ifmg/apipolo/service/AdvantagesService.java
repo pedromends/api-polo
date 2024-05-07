@@ -2,7 +2,7 @@ package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.AdvantagesCard;
 import com.ifmg.apipolo.repository.AdvantagesRepository;
-import com.ifmg.apipolo.vo.AdvantagesVO;
+import com.ifmg.apipolo.vo.AdvantagesCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +15,13 @@ public class AdvantagesService {
     @Autowired
     private AdvantagesRepository advantagesRepository;
 
-    public List<AdvantagesVO> list(){
+    public List<AdvantagesCardVO> list(){
 
-        List<AdvantagesVO> listVO = new ArrayList<>();
+        List<AdvantagesCardVO> listVO = new ArrayList<>();
         List<AdvantagesCard> list = advantagesRepository.findAll();
 
         for(AdvantagesCard adv : list)
-            listVO.add(new AdvantagesVO(adv));
+            listVO.add(new AdvantagesCardVO(adv));
 
         return listVO;
     }

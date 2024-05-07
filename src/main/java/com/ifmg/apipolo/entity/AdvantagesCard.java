@@ -19,13 +19,13 @@ public class AdvantagesCard {
     @Column(name = "id")
     private Long id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
+    private Image img;
+
     @Column(name = "diferencial")
     private String differential;
 
     @Column(name = "descricao")
     private String description;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
-    private Image img;
 }
