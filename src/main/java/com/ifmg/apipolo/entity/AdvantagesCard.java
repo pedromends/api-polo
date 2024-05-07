@@ -7,31 +7,25 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "news_card", schema = "ifmg")
+@Table(name = "card_vantagens", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class NewsCard {
+public class AdvantagesCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "diferencial")
+    private String differential;
+
+    @Column(name = "descricao")
+    private String description;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_imagem", referencedColumnName = "id")
     private Image img;
-
-    @Column(name = "dica")
-    private String tip;
-
-    @Column(name = "titulo")
-    private String title;
-
-    @Column(name = "data")
-    private String date;
-
-    @Column(name = "tempo_leitura")
-    private String read;
 }

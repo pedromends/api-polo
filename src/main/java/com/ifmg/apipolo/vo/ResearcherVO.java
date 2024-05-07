@@ -3,7 +3,6 @@ package com.ifmg.apipolo.vo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ifmg.apipolo.entity.Researcher;
-import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,8 +22,8 @@ public class ResearcherVO {
     public ResearcherVO(Researcher researcher) {
         this.id = researcher.getId();
         this.position = researcher.getPosition();
-        this.name = researcher.getName();
-        this.email = researcher.getEmail();
+        this.name = researcher.getFirstName();
+        this.email = researcher.getLastName();
         this.lattesLink = researcher.getLattesLink();
         this.course = researcher.getCourse();
     }

@@ -2,8 +2,7 @@ package com.ifmg.apipolo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ifmg.apipolo.entity.Talent;
-import jakarta.persistence.Column;
+import com.ifmg.apipolo.entity.TalentCard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,12 +19,12 @@ public class TalentVO {
     private String details;
     private String linkTo;
 
-    public TalentVO(Talent talent) {
-        this.id = talent.getId();
-        this.image = talent.getImage();
-        this.name = talent.getName();
-        this.profession = talent.getProfession();
-        this.details = talent.getDetails();
-        this.linkTo = talent.getLinkTo();
+    public TalentVO(TalentCard talentCard) {
+        this.id = talentCard.getId();
+        this.image = talentCard.getImage();
+        this.name = talentCard.getName();
+        this.profession = talentCard.getProfession();
+        this.details = talentCard.getDetails();
+        this.linkTo = talentCard.getLinkTo();
     }
 }

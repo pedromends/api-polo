@@ -29,7 +29,7 @@ public class CompanyVO {
     public CompanyVO(Company company) {
         this.id = company.getId();
         this.image = company.getImage();
-        this.companyName = company.getCompanyName();
+        this.companyName = company.getName();
         this.modalName = company.getModalName();
         this.accordionId = company.getAccordionId();
         this.headerBody = company.getHeaderBody();

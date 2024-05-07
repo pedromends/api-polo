@@ -2,7 +2,7 @@ package com.ifmg.apipolo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ifmg.apipolo.entity.Capacitation;
+import com.ifmg.apipolo.entity.CapacitationCard;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,11 +17,11 @@ public class CapacitationVO {
     private String img;
     private String linkTo;
 
-    public CapacitationVO(Capacitation capacitation) {
-        this.id = capacitation.getId();
-        this.title = capacitation.getTitle();
-        this.subtitle = capacitation.getSubtitle();
-        this.img = capacitation.getImg();
-        this.linkTo = capacitation.getLinkTo();
+    public CapacitationVO(CapacitationCard capacitationCard) {
+        this.id = capacitationCard.getId();
+        this.title = capacitationCard.getTitle();
+        this.subtitle = capacitationCard.getSubtitle();
+        this.img = capacitationCard.getImg();
+        this.linkTo = capacitationCard.getLinkTo();
     }
 }

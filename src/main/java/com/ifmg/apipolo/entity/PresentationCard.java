@@ -7,27 +7,21 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "capacitation", schema = "ifmg")
+@Table(name = "presenter_card", schema = "ifmg")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Capacitation {
+public class PresentationCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "num")
+    private String num;
 
-    @Column(name = "subtitle")
-    private String subtitle;
-
-    @Column(name = "image")
-    private String img;
-
-    @Column(name = "link_to")
-    private String linkTo;
+    @Column(name = "text")
+    private String text;
 }

@@ -1,6 +1,6 @@
 package com.ifmg.apipolo.service;
 
-import com.ifmg.apipolo.entity.Event;
+import com.ifmg.apipolo.entity.EventCard;
 import com.ifmg.apipolo.repository.EventRepository;
 import com.ifmg.apipolo.vo.EventVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ public class EventService {
     public List<EventVO> list(){
 
         List<EventVO> listVO = new ArrayList<>();
-        List<Event> list = eventRepository.findAll();
+        List<EventCard> list = eventRepository.findAll();
 
-        for(Event event : list)
-            listVO.add(new EventVO(event));
+        for(EventCard eventCard : list)
+            listVO.add(new EventVO(eventCard));
 
         return listVO;
     }

@@ -1,6 +1,6 @@
 package com.ifmg.apipolo.service;
 
-import com.ifmg.apipolo.entity.PresenterCard;
+import com.ifmg.apipolo.entity.PresentationCard;
 import com.ifmg.apipolo.repository.PresenterCardRepository;
 import com.ifmg.apipolo.vo.PresenterCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ public class PresenterCardService {
     public List<PresenterCardVO> list(){
 
         List<PresenterCardVO> listVO = new ArrayList<>();
-        List<PresenterCard> list = presenterCardRepository.findAll();
+        List<PresentationCard> list = presenterCardRepository.findAll();
 
-        for(PresenterCard presenterCard : list)
-            listVO.add(new PresenterCardVO(presenterCard));
+        for(PresentationCard presentationCard : list)
+            listVO.add(new PresenterCardVO(presentationCard));
 
         return listVO;
     }

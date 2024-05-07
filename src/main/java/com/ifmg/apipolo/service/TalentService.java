@@ -1,10 +1,7 @@
 package com.ifmg.apipolo.service;
 
-import com.ifmg.apipolo.entity.Researcher;
-import com.ifmg.apipolo.entity.Talent;
-import com.ifmg.apipolo.repository.ResearcherRepository;
+import com.ifmg.apipolo.entity.TalentCard;
 import com.ifmg.apipolo.repository.TalentRepository;
-import com.ifmg.apipolo.vo.ResearcherVO;
 import com.ifmg.apipolo.vo.TalentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +18,10 @@ public class TalentService {
     public List<TalentVO> list(){
 
         List<TalentVO> listVO = new ArrayList<>();
-        List<Talent> list = talentRepository.findAll();
+        List<TalentCard> list = talentRepository.findAll();
 
-        for(Talent talent : list)
-            listVO.add(new TalentVO(talent));
+        for(TalentCard talentCard : list)
+            listVO.add(new TalentVO(talentCard));
 
         return listVO;
     }

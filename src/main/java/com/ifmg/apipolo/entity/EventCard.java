@@ -7,21 +7,30 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "presenter_card", schema = "ifmg")
+@Table(name = "card_evento", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class PresenterCard {
+public class EventCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "num")
-    private String num;
+    @Column(name = "mes")
+    private String month;
 
-    @Column(name = "text")
-    private String text;
+    @Column(name = "dia")
+    private String day;
+
+    @Column(name = "titulo")
+    private String title;
+
+    @Column(name = "hora")
+    private String hour;
+
+    @Column(name = "local")
+    private String local;
 }

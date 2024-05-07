@@ -7,12 +7,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "main_new", schema = "ifmg")
+@Table(name = "main_new", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class MainNew {
+public class MainNewCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

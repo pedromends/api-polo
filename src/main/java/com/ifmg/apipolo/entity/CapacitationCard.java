@@ -7,12 +7,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "news_card", schema = "ifmg")
+@Table(name = "card_capacitacao", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class NewsCard {
+public class CapacitationCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,15 +23,9 @@ public class NewsCard {
     @JoinColumn(name = "id_imagem", referencedColumnName = "id")
     private Image img;
 
-    @Column(name = "dica")
-    private String tip;
-
     @Column(name = "titulo")
     private String title;
 
-    @Column(name = "data")
-    private String date;
-
-    @Column(name = "tempo_leitura")
-    private String read;
+    @Column(name = "subtitulo")
+    private String subtitle;
 }

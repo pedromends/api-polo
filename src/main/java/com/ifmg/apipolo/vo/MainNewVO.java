@@ -2,8 +2,7 @@ package com.ifmg.apipolo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ifmg.apipolo.entity.MainNew;
-import jakarta.persistence.Column;
+import com.ifmg.apipolo.entity.MainNewCard;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,13 +21,13 @@ public class MainNewVO {
     private String linkTo;
     private String attr1;
 
-    public MainNewVO(MainNew mainNew) {
-        this.id = mainNew.getId();
-        this.tip = mainNew.getTip();
-        this.title = mainNew.getTitle();
-        this.parag = mainNew.getParag();
-        this.image = mainNew.getImage();
-        this.linkTo = mainNew.getLinkTo();
-        this.attr1 = mainNew.getAttr1();
+    public MainNewVO(MainNewCard mainNewCard) {
+        this.id = mainNewCard.getId();
+        this.tip = mainNewCard.getTip();
+        this.title = mainNewCard.getTitle();
+        this.parag = mainNewCard.getParag();
+        this.image = mainNewCard.getImage();
+        this.linkTo = mainNewCard.getLinkTo();
+        this.attr1 = mainNewCard.getAttr1();
     }
 }

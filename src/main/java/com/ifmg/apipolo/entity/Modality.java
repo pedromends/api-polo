@@ -7,30 +7,24 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "talent", schema = "ifmg")
+@Table(name = "modalidade", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Talent {
+public class Modality {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "image")
-    private String image;
-
-    @Column(name = "name")
+    @Column(name = "nome")
     private String name;
 
-    @Column(name = "profession")
-    private String profession;
+    @Column(name = "empresamin")
+    private String mincompany;
 
-    @Column(name = "details")
-    private String details;
-
-    @Column(name = "link_to")
-    private String linkTo;
+    @Column(name = "embrapii_max")
+    private String embrapii_max;
 }
