@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "presenter_card", schema = "ifmg")
+@Table(name = "card_apresentacao", schema = "ifmg")
 @Getter
 @Setter
 @ToString
@@ -19,9 +19,9 @@ public class PresentationCard {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "num")
+    @Column(name = "numero")
     private String num;
 
-    @Column(name = "text")
+    @Column(name = "frase")
     private String text;
 }

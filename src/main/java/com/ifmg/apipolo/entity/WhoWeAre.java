@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "who_we_are", schema = "ifmg")
+@Table(name = "quem_somos", schema = "ifmg")
 @Getter
 @Setter
 @ToString
@@ -19,9 +19,9 @@ public class WhoWeAre {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "titulo")
     private String title;
 
-    @Column(name = "parag")
+    @Column(name = "paragrafo")
     private String parag;
 }

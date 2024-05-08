@@ -19,9 +19,9 @@ public class CompanyProject {
     @Id
     private int id;
 
-    @OneToMany(mappedBy="empresa")
+    @OneToMany(mappedBy="id")
     private Set<Company> companies;
 
-    @OneToMany(mappedBy="projeto")
+    @OneToMany(mappedBy="id")
     private Set<Project> projects;
 }

@@ -22,6 +22,7 @@ public class MainNewCardVO {
 
     public MainNewCardVO(MainNewCard mainNewCard) {
         this.id = mainNewCard.getId();
+        this.image = mainNewCard.getImg();
         this.tip = mainNewCard.getTip();
         this.title = mainNewCard.getTitle();
         this.paragraph = mainNewCard.getParagraph();

@@ -22,9 +22,9 @@ public class ResearcherTeam {
     @Id
     private int id;
 
-    @OneToMany(mappedBy="pesquisador")
+    @OneToMany(mappedBy="id")
     private Set<Researcher> researchers;
 
-    @OneToMany(mappedBy="projeto")
+    @OneToMany(mappedBy="id")
     private Set<Project> projects;
 }
