@@ -1,6 +1,6 @@
 package com.ifmg.apipolo.controller;
 
-import com.ifmg.apipolo.service.AdvantagesService;
+import com.ifmg.apipolo.service.AdvantagesCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/advantages")
-public class AdvantagesController {
+public class AdvantagesCardController {
 
     @Autowired
-    AdvantagesService advantagesService;
+    AdvantagesCardService advantagesCardService;
 
     @GetMapping("/list")
     public ResponseEntity<Object> listAdvantages()  {
-        return new ResponseEntity<>(advantagesService.list(), HttpStatus.OK);
+        return new ResponseEntity<>(advantagesCardService.list(), HttpStatus.OK);
     }
 }

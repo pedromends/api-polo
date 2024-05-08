@@ -1,6 +1,6 @@
 package com.ifmg.apipolo.controller;
 
-import com.ifmg.apipolo.service.EventService;
+import com.ifmg.apipolo.service.PresentationCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/event")
-public class EventController {
-
+@RequestMapping("/presenter-card")
+public class PresentationCardController {
 
     @Autowired
-    EventService eventService;
+    PresentationCardService presentationCardService;
 
     @GetMapping("/list")
-    public ResponseEntity<Object> listEvents()  {
-        return new ResponseEntity<>(eventService.list(), HttpStatus.OK);
+    public ResponseEntity<Object> listAdvantages()  {
+        return new ResponseEntity<>(presentationCardService.list(), HttpStatus.OK);
     }
 }

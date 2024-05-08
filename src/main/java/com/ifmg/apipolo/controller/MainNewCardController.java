@@ -1,6 +1,6 @@
 package com.ifmg.apipolo.controller;
 
-import com.ifmg.apipolo.service.MainNewService;
+import com.ifmg.apipolo.service.MainNewCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/main-new", produces = MediaType.APPLICATION_JSON_VALUE)
-public class MainNewController {
+public class MainNewCardController {
 
     @Autowired
-    MainNewService mainNewService;
+    MainNewCardService mainNewCardService;
 
     @GetMapping("/list")
     public ResponseEntity<Object> listMainNews()  {
-        return new ResponseEntity<>(mainNewService.list(), HttpStatus.OK);
+        return new ResponseEntity<>(mainNewCardService.list(), HttpStatus.OK);
     }
 }

@@ -1,6 +1,5 @@
 package com.ifmg.apipolo.controller;
 
-import com.ifmg.apipolo.service.CapacitationService;
 import com.ifmg.apipolo.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +17,11 @@ public class ImageController {
 
     @GetMapping("/list")
     public ResponseEntity<Object> listImages()  {
+        return new ResponseEntity<>(imageService.list(), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-one")
+    public ResponseEntity<Object> getOne()  {
         return new ResponseEntity<>(imageService.list(), HttpStatus.OK);
     }
 }
