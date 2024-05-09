@@ -19,6 +19,10 @@ public class WhoWeAre {
     @Column(name = "id")
     private Long id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
+    private Image img;
+
     @Column(name = "titulo")
     private String title;
 

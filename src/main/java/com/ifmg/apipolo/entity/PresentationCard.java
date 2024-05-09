@@ -20,7 +20,7 @@ public class PresentationCard {
     private Long id;
 
     @Column(name = "numero")
-    private String num;
+    private int num;
 
     @Column(name = "frase")
     private String text;

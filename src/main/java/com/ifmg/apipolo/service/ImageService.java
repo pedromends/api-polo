@@ -8,12 +8,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    public ImageVO getOne(Long id){
+
+        Optional<Image> image = imageRepository.findById(id);
+        return new ImageVO(image);
+    }
 
     public List<ImageVO> list(){
 

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class PresentationCardVO {
 
     private Long id;
-    private String num;
+    private int num;
     private String text;
 
     public PresentationCardVO(PresentationCard presentationCard) {

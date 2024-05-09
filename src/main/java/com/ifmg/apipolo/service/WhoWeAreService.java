@@ -14,6 +14,14 @@ public class WhoWeAreService {
     @Autowired
     WhoWeAreRepository whoWeAreRepository;
 
+    public void createAboutUs(WhoWeAreVO whoWeAreVO) {
+        WhoWeAre whoWeAre = whoWeAreRepository.getReferenceById(whoWeAreVO.getId());
+        whoWeAre.setTitle(whoWeAreVO.getTitle());
+        whoWeAre.setParag(whoWeAreVO.getParag());
+        whoWeAre.setImg(whoWeAreVO.getImage());
+        whoWeAreRepository.save(whoWeAre);
+    }
+
     public Optional<WhoWeAreVO> getText(){
 
         Optional<WhoWeAre> whoWeAre = whoWeAreRepository.findById(Long.valueOf(1));

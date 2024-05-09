@@ -20,8 +20,8 @@ public class ImageController {
         return new ResponseEntity<>(imageService.list(), HttpStatus.OK);
     }
 
-    @GetMapping("/get-one")
-    public ResponseEntity<Object> getOne()  {
-        return new ResponseEntity<>(imageService.list(), HttpStatus.OK);
+    @GetMapping("/get-one/{id}")
+    public ResponseEntity<Object> getOne(@PathVariable("id") Long id)  {
+        return new ResponseEntity<>(imageService.getOne(id), HttpStatus.OK);
     }
 }

@@ -15,10 +15,6 @@ public class CompanyVO {
     private Long id;
     private Image image;
     private String name;
-//    private String modalName;
-//    private String accordionId;
-//    private String headerBody;
-//    private String headerName;
     private String classification;
     private String cnpj;
 
@@ -26,11 +22,7 @@ public class CompanyVO {
         this.id = company.getId();
         this.image = company.getImg();
         this.name = company.getName();
-        this.classification = classification;
-        this.cnpj = cnpj;
-//        this.modalName = company.getModalName();
-//        this.accordionId = company.getAccordionId();
-//        this.headerBody = company.getHeaderBody();
-//        this.headerName = company.getHeaderName();
+        this.classification = company.getClassification();
+        this.cnpj = company.getCnpj();
     }
 }
