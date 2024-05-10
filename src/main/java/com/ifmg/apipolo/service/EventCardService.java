@@ -16,13 +16,15 @@ public class EventCardService {
     private EventCardRepository eventCardRepository;
 
     public void createEvent(EventCardVO eventCardVO) {
-        System.out.println(eventCardVO);
+
         EventCard eventCard = eventCardRepository.getReferenceById(eventCardVO.getId());
+
         eventCard.setDay(eventCardVO.getDay());
         eventCard.setMonth(eventCardVO.getMonth());
         eventCard.setTitle(eventCardVO.getTitle());
         eventCard.setHour(eventCardVO.getHour());
         eventCard.setLocal(eventCardVO.getLocal());
+
         eventCardRepository.save(eventCard);
     }
 

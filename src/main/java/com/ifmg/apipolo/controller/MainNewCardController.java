@@ -1,7 +1,6 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.MainNewCardService;
-import com.ifmg.apipolo.vo.AdvantagesCardVO;
 import com.ifmg.apipolo.vo.MainNewCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
