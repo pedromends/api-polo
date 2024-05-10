@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EventVO {
+public class EventCardVO {
 
     private Long id;
     private String month;
@@ -19,7 +19,7 @@ public class EventVO {
     private String hour;
     private String local;
 
-    public EventVO(EventCard eventCard) {
+    public EventCardVO(EventCard eventCard) {
         this.id = eventCard.getId();
         this.month = eventCard.getMonth();
         this.day = eventCard.getDay();
