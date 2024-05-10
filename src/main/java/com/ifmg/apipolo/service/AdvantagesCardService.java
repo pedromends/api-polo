@@ -1,7 +1,9 @@
 package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.AdvantagesCard;
+import com.ifmg.apipolo.entity.Image;
 import com.ifmg.apipolo.repository.AdvantagesCardRepository;
+import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.vo.AdvantagesCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,22 @@ public class AdvantagesCardService {
 
     @Autowired
     private AdvantagesCardRepository advantagesCardRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
+
+    public void createCard(AdvantagesCardVO advantagesCardVO) {
+        System.out.println(advantagesCardVO);
+        Image cardImage = imageRepository.getReferenceById(advantagesCardVO.getImg().getId());
+        AdvantagesCard advantagesCard = advantagesCardRepository.getReferenceById(advantagesCardVO.getId());
+
+        advantagesCard.setDifferential(advantagesCardVO.getDifferential());
+        advantagesCard.setDescription(advantagesCardVO.getDescription());
+        cardImage.setCode(advantagesCardVO.getImg().getCode());
+
+        imageRepository.save(cardImage);
+        advantagesCardRepository.save(advantagesCard);
+    }
 
     public List<AdvantagesCardVO> list(){
 

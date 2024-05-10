@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AdvantagesCardVO {
+
     private Long id;
     private String differential;
     private String description;

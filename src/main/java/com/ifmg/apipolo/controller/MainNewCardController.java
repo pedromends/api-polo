@@ -1,6 +1,8 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.MainNewCardService;
+import com.ifmg.apipolo.vo.AdvantagesCardVO;
+import com.ifmg.apipolo.vo.MainNewCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,12 @@ public class MainNewCardController {
 
     @Autowired
     MainNewCardService mainNewCardService;
+
+    @PostMapping("/create")
+    public ResponseEntity<Object> createCard(@RequestBody MainNewCardVO mainNewCardVO) {
+        mainNewCardService.createMainNew(mainNewCardVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     @GetMapping("/list")
     public ResponseEntity<Object> listMainNews()  {

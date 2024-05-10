@@ -1,10 +1,8 @@
 package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.Image;
-import com.ifmg.apipolo.entity.WhoWeAre;
 import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.vo.ImageVO;
-import com.ifmg.apipolo.vo.WhoWeAreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,6 @@ public class ImageService {
     public void createImage(ImageVO imageVO) {
         System.out.println(imageVO);
         Image image = imageRepository.getReferenceById(imageVO.getId());
-        image.setName(imageVO.getName());
         image.setCode(imageVO.getCode());
         imageRepository.save(image);
     }

@@ -1,7 +1,11 @@
 package com.ifmg.apipolo.service;
 
+import com.ifmg.apipolo.entity.AdvantagesCard;
+import com.ifmg.apipolo.entity.Image;
 import com.ifmg.apipolo.entity.MainNewCard;
+import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.MainNewCardRepository;
+import com.ifmg.apipolo.vo.AdvantagesCardVO;
 import com.ifmg.apipolo.vo.MainNewCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,23 @@ public class MainNewCardService {
 
     @Autowired
     private MainNewCardRepository mainNewCardRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
+
+    public void createMainNew(MainNewCardVO mainNewCardVO) {
+
+        Image cardImage = imageRepository.getReferenceById(mainNewCardVO.getImage().getId());
+        MainNewCard mainNewCard = mainNewCardRepository.getReferenceById(mainNewCardVO.getId());
+
+        mainNewCard.setTip(mainNewCardVO.getTip());
+        mainNewCard.setTitle(mainNewCardVO.getTitle());
+        mainNewCard.setParagraph(mainNewCardVO.getParagraph());
+        cardImage.setCode(mainNewCardVO.getImage().getCode());
+
+        imageRepository.save(cardImage);
+        mainNewCardRepository.save(mainNewCard);
+    }
 
     public Optional<MainNewCardVO> list(){
 
