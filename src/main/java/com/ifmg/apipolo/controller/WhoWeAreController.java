@@ -17,7 +17,6 @@ public class WhoWeAreController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> createCard(@RequestBody WhoWeAreVO whoWeAreVO) {
-        System.out.println(whoWeAreVO);
         whoWeAreService.createAboutUs(whoWeAreVO);
         return ResponseEntity.ok(HttpStatus.OK);
     }

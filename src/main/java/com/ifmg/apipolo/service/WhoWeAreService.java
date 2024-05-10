@@ -15,10 +15,10 @@ public class WhoWeAreService {
     WhoWeAreRepository whoWeAreRepository;
 
     public void createAboutUs(WhoWeAreVO whoWeAreVO) {
+        System.out.println(whoWeAreVO);
         WhoWeAre whoWeAre = whoWeAreRepository.getReferenceById(whoWeAreVO.getId());
         whoWeAre.setTitle(whoWeAreVO.getTitle());
         whoWeAre.setParag(whoWeAreVO.getParag());
-        whoWeAre.setImg(whoWeAreVO.getImage());
         whoWeAreRepository.save(whoWeAre);
     }
 

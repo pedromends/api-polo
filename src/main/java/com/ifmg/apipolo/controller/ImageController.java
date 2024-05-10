@@ -1,6 +1,8 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.ImageService;
+import com.ifmg.apipolo.vo.ImageVO;
+import com.ifmg.apipolo.vo.WhoWeAreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,12 @@ public class ImageController {
 
     @Autowired
     ImageService imageService;
+
+    @PostMapping("/create")
+    public ResponseEntity<Object> createCard(@RequestBody ImageVO imageVO) {
+        imageService.createImage(imageVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     @GetMapping("/list")
     public ResponseEntity<Object> listImages()  {
