@@ -1,6 +1,8 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.CapacitationCardService;
+import com.ifmg.apipolo.vo.CapacitationCardVO;
+import com.ifmg.apipolo.vo.MainNewCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,12 @@ public class CapacitationCardController {
 
     @Autowired
     CapacitationCardService capacitationCardService;
+
+    @PostMapping("/create")
+    public ResponseEntity<Object> createCard(@RequestBody CapacitationCardVO capacitationCardVO) {
+        capacitationCardService.createMainNew(capacitationCardVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     @GetMapping("/list")
     public ResponseEntity<Object> listCapacitations()  {
