@@ -1,11 +1,9 @@
 package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.Image;
-import com.ifmg.apipolo.entity.NewsCard;
 import com.ifmg.apipolo.entity.TalentCard;
 import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.TalentCardRepository;
-import com.ifmg.apipolo.vo.NewsCardVO;
 import com.ifmg.apipolo.vo.TalentCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

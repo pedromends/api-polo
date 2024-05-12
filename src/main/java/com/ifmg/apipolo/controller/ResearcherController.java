@@ -1,6 +1,7 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.ResearcherService;
+import com.ifmg.apipolo.vo.ResearcherVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,12 @@ public class ResearcherController {
 
     @Autowired
     ResearcherService researcherService;
+
+    @PostMapping("/create")
+    public ResponseEntity<Object> createCard(@RequestBody ResearcherVO researcherVO) {
+        researcherService.createResearcher(researcherVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     @GetMapping("/list")
     public ResponseEntity<Object> listAdvantages()  {

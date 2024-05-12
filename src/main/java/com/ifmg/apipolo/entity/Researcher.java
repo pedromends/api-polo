@@ -33,6 +33,12 @@ public class Researcher {
     @Column(name = "sobrenome")
     private String lastName;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "curso")
+    private String course;
+
     @Column(name = "titulacao")
     private String level;
 

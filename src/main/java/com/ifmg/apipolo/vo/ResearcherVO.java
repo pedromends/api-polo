@@ -5,10 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ifmg.apipolo.entity.Campus;
 import com.ifmg.apipolo.entity.Image;
 import com.ifmg.apipolo.entity.Researcher;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +19,8 @@ public class ResearcherVO {
     private Campus campus;
     private String firstName;
     private String lastName;
+    private String email;
+    private String course;
     private String level;
     private String sex;
 
@@ -32,6 +30,8 @@ public class ResearcherVO {
         this.campus = researcher.getCampus();
         this.firstName = researcher.getFirstName();
         this.lastName = researcher.getLastName();
+        this.email = researcher.getEmail();
+        this.course = researcher.getCourse();
         this.level = researcher.getLevel();
         this.sex = researcher.getSex();
     }

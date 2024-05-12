@@ -15,7 +15,7 @@ public class CampusService {
     @Autowired
     private CampusRepository campusRepository;
 
-    public List<CampusVO> list() {
+    public List<CampusVO> listCampus() {
         List<CampusVO> listVO = new ArrayList<>();
         List<Campus> list = campusRepository.findAll();
         for(Campus campus : list) {
