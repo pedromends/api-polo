@@ -52,7 +52,7 @@ public class EventCardService {
         eventCardRepository.save(eventCard);
     }
 
-    public void deleteCapacitation(Long id) {
+    public void deleteEventCard(Long id) {
         eventCardRepository.deleteById(id);
     }
 }

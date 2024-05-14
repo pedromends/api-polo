@@ -27,7 +27,7 @@ public class EventCardController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PutMapping("/update")
     public ResponseEntity<Object> updateCard(@RequestBody EventCardVO eventCardVO) {
         eventCardService.updateEvent(eventCardVO);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -40,7 +40,7 @@ public class EventCardController {
 
     @DeleteMapping("/delete")
     public ResponseEntity deleteCard(@RequestParam("id") Long id)  {
-        eventCardService.deleteCapacitation(id);
-        return new ResponseEntity(HttpStatus.OK);
+        eventCardService.deleteEventCard(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

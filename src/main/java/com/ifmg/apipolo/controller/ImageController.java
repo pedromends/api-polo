@@ -39,7 +39,7 @@ public class ImageController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping("/update")
+    @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteImage(@RequestParam("id") Long id) {
         imageService.deleteCapacitation(id);
         return ResponseEntity.ok(HttpStatus.OK);
