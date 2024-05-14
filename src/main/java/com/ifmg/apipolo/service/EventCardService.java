@@ -17,7 +17,7 @@ public class EventCardService {
 
     public void createEvent(EventCardVO eventCardVO) {
 
-        EventCard eventCard = eventCardRepository.getReferenceById(eventCardVO.getId());
+        EventCard eventCard = new EventCard();
 
         eventCard.setDay(eventCardVO.getDay());
         eventCard.setMonth(eventCardVO.getMonth());
@@ -37,5 +37,22 @@ public class EventCardService {
             listVO.add(new EventCardVO(eventCard));
 
         return listVO;
+    }
+
+    public void updateEvent(EventCardVO eventCardVO) {
+
+        EventCard eventCard = eventCardRepository.getReferenceById(eventCardVO.getId());
+
+        eventCard.setDay(eventCardVO.getDay());
+        eventCard.setMonth(eventCardVO.getMonth());
+        eventCard.setTitle(eventCardVO.getTitle());
+        eventCard.setHour(eventCardVO.getHour());
+        eventCard.setLocal(eventCardVO.getLocal());
+
+        eventCardRepository.save(eventCard);
+    }
+
+    public void deleteCapacitation(Long id) {
+        eventCardRepository.deleteById(id);
     }
 }

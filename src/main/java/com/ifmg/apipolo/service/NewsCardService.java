@@ -22,7 +22,20 @@ public class NewsCardService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public void createMainNew(NewsCardVO newsCardVO) {
+    public void createCard(NewsCardVO newsCardVO) {
+
+        NewsCard newsCard = new NewsCard();
+
+        newsCard.setTip(newsCardVO.getTip());
+        newsCard.setTitle(newsCardVO.getTitle());
+        newsCard.setRead(newsCardVO.getRead());
+        newsCard.setDate(newsCardVO.getDate());
+        newsCard.setImg(newsCardVO.getImg());
+
+        newsCardRepository.save(newsCard);
+    }
+
+    public void updateCard(NewsCardVO newsCardVO) {
 
         Image cardImage = imageRepository.getReferenceById(newsCardVO.getImg().getId());
         NewsCard newsCard = newsCardRepository.getReferenceById(newsCardVO.getId());
@@ -46,5 +59,9 @@ public class NewsCardService {
             listVO.add(new NewsCardVO(newsCard));
 
         return listVO;
+    }
+
+    public void deleteModality(Long id) {
+        newsCardRepository.deleteById(id);
     }
 }

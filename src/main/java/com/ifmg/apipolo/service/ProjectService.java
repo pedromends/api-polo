@@ -15,6 +15,40 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    public void createProject(ProjectVO projectVO) {
+
+        Project project = new Project();
+
+        project.setModality(projectVO.getModality());
+        project.setCoordinator(projectVO.getCoordinator());
+        project.setCompany(projectVO.getCompany());
+        project.setModalName(projectVO.getModalName());
+        project.setAccordionId(projectVO.getAccordionId());
+        project.setHeaderName(projectVO.getHeaderName());
+        project.setHeaderBody(projectVO.getHeaderBody());
+        project.setName(projectVO.getName());
+        project.setResume(projectVO.getResume());
+        project.setSituation(projectVO.getSituation());
+        project.setValue(projectVO.getValue());
+
+        projectRepository.save(project);
+    }
+
+    public void updateProject(ProjectVO projectVO) {
+
+        Project project = projectRepository.getReferenceById(projectVO.getId());
+
+        project.setModality(projectVO.getModality());
+        project.setCoordinator(projectVO.getCoordinator());
+        project.setCompany(projectVO.getCompany());
+        project.setName(projectVO.getName());
+        project.setResume(projectVO.getResume());
+        project.setSituation(projectVO.getSituation());
+        project.setValue(projectVO.getValue());
+
+        projectRepository.save(project);
+    }
+
     public List<ProjectVO> list(){
 
         List<ProjectVO> listVO = new ArrayList<>();
@@ -24,5 +58,9 @@ public class ProjectService {
             listVO.add(new ProjectVO(project));
 
         return listVO;
+    }
+
+    public void deleteProject(Long id) {
+        projectRepository.deleteById(id);
     }
 }

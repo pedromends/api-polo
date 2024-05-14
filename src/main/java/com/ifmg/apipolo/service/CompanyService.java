@@ -15,6 +15,17 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
+    public void createCompany(CompanyVO companyVO) {
+        Company company = new Company();
+
+        company.setName(companyVO.getName());
+        company.setClassification(companyVO.getClassification());
+        company.setCnpj(companyVO.getCnpj());
+        company.setImg(companyVO.getImage());
+
+        companyRepository.save(company);
+    }
+
     public List<CompanyVO> list(){
 
         List<CompanyVO> listVO = new ArrayList<>();
@@ -24,5 +35,20 @@ public class CompanyService {
             listVO.add(new CompanyVO(company));
 
         return listVO;
+    }
+
+    public void updateCompany(CompanyVO companyVO) {
+        Company company = companyRepository.getReferenceById(companyVO.getId());
+
+        company.setName(companyVO.getName());
+        company.setClassification(companyVO.getClassification());
+        company.setCnpj(companyVO.getCnpj());
+        company.setImg(companyVO.getImage());
+
+        companyRepository.save(company);
+    }
+
+    public void deleteCompany(Long id) {
+        companyRepository.deleteById(id);
     }
 }

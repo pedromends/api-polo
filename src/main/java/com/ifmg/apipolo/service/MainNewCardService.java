@@ -23,6 +23,28 @@ public class MainNewCardService {
 
     public void createMainNew(MainNewCardVO mainNewCardVO) {
 
+        MainNewCard mainNewCard = mainNewCardRepository.getReferenceById(mainNewCardVO.getId());
+        Image cardImage = new Image();
+
+        mainNewCard.setTip(mainNewCardVO.getTip());
+        mainNewCard.setTitle(mainNewCardVO.getTitle());
+        mainNewCard.setParagraph(mainNewCardVO.getParagraph());
+        mainNewCard.setImg(mainNewCardVO.getImage());
+
+        imageRepository.save(cardImage);
+        mainNewCardRepository.save(mainNewCard);
+    }
+
+    public Optional<MainNewCardVO> list(){
+
+        Optional<MainNewCard> mainNew = mainNewCardRepository.findById(Long.valueOf(1));
+        MainNewCardVO mainNewCardVO = new MainNewCardVO(mainNew.get());
+
+        return Optional.of(mainNewCardVO);
+    }
+
+    public void updateMainNew(MainNewCardVO mainNewCardVO) {
+
         Image cardImage = imageRepository.getReferenceById(mainNewCardVO.getImage().getId());
         MainNewCard mainNewCard = mainNewCardRepository.getReferenceById(mainNewCardVO.getId());
 
@@ -35,11 +57,7 @@ public class MainNewCardService {
         mainNewCardRepository.save(mainNewCard);
     }
 
-    public Optional<MainNewCardVO> list(){
-
-        Optional<MainNewCard> mainNew = mainNewCardRepository.findById(Long.valueOf(1));
-        MainNewCardVO mainNewCardVO = new MainNewCardVO(mainNew.get());
-
-        return Optional.of(mainNewCardVO);
+    public void deleteMainNewService(Long id) {
+        mainNewCardRepository.deleteById(id);
     }
 }

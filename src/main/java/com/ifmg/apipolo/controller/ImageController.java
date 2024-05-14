@@ -32,4 +32,16 @@ public class ImageController {
     public ResponseEntity<Object> getOne(@PathVariable("id") Long id)  {
         return new ResponseEntity<>(imageService.getOne(id), HttpStatus.OK);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateImage(@RequestBody ImageVO imageVO) {
+        imageService.updateImage(imageVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Object> deleteImage(@RequestParam("id") Long id) {
+        imageService.deleteCapacitation(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 }

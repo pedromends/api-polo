@@ -25,7 +25,7 @@ public class Project {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_coordenador", referencedColumnName = "id")
-    private Researcher researcher;
+    private Researcher coordinator;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_empresa", referencedColumnName = "id")
@@ -37,17 +37,11 @@ public class Project {
     @Column(name = "resumo")
     private String resume;
 
-    @Column(name = "coordenador")
-    private String coordinator;
-
     @Column(name = "situacao")
     private String situation;
 
     @Column(name = "valor")
     private String value;
-
-    @Column(name = "equipe")
-    private String team;
 
     @Column(name = "modal_name")
     private String modalName;

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/event")
 public class EventCardController {
 
+    // mínimo 4 eventos, apenas atualização
+
 
     @Autowired
     EventCardService eventCardService;
@@ -25,8 +27,20 @@ public class EventCardController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<Object> updateCard(@RequestBody EventCardVO eventCardVO) {
+        eventCardService.updateEvent(eventCardVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listEvents()  {
         return new ResponseEntity<>(eventCardService.list(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteCard(@RequestParam("id") Long id)  {
+        eventCardService.deleteCapacitation(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

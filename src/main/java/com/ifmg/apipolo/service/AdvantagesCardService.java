@@ -21,9 +21,22 @@ public class AdvantagesCardService {
     private ImageRepository imageRepository;
 
     public void createCard(AdvantagesCardVO advantagesCardVO) {
-        System.out.println(advantagesCardVO);
+
         Image cardImage = imageRepository.getReferenceById(advantagesCardVO.getImg().getId());
         AdvantagesCard advantagesCard = advantagesCardRepository.getReferenceById(advantagesCardVO.getId());
+
+        advantagesCard.setDifferential(advantagesCardVO.getDifferential());
+        advantagesCard.setDescription(advantagesCardVO.getDescription());
+        cardImage.setCode(advantagesCardVO.getImg().getCode());
+
+        imageRepository.save(cardImage);
+        advantagesCardRepository.save(advantagesCard);
+    }
+
+    public void updateCard(AdvantagesCardVO advantagesCardVO) {
+
+        Image cardImage = imageRepository.getReferenceById(advantagesCardVO.getImg().getId());
+        AdvantagesCard advantagesCard = new AdvantagesCard();
 
         advantagesCard.setDifferential(advantagesCardVO.getDifferential());
         advantagesCard.setDescription(advantagesCardVO.getDescription());
@@ -42,5 +55,13 @@ public class AdvantagesCardService {
             listVO.add(new AdvantagesCardVO(adv));
 
         return listVO;
+    }
+
+    public void delete(Long id) {
+        AdvantagesCard advantagesCard = advantagesCardRepository.getReferenceById(id);
+        Image cardImage = imageRepository.getReferenceById(advantagesCard.getImg().getId());
+
+        imageRepository.delete(cardImage);
+        advantagesCardRepository.deleteById(id);
     }
 }

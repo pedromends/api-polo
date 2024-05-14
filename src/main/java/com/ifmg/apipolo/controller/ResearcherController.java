@@ -22,8 +22,19 @@ public class ResearcherController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateCard(@RequestBody ResearcherVO researcherVO) {
+        researcherService.updateResearcher(researcherVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listAdvantages()  {
         return new ResponseEntity<>(researcherService.list(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete")
+    public void deleteProject(Long id){
+        researcherService.deleteResearcher(id);
     }
 }

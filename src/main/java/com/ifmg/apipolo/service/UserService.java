@@ -18,7 +18,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<UserVO> list(){
+    public void createUser(UserVO userVO){
+        User user = new User();
+
+        user.setUsername(userVO.getUsername());
+        user.setPassword(userVO.getPassword());
+        user.setEmail(userVO.getEmail());
+        user.setFirstName(userVO.getFirstName());
+        user.setLastName(userVO.getLastName());
+        user.setLocked(userVO.getLocked());
+        user.setRole(userVO.getRole());
+        user.setEnabled(userVO.getEnabled());
+
+        userRepository.save(user);
+    }
+
+    public List<UserVO> listUser(){
 
         List<UserVO> listVO = new ArrayList<>();
         List<User> list = userRepository.findAll();
@@ -27,5 +42,25 @@ public class UserService {
             listVO.add(new UserVO(user));
 
         return listVO;
+    }
+
+    public void updateUser(UserVO userVO){
+
+        User user = userRepository.getReferenceById(userVO.getId());
+
+        user.setUsername(userVO.getUsername());
+        user.setPassword(userVO.getPassword());
+        user.setEmail(userVO.getEmail());
+        user.setFirstName(userVO.getFirstName());
+        user.setLastName(userVO.getLastName());
+        user.setLocked(userVO.getLocked());
+        user.setRole(userVO.getRole());
+        user.setEnabled(userVO.getEnabled());
+
+        userRepository.save(user);
+    }
+
+    public void deleteTalentCard(Long id) {
+        userRepository.deleteById(id);
     }
 }

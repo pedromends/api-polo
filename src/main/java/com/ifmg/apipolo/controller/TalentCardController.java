@@ -1,7 +1,6 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.TalentCardService;
-import com.ifmg.apipolo.vo.NewsCardVO;
 import com.ifmg.apipolo.vo.TalentCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/talent")
-public class TalentController {
+public class TalentCardController {
 
     @Autowired
     TalentCardService talentCardService;
@@ -26,5 +25,17 @@ public class TalentController {
     @GetMapping("/list")
     public ResponseEntity<Object> listAdvantages()  {
         return new ResponseEntity<>(talentCardService.list(), HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateAdvantages(@RequestBody TalentCardVO talentCardVO)  {
+        talentCardService.updateTalentCard(talentCardVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> deleteAdvantages(@RequestParam("id") Long id)  {
+        talentCardService.deleteTalentCard(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

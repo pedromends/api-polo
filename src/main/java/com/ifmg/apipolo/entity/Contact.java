@@ -29,6 +29,9 @@ public class Contact {
     @Column(name = "cargo")
     private String position;
 
+    @Column(name = "celular")
+    private String phoneNumber;
+
     @Column(name = "email")
     private String email;
 }

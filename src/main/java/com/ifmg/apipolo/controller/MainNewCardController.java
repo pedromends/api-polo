@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/main-new", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MainNewCardController {
 
+    // Apenas atualização, não criar método de deleção como modo de proteção
+
     @Autowired
     MainNewCardService mainNewCardService;
 
@@ -26,5 +28,17 @@ public class MainNewCardController {
     @GetMapping("/list")
     public ResponseEntity<Object> listMainNews()  {
         return new ResponseEntity<>(mainNewCardService.list(), HttpStatus.OK);
+    }
+
+    @GetMapping("/update")
+    public ResponseEntity<Object> updateMainNew(@RequestBody MainNewCardVO mainNewCardVO)  {
+        mainNewCardService.updateMainNew(mainNewCardVO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/delete")
+    public ResponseEntity<Object> deleteMainNew(@RequestParam("id") Long id)  {
+        mainNewCardService.deleteMainNewService(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

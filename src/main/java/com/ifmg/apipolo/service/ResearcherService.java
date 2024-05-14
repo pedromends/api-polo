@@ -28,6 +28,22 @@ public class ResearcherService {
 
     public void createResearcher(ResearcherVO researcherVO) {
 
+        Researcher newResearcher = new Researcher();
+
+        newResearcher.setImg(researcherVO.getImg());
+        newResearcher.setCampus(researcherVO.getCampus());
+        newResearcher.setFirstName(researcherVO.getFirstName());
+        newResearcher.setLastName(researcherVO.getLastName());
+        newResearcher.setEmail(researcherVO.getEmail());
+        newResearcher.setCourse(researcherVO.getCourse());
+        newResearcher.setLevel(researcherVO.getLevel());
+        newResearcher.setSex(researcherVO.getSex());
+
+        researcherRepository.save(newResearcher);
+    }
+
+    public void updateResearcher(ResearcherVO researcherVO) {
+
         Image cardImage = imageRepository.getReferenceById(researcherVO.getImg().getId());
         Researcher researcher = researcherRepository.getReferenceById(researcherVO.getId());
         Campus campus = campusRepository.getReferenceById(researcherVO.getCampus().getId());
@@ -55,5 +71,9 @@ public class ResearcherService {
             listVO.add(new ResearcherVO(researcher));
 
         return listVO;
+    }
+
+    public void deleteResearcher(Long id) {
+        researcherRepository.deleteById(id);
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/who-we-are")
 public class WhoWeAreController {
 
+    // Título, texto e imagem obrigatórios
+
     @Autowired
     WhoWeAreService whoWeAreService;
 

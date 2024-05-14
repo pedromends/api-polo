@@ -39,4 +39,18 @@ public class ImageService {
 
         return listVO;
     }
+
+    public void updateImage(ImageVO imageVO){
+
+        Image image = imageRepository.getReferenceById(imageVO.getId());
+
+        image.setCode(imageVO.getCode());
+        image.setName(imageVO.getName());
+
+        imageRepository.save(image);
+    }
+
+    public void deleteCapacitation(Long id) {
+        imageRepository.deleteById(id);
+    }
 }

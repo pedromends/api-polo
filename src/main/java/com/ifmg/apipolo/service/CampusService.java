@@ -15,12 +15,33 @@ public class CampusService {
     @Autowired
     private CampusRepository campusRepository;
 
+    public void createCampus(CampusVO campusVO) {
+        Campus campus = new Campus();
+
+        campus.setName(campusVO.getName());
+        campusRepository.save(campus);
+    }
+
     public List<CampusVO> listCampus() {
+
         List<CampusVO> listVO = new ArrayList<>();
         List<Campus> list = campusRepository.findAll();
+
         for(Campus campus : list) {
             listVO.add(new CampusVO(campus));
         }
         return listVO;
+    }
+
+    public void updateCampus(CampusVO campusVO) {
+
+        Campus campus = campusRepository.getReferenceById(campusVO.getId());
+
+        campus.setName(campusVO.getName());
+        campusRepository.save(campus);
+    }
+
+    public void deleteCampus(Long id) {
+        campusRepository.deleteById(id);
     }
 }

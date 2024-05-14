@@ -17,9 +17,11 @@ public class PresentationCardService {
     private PresentationCardRepository presentationCardRepository;
 
     public void createCard(PresentationCardVO presentationCardVO) {
-        PresentationCard presentationCard = presentationCardRepository.getReferenceById(presentationCardVO.getId());
+        PresentationCard presentationCard = new PresentationCard();
+
         presentationCard.setNum(presentationCardVO.getNum());
         presentationCard.setText(presentationCardVO.getText());
+
         presentationCardRepository.save(presentationCard);
     }
 
@@ -32,5 +34,16 @@ public class PresentationCardService {
             listVO.add(new PresentationCardVO(presentationCard));
 
         return listVO;
+    }
+
+    public void updatePresentationCard(PresentationCardVO presentationCardVO) {
+        PresentationCard presentationCard = presentationCardRepository.getReferenceById(presentationCardVO.getId());
+        presentationCard.setNum(presentationCardVO.getNum());
+        presentationCard.setText(presentationCardVO.getText());
+        presentationCardRepository.save(presentationCard);
+    }
+
+    public void deletePresentationCard(Long id){
+        presentationCardRepository.deleteById(id);
     }
 }

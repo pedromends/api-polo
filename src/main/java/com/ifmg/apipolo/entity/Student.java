@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "project", schema = "ifmg-polo")
+@Table(name = "aluno", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
@@ -33,9 +33,12 @@ public class Student {
     @Column(name = "sobrenome")
     private String lastName;
 
-    @Column(name = "titulacao")
-    private String level;
+    @Column(name = "idade")
+    private String age;
 
     @Column(name = "sexo")
     private String sex;
+
+    @Column(name = "matricula")
+    private String register;
 }

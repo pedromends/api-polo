@@ -23,8 +23,20 @@ public class CapacitationCardController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateCard(@RequestBody CapacitationCardVO capacitationCardVO) {
+        capacitationCardService.updateMainNew(capacitationCardVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listCapacitations()  {
         return new ResponseEntity<>(capacitationCardService.list(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> deleteCapacitation(@RequestParam("id") Long id) {
+        capacitationCardService.deleteCapacitation(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

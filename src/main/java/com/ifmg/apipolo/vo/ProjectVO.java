@@ -17,14 +17,12 @@ public class ProjectVO {
 
     private Long id;
     private Modality modality;
-    private Researcher researcher;
+    private Researcher coordinator;
     private Company company;
     private String name;
     private String resume;
-    private String coordinator;
     private String situation;
     private String value;
-    private String team;
     private String modalName;
     private String accordionId;
     private String headerName;
@@ -33,14 +31,12 @@ public class ProjectVO {
     public ProjectVO(Project project) {
         this.id = project.getId();
         this.modality = project.getModality();
-        this.researcher = project.getResearcher();
+        this.coordinator = project.getCoordinator();
         this.company = project.getCompany();
         this.name = project.getName();
         this.resume = project.getResume();
-        this.coordinator = project.getCoordinator();
         this.situation = project.getSituation();
         this.value = project.getValue();
-        this.team = project.getTeam();
         this.modalName = project.getModalName();
         this.accordionId = project.getAccordionId();
         this.headerName = project.getHeaderName();
