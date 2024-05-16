@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value = "/project", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/project")
 public class ProjectController {
 
     @Autowired
