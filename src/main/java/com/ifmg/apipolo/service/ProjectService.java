@@ -2,6 +2,7 @@ package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.Project;
 import com.ifmg.apipolo.repository.CompanyRepository;
+import com.ifmg.apipolo.repository.ModalityRepository;
 import com.ifmg.apipolo.repository.ProjectRepository;
 import com.ifmg.apipolo.repository.ResearcherRepository;
 import com.ifmg.apipolo.vo.ProjectVO;
@@ -20,6 +21,8 @@ public class ProjectService {
     private ResearcherRepository researcherRepository;
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private ModalityRepository modalityRepository;
 
     public void createProject(ProjectVO projectVO) {
 
@@ -43,7 +46,8 @@ public class ProjectService {
     public void updateProject(ProjectVO projectVO) {
 
         Project project = projectRepository.getReferenceById(projectVO.getId());
-        project.setModality(projectVO.getModality());
+
+        project.setModality(modalityRepository.getReferenceById(projectVO.getModality().getId()));
         project.setCoordinator(researcherRepository.getReferenceById(projectVO.getCoordinator().getId()));
         project.setCompany(companyRepository.getReferenceById(projectVO.getCompany().getId()));
         project.setName(projectVO.getName());
