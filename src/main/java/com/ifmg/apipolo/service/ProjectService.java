@@ -43,7 +43,6 @@ public class ProjectService {
     public void updateProject(ProjectVO projectVO) {
 
         Project project = projectRepository.getReferenceById(projectVO.getId());
-        System.out.println(projectVO);
         project.setModality(projectVO.getModality());
         project.setCoordinator(researcherRepository.getReferenceById(projectVO.getCoordinator().getId()));
         project.setCompany(companyRepository.getReferenceById(projectVO.getCompany().getId()));

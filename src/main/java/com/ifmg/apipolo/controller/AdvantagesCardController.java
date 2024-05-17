@@ -18,12 +18,12 @@ public class AdvantagesCardController {
 
     @Autowired
     AdvantagesCardService advantagesCardService;
-
-    @PutMapping("/create")
-    public ResponseEntity<Object> createCard(@RequestBody AdvantagesCardVO advantagesCardVO) {
-        advantagesCardService.createCard(advantagesCardVO);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
+//
+//    @PutMapping("/create")
+//    public ResponseEntity<Object> createCard(@RequestBody AdvantagesCardVO advantagesCardVO) {
+//        advantagesCardService.createCard(advantagesCardVO);
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
 
     @PutMapping("/update")
     public ResponseEntity<Object> updateCard(@RequestBody AdvantagesCardVO advantagesCardVO) {

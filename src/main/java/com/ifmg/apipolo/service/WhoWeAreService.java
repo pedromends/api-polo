@@ -14,8 +14,7 @@ public class WhoWeAreService {
     @Autowired
     WhoWeAreRepository whoWeAreRepository;
 
-    public void createAboutUs(WhoWeAreVO whoWeAreVO) {
-        System.out.println(whoWeAreVO);
+    public void updateAboutUs(WhoWeAreVO whoWeAreVO) {
         WhoWeAre whoWeAre = whoWeAreRepository.getReferenceById(whoWeAreVO.getId());
         whoWeAre.setTitle(whoWeAreVO.getTitle());
         whoWeAre.setParag(whoWeAreVO.getParag());

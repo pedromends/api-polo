@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping(value = "/main-new", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/main-new")
 public class MainNewCardController {
 
     // Apenas atualização, não criar método de deleção como modo de proteção
@@ -30,7 +30,7 @@ public class MainNewCardController {
         return new ResponseEntity<>(mainNewCardService.list(), HttpStatus.OK);
     }
 
-    @GetMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<Object> updateMainNew(@RequestBody MainNewCardVO mainNewCardVO)  {
         mainNewCardService.updateMainNew(mainNewCardVO);
         return new ResponseEntity<>(HttpStatus.OK);

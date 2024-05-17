@@ -17,9 +17,9 @@ public class WhoWeAreController {
     @Autowired
     WhoWeAreService whoWeAreService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Object> createCard(@RequestBody WhoWeAreVO whoWeAreVO) {
-        whoWeAreService.createAboutUs(whoWeAreVO);
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateWhoWeAre(@RequestBody WhoWeAreVO whoWeAreVO) {
+        whoWeAreService.updateAboutUs(whoWeAreVO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
