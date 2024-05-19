@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "image", schema = "ifmg")
+@Table(name = "imagem", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
@@ -19,12 +19,9 @@ public class Image {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "nome")
     private String name;
 
-    @Column(name = "code")
+    @Column(name = "codigo")
     private String code;
-
-    @Column(name = "attr_1")
-    private String attr1;
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "user", schema = "ifmg")
+@Table(name = "usuario", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
@@ -19,13 +19,13 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "firstName")
+    @Column(name = "nome")
     private String firstName;
 
     @Column(name = "role")
     private String role;
 
-    @Column(name = "last_name")
+    @Column(name = "sobrenome")
     private String lastName;
 
     @Column(name = "username")
@@ -37,12 +37,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "locked")
+    @Column(name = "eh_travado")
     private String locked;
 
-    @Column(name = "enabled")
+    @Column(name = "eh_ativo")
     private String enabled;
-
-    @Column(name = "image")
-    private String image;
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "news_card", schema = "ifmg")
+@Table(name = "card_noticias", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
@@ -19,24 +19,19 @@ public class NewsCard {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "tip")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
+    private Image img;
+
+    @Column(name = "dica")
     private String tip;
 
-    @Column(name = "title")
+    @Column(name = "titulo")
     private String title;
 
-    @Column(name = "date")
+    @Column(name = "data")
     private String date;
 
-    @Column(name = "read")
+    @Column(name = "tempo_leitura")
     private String read;
-
-    @Column(name = "image")
-    private String image;
-
-    @Column(name = "link_to")
-    private String linkTo;
-
-    @Column(name = "attr_1")
-    private String attr1;
 }

@@ -1,7 +1,8 @@
 package com.ifmg.apipolo.controller;
 
-import com.ifmg.apipolo.service.CapacitationService;
 import com.ifmg.apipolo.service.ImageService;
+import com.ifmg.apipolo.vo.ImageVO;
+import com.ifmg.apipolo.vo.WhoWeAreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,31 @@ public class ImageController {
     @Autowired
     ImageService imageService;
 
+    @PostMapping("/create")
+    public ResponseEntity<Object> createCard(@RequestBody ImageVO imageVO) {
+        imageService.createImage(imageVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listImages()  {
         return new ResponseEntity<>(imageService.list(), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-one/{id}")
+    public ResponseEntity<Object> getOne(@PathVariable("id") Long id)  {
+        return new ResponseEntity<>(imageService.getOne(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateImage(@RequestBody ImageVO imageVO) {
+        imageService.updateImage(imageVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> deleteImage(@RequestParam("id") Long id) {
+        imageService.deleteCapacitation(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
