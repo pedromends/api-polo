@@ -27,7 +27,7 @@ public class TalentCardService {
         talentCard.setName(talentCardVO.getName());
         talentCard.setProfession(talentCardVO.getProfession());
         talentCard.setDetails(talentCardVO.getDetails());
-        talentCard.setImg(imageRepository.getReferenceById(talentCardVO.getImg().getId()));
+        talentCard.setImg(talentCardVO.getImg());
 
         talentCardRepository.save(talentCard);
     }

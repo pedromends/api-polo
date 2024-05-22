@@ -18,6 +18,7 @@ public class NewVO {
     private Image img1;
     private Image img2;
     private String title;
+    private String date;
     private String paragraph1;
     private String paragraph2;
 
@@ -26,6 +27,7 @@ public class NewVO {
         this.img1 = newNew.getImg1();
         this.img2 = newNew.getImg2();
         this.title = newNew.getTitle();
+        this.date = newNew.getDate();
         this.paragraph1 = newNew.getParagraph1();
         this.paragraph2 = newNew.getParagraph2();
     }

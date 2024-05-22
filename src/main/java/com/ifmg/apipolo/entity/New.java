@@ -27,6 +27,9 @@ public class New {
     @JoinColumn(name = "id_img2", referencedColumnName = "id")
     private Image img2;
 
+    @Column(name = "data")
+    private String date;
+
     @Column(name = "titulo")
     private String title;
 
