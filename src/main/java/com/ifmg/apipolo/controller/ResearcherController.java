@@ -2,6 +2,7 @@ package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.ResearcherService;
 import com.ifmg.apipolo.vo.ResearcherVO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,9 @@ public class ResearcherController {
         return new ResponseEntity<>(researcherService.list(), HttpStatus.OK);
     }
 
-    @DeleteMapping("delete")
-    public void deleteProject(Long id){
+    @Transactional
+    @DeleteMapping("delete/{id}")
+    public void deleteProject(@PathVariable("id") Long id){
         researcherService.deleteResearcher(id);
     }
 }

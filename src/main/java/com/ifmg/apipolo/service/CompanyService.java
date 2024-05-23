@@ -22,7 +22,10 @@ public class CompanyService {
 
     public void createCompany(CompanyVO companyVO) {
         Company company = new Company();
+        Image newImage = new Image();
 
+        newImage.setCode(companyVO.getImage().getCode());
+        company.setImg(newImage);
         company.setName(companyVO.getName());
         company.setClassification(companyVO.getClassification());
         company.setCnpj(companyVO.getCnpj());

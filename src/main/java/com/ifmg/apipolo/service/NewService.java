@@ -73,7 +73,7 @@ public class NewService {
     public List<NewVO> list(){
 
         List<NewVO> listVO = new ArrayList<>();
-        List<New> list = newRepository.findAll();
+        List<New> list = newRepository.findAllDesc();
 
         for(New newNew : list)
             listVO.add(new NewVO(newNew));

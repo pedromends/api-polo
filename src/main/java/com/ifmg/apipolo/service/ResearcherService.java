@@ -8,11 +8,13 @@ import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.ResearcherRepository;
 import com.ifmg.apipolo.vo.NewsCardVO;
 import com.ifmg.apipolo.vo.ResearcherVO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResearcherService {
@@ -29,7 +31,7 @@ public class ResearcherService {
     public void createResearcher(ResearcherVO researcherVO) {
 
         Researcher newResearcher = new Researcher();
-
+        System.out.println(researcherVO);
         newResearcher.setImg(researcherVO.getImg());
         newResearcher.setCampus(researcherVO.getCampus());
         newResearcher.setFirstName(researcherVO.getFirstName());
@@ -73,7 +75,14 @@ public class ResearcherService {
         return listVO;
     }
 
+    @Transactional
     public void deleteResearcher(Long id) {
+
+        // fazer deleção virtual
+        Optional<Researcher> researcher = researcherRepository.findById(id);
+        researcher.get().setCampus(null);
+        researcher.get().setImg(null);
+        researcherRepository.save(researcher.get());
         researcherRepository.deleteById(id);
     }
 }
