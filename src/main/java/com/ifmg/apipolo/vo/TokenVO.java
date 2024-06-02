@@ -3,6 +3,7 @@ package com.ifmg.apipolo.vo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ifmg.apipolo.entity.Token;
+import com.ifmg.apipolo.entity.User;
 import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class TokenVO {
     private String confirmedAt;
     private String expiresAt;
     private String expired;
-    private String user;
+    private User user;
 
     public TokenVO(Token token) {
         this.id = token.getId();

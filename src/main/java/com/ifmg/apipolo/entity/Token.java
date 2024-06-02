@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
 @Entity
 @Table(name = "token", schema = "ifmg-polo")
 @Getter
@@ -19,7 +20,11 @@ public class Token {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "token")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
+    private User user;
+
+    @Column(name = "token_code")
     private String token;
 
     @Column(name = "token_type")
@@ -34,6 +39,8 @@ public class Token {
     @Column(name = "expired")
     private String expired;
 
-    @Column(name = "user")
-    private String user;
+    public Token(User user, String token){
+        this.user = user;
+        this.token = token;
+    }
 }

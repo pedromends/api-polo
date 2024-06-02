@@ -1,23 +1,30 @@
 package com.ifmg.apipolo.service;
 
+import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
+import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
 import com.ifmg.apipolo.vo.UserVO;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TokenRepository tokenRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -43,6 +50,25 @@ public class AuthService {
 
             userRepository.save(user);
         }
+    }
+
+    public Token login(UserVO userVO){
+        var user = userRepository.findByEmail(userVO.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas"));
+
+        if(!passwordEncoder.matches(userVO.getPassword(), user.getPassword()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas");
+
+        var issueDate = Instant.now();
+
+        Token token = new Token(user, Jwts.builder()
+                .claim("id_usuario", user.getId())
+                .setIssuedAt(Date.from(issueDate))
+                .setExpiration(Date.from(issueDate.plus(10L, ChronoUnit.MINUTES)))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString("very_long_and_secure_safe_access_key".getBytes()))
+                .compact());
+
+        return token;
     }
 
     public List<UserVO> listUser(){

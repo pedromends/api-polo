@@ -1,5 +1,6 @@
 package com.ifmg.apipolo.controller;
 
+import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.service.AuthService;
 import com.ifmg.apipolo.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class AuthController {
     public ResponseEntity<Object> createUser(@RequestBody UserVO userVO)  {
         authService.createUser(userVO);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Token> login(@RequestBody UserVO userVO)  {
+        return new ResponseEntity<>(authService.login(userVO), HttpStatus.OK);
     }
 
     @GetMapping("/list")
