@@ -1,10 +1,18 @@
 package com.ifmg.apipolo.entity;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Base64;
+import java.util.Date;
 
 
 @Entity
@@ -36,11 +44,17 @@ public class Token {
     @Column(name = "expires_at")
     private String expiresAt;
 
-    @Column(name = "expired")
-    private String expired;
+    @Column(name = "is_expired")
+    private Boolean expired;
 
-    public Token(User user, String token){
+    public Token(User user, Long validityInMinutes, String secretKey){
         this.user = user;
-        this.token = token;
+        this.token = Jwts.builder()
+                .claim("id_usuario", user.getId())
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(validityInMinutes, ChronoUnit.MINUTES)))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder()
+                        .encodeToString(secretKey.getBytes(StandardCharsets.UTF_8)))
+                .compact();
     }
 }

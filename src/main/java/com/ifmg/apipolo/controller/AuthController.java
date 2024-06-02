@@ -1,13 +1,21 @@
 package com.ifmg.apipolo.controller;
 
+import com.ifmg.apipolo.entity.Login;
 import com.ifmg.apipolo.entity.Token;
+import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.service.AuthService;
+import com.ifmg.apipolo.vo.LoginRequest;
+import com.ifmg.apipolo.vo.LoginResponse;
 import com.ifmg.apipolo.vo.UserVO;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -18,14 +26,22 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> createUser(@RequestBody UserVO userVO)  {
-        authService.createUser(userVO);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<Optional<User>> createUser(@RequestBody UserVO userVO)  {
+        return new ResponseEntity<>(authService.registerUser(userVO), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Token> login(@RequestBody UserVO userVO)  {
-        return new ResponseEntity<>(authService.login(userVO), HttpStatus.OK);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response)  {
+        var login = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+
+        Cookie cookie = new Cookie("refresh_token", login.getAccessToken().getToken());
+        cookie.setMaxAge(3600);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api-polo");
+
+        response.addCookie(cookie);
+        LoginResponse loginResponse = new LoginResponse(login.getAccessToken().getToken());
+        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
     @GetMapping("/list")

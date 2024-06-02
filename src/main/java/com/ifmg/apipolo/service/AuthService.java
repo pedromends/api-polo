@@ -1,20 +1,21 @@
 package com.ifmg.apipolo.service;
 
+import com.ifmg.apipolo.controller.AuthController;
+import com.ifmg.apipolo.entity.Login;
 import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
 import com.ifmg.apipolo.vo.UserVO;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -26,17 +27,39 @@ public class AuthService {
     @Autowired
     private TokenRepository tokenRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    @Value("${application.security.access-token-secret}")
+    private String accessTokenSecret;
+
+    @Autowired
+    @Value("${application.security.refresh-token-secret}")
+    private String refreshTokenSecret;
+
+    public AuthService() {
+
+    }
 
     public AuthService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(UserVO userVO){
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, String accessTokenSecret, String refreshTokenSecret) {
+        this.passwordEncoder = passwordEncoder;
+        this.accessTokenSecret = accessTokenSecret;
+        this.refreshTokenSecret = refreshTokenSecret;
+        this.userRepository = userRepository;
+    }
+
+    public Optional<User> registerUser(UserVO userVO){
 
         if(!Objects.equals(userVO.getPassword(), userVO.getConfirmPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senhas diferentes");
         } else {
+
+            //colocar try catch depois
             User user = new User();
 
             user.setUsername(userVO.getUsername());
@@ -49,26 +72,26 @@ public class AuthService {
             user.setEnabled(false);
 
             userRepository.save(user);
+
+            return userRepository.findByEmail(user.getEmail());
         }
     }
 
-    public Token login(UserVO userVO){
-        var user = userRepository.findByEmail(userVO.getEmail())
+    public Login login(String email, String password){
+        var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas"));
 
-        if(!passwordEncoder.matches(userVO.getPassword(), user.getPassword()))
+        if(!passwordEncoder.matches(password, user.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas");
 
-        var issueDate = Instant.now();
+        Token newToken = new Token(user, 10L, accessTokenSecret);
 
-        Token token = new Token(user, Jwts.builder()
-                .claim("id_usuario", user.getId())
-                .setIssuedAt(Date.from(issueDate))
-                .setExpiration(Date.from(issueDate.plus(10L, ChronoUnit.MINUTES)))
-                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString("very_long_and_secure_safe_access_key".getBytes()))
-                .compact());
+        tokenRepository.save(newToken);
+        Token loggedUser = tokenRepository.findByUserId(newToken.getUser().getId());
+        System.out.println(loggedUser);
+        return new Login(loggedUser.getUser(),
+                accessTokenSecret, refreshTokenSecret);
 
-        return token;
     }
 
     public List<UserVO> listUser(){

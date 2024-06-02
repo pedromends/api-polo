@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class TokenVO {
 
     private Long id;
-    private String token;
+    private String token_code;
     private String tokenType;
     private String confirmedAt;
     private String expiresAt;
@@ -24,11 +24,7 @@ public class TokenVO {
 
     public TokenVO(Token token) {
         this.id = token.getId();
-        this.token = token.getToken();
-        this.tokenType = token.getTokenType();
-        this.confirmedAt = token.getConfirmedAt();
-        this.expiresAt = token.getExpiresAt();
-        this.expired = token.getExpired();
+        this.token_code = token.getToken();
         this.user = token.getUser();
     }
 }
