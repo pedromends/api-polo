@@ -1,6 +1,6 @@
 package com.ifmg.apipolo.controller;
 
-import com.ifmg.apipolo.service.UserService;
+import com.ifmg.apipolo.service.AuthService;
 import com.ifmg.apipolo.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,31 +11,31 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class AuthController {
 
     @Autowired
-    UserService userService;
+    AuthService authService;
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<Object> createUser(@RequestBody UserVO userVO)  {
-        userService.createUser(userVO);
+        authService.createUser(userVO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/list")
     public ResponseEntity<Object> listUser()  {
-        return new ResponseEntity<>(userService.listUser(), HttpStatus.OK);
+        return new ResponseEntity<>(authService.listUser(), HttpStatus.OK);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Object> updateUser(@RequestBody UserVO userVO)  {
-        userService.updateUser(userVO);
+        authService.updateUser(userVO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteUser(@RequestParam("id") Long id)  {
-        userService.deleteTalentCard(id);
+        authService.deleteTalentCard(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
