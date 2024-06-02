@@ -38,8 +38,8 @@ public class User {
     private String password;
 
     @Column(name = "eh_travado")
-    private String locked;
+    private Boolean locked;
 
     @Column(name = "eh_ativo")
-    private String enabled;
+    private Boolean enabled;
 }

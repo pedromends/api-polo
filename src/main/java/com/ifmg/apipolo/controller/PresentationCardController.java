@@ -39,8 +39,8 @@ public class PresentationCardController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deletePresentationCard(@RequestParam("id")Long id)  {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deletePresentationCard(@PathVariable("id")Long id)  {
         presentationCardService.deletePresentationCard(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

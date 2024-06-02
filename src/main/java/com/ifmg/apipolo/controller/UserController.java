@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public ResponseEntity<Object> createUser(@RequestBody UserVO userVO)  {
         userService.createUser(userVO);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -27,13 +27,13 @@ public class UserController {
         return new ResponseEntity<>(userService.listUser(), HttpStatus.OK);
     }
 
-    @PutMapping("/list")
+    @PutMapping("/update")
     public ResponseEntity<Object> updateUser(@RequestBody UserVO userVO)  {
         userService.updateUser(userVO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/list")
+    @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteUser(@RequestParam("id") Long id)  {
         userService.deleteTalentCard(id);
         return ResponseEntity.ok(HttpStatus.OK);

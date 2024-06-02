@@ -19,6 +19,7 @@ public class UserVO {
     private String username;
     private String email;
     private String password;
+    private String confirmPassword;
     private String locked;
     private String enabled;
 
@@ -30,7 +31,5 @@ public class UserVO {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.locked = user.getLocked();
-        this.enabled = user.getEnabled();
     }
 }

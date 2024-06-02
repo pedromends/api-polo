@@ -26,9 +26,9 @@ public class UserService {
         user.setEmail(userVO.getEmail());
         user.setFirstName(userVO.getFirstName());
         user.setLastName(userVO.getLastName());
-        user.setLocked(userVO.getLocked());
+        user.setLocked(true);
         user.setRole(userVO.getRole());
-        user.setEnabled(userVO.getEnabled());
+        user.setEnabled(false);
 
         userRepository.save(user);
     }
@@ -53,9 +53,7 @@ public class UserService {
         user.setEmail(userVO.getEmail());
         user.setFirstName(userVO.getFirstName());
         user.setLastName(userVO.getLastName());
-        user.setLocked(userVO.getLocked());
         user.setRole(userVO.getRole());
-        user.setEnabled(userVO.getEnabled());
 
         userRepository.save(user);
     }
