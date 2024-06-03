@@ -1,6 +1,5 @@
 package com.ifmg.apipolo.service;
 
-import com.ifmg.apipolo.controller.AuthController;
 import com.ifmg.apipolo.entity.Login;
 import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
@@ -18,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
+@NoArgsConstructor
 @Service
 public class AuthService {
 
@@ -37,10 +37,6 @@ public class AuthService {
     @Autowired
     @Value("${application.security.refresh-token-secret}")
     private String refreshTokenSecret;
-
-    public AuthService() {
-
-    }
 
     public AuthService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -88,7 +84,6 @@ public class AuthService {
 
         tokenRepository.save(newToken);
         Token loggedUser = tokenRepository.findByUserId(newToken.getUser().getId());
-        System.out.println(loggedUser);
         return new Login(loggedUser.getUser(),
                 accessTokenSecret, refreshTokenSecret);
 
@@ -121,5 +116,11 @@ public class AuthService {
 
     public void deleteTalentCard(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public User getUserFromToken(String substring) {
+        User user = userRepository.findByTokenCode(substring);
+        System.out.println(user);
+        return user;
     }
 }

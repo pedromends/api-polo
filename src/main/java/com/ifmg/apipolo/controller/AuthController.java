@@ -1,13 +1,13 @@
 package com.ifmg.apipolo.controller;
 
-import com.ifmg.apipolo.entity.Login;
-import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.service.AuthService;
 import com.ifmg.apipolo.vo.LoginRequest;
 import com.ifmg.apipolo.vo.LoginResponse;
+import com.ifmg.apipolo.vo.UserResponse;
 import com.ifmg.apipolo.vo.UserVO;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,6 +42,12 @@ public class AuthController {
         response.addCookie(cookie);
         LoginResponse loginResponse = new LoginResponse(login.getAccessToken().getToken());
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/auth")
+    public UserResponse user(HttpServletRequest request){
+        User user = (User) request.getAttribute("user");
+        return new UserResponse(user);
     }
 
     @GetMapping("/list")
