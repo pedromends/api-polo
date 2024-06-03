@@ -1,8 +1,11 @@
 package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.Login;
+import com.ifmg.apipolo.entity.PasswordRecovery;
 import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
+import com.ifmg.apipolo.error.UserNotFoundError;
+import com.ifmg.apipolo.repository.PasswordRecoveryRepository;
 import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
 import com.ifmg.apipolo.vo.UserVO;
@@ -28,14 +31,20 @@ public class AuthService {
     private TokenRepository tokenRepository;
 
     @Autowired
+    private PasswordRecoveryRepository passwordRecoveryRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    @Value("${application.security.access-token-secret}")
+    private MailService mailService;
+
+    @Autowired
+    @Value("${application.security.access-token-secret")
     private String accessTokenSecret;
 
     @Autowired
-    @Value("${application.security.refresh-token-secret}")
+    @Value("${application.security.refresh-token-secret")
     private String refreshTokenSecret;
 
     public AuthService(PasswordEncoder passwordEncoder) {
@@ -81,12 +90,40 @@ public class AuthService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas");
 
         Token newToken = new Token(user, 10L, accessTokenSecret);
+        Token loggedUser = tokenRepository.findByUserId(newToken.getUser().getId());
 
         tokenRepository.save(newToken);
-        Token loggedUser = tokenRepository.findByUserId(newToken.getUser().getId());
-        return new Login(loggedUser.getUser(),
-                newToken.getToken(), refreshTokenSecret);
 
+        return new Login(loggedUser.getUser(), newToken.getToken(), refreshTokenSecret);
+    }
+
+    public Login refreshAccess(String refreshToken) {
+        User user = userRepository.findByTokenCode(refreshToken);
+        Token tokenToUpdate = tokenRepository.findByUserId(user.getId());
+        Token newToken = new Token(user, 10L, refreshToken);
+        Login newLogin = new Login(newToken.getToken(), refreshTokenSecret);
+
+        tokenToUpdate.setToken(newToken.getToken());
+        tokenRepository.save(tokenToUpdate);
+
+        return newLogin;
+    }
+
+    public void forgot(String email, String originUrl) {
+        var user = userRepository.findByEmail(email);
+
+        try{
+            if(user.isPresent()){
+                var token = UUID.randomUUID().toString().replaceAll("-", "");
+                PasswordRecovery passwordRecovery = new PasswordRecovery();
+                passwordRecovery.setUser(user.get());
+                passwordRecovery.setToken(new Token(user.get(), token));
+                passwordRecoveryRepository.save(passwordRecovery);
+                mailService.sendForgotMessage(email, token, originUrl);
+            }
+        } catch (Exception e) {
+            throw new UserNotFoundError();
+        }
     }
 
     public List<UserVO> listUser(){
@@ -109,15 +146,6 @@ public class AuthService {
         return userRepository.findByTokenCode(substring);
     }
 
-    public Login refreshAccess(String refreshToken) {
-        User user = userRepository.findByTokenCode(refreshToken);
-        Token tokenToUpdate = tokenRepository.findByUserId(user.getId());
-        Token newToken = new Token(user, 10L, refreshToken);
-        Login newLogin = new Login(newToken.getToken(), refreshTokenSecret);
 
-        tokenToUpdate.setToken(newToken.getToken());
-        tokenRepository.save(tokenToUpdate);
 
-        return newLogin;
-    }
 }

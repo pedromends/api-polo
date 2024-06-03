@@ -1,5 +1,8 @@
 package com.ifmg.apipolo.controller;
 
+import com.ifmg.apipolo.entity.ForgotRequest;
+import com.ifmg.apipolo.entity.ForgotResponse;
+import com.ifmg.apipolo.entity.Login;
 import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.service.AuthService;
 import com.ifmg.apipolo.service.LogoutResponse;
@@ -29,33 +32,46 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<RefreshResponse> refresh(@CookieValue("refresh_token")String refreshToken, HttpServletResponse response){
+    public ResponseEntity<RefreshResponse> refresh(@CookieValue("refresh_token") String refreshToken, HttpServletResponse response){
         String currToken = authService.refreshAccess(refreshToken).getCurrentAccess();
-        Cookie cookie = new Cookie("refresh_token",currToken );
+
+        Cookie cookie = new Cookie("refresh_token",currToken);
         response.addCookie(cookie);
         return new ResponseEntity<>(new RefreshResponse(currToken), HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response)  {
-        var login = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
-
+        Login login = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        LoginResponse loginResponse = new LoginResponse(login.getAccessToken().getToken());
         Cookie cookie = new Cookie("refresh_token", login.getAccessToken().getToken());
+
         cookie.setMaxAge(3600);
         cookie.setHttpOnly(true);
         cookie.setPath("/api-polo");
-
         response.addCookie(cookie);
-        LoginResponse loginResponse = new LoginResponse(login.getAccessToken().getToken());
+
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/forgot")
+    public ForgotResponse forgot(@RequestBody ForgotRequest forgotRequest, HttpServletRequest request){
+        var originUrl = request.getHeader("Origin");
+
+        authService.forgot(forgotRequest.getEmail(), originUrl);
+
+        return new ForgotResponse("Confira seu email");
     }
 
     @PostMapping("/logout")
     public LogoutResponse logout(HttpServletResponse response){
         Cookie cookie = new Cookie("refresh_token", null);
+
         cookie.setMaxAge(0);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
+
+        // TODO: remover o token após logout
 
         return new LogoutResponse("success");
     }

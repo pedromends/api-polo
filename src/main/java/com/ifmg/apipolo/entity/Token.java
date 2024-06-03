@@ -63,16 +63,6 @@ public class Token {
                 .compact();
     }
 
-    public Token(User user, long validityInMinutes, Token refreshToken) {
-        this.user = user;
-        this.token = Jwts.builder()
-                .claim("id_usuario", user.getId())
-                .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(validityInMinutes, ChronoUnit.MINUTES)))
-                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder()
-                        .encodeToString(refreshToken.getToken().getBytes(StandardCharsets.UTF_8)))
-                .compact();
-    }
 
     public Token(String refreshTokenSecret) {
         this.token = Jwts.builder()
@@ -83,5 +73,4 @@ public class Token {
                         .encodeToString(refreshTokenSecret.getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
-
 }
