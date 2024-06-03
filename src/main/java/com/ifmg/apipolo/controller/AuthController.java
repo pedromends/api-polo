@@ -2,10 +2,8 @@ package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.service.AuthService;
-import com.ifmg.apipolo.vo.LoginRequest;
-import com.ifmg.apipolo.vo.LoginResponse;
-import com.ifmg.apipolo.vo.UserResponse;
-import com.ifmg.apipolo.vo.UserVO;
+import com.ifmg.apipolo.service.LogoutResponse;
+import com.ifmg.apipolo.vo.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +28,14 @@ public class AuthController {
         return new ResponseEntity<>(authService.registerUser(userVO), HttpStatus.OK);
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshResponse> refresh(@CookieValue("refresh_token")String refreshToken, HttpServletResponse response){
+        String currToken = authService.refreshAccess(refreshToken).getCurrentAccess();
+        Cookie cookie = new Cookie("refresh_token",currToken );
+        response.addCookie(cookie);
+        return new ResponseEntity<>(new RefreshResponse(currToken), HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response)  {
         var login = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
@@ -44,6 +50,16 @@ public class AuthController {
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public LogoutResponse logout(HttpServletResponse response){
+        Cookie cookie = new Cookie("refresh_token", null);
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        return new LogoutResponse("success");
+    }
+
     @GetMapping("/auth")
     public UserResponse user(HttpServletRequest request){
         User user = (User) request.getAttribute("user");
@@ -55,11 +71,6 @@ public class AuthController {
         return new ResponseEntity<>(authService.listUser(), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Object> updateUser(@RequestBody UserVO userVO)  {
-        authService.updateUser(userVO);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteUser(@RequestParam("id") Long id)  {

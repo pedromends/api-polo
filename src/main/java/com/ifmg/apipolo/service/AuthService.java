@@ -85,7 +85,7 @@ public class AuthService {
         tokenRepository.save(newToken);
         Token loggedUser = tokenRepository.findByUserId(newToken.getUser().getId());
         return new Login(loggedUser.getUser(),
-                accessTokenSecret, refreshTokenSecret);
+                newToken.getToken(), refreshTokenSecret);
 
     }
 
@@ -100,27 +100,24 @@ public class AuthService {
         return listVO;
     }
 
-    public void updateUser(UserVO userVO){
-
-        User user = userRepository.getReferenceById(userVO.getId());
-
-        user.setUsername(userVO.getUsername());
-        user.setPassword(userVO.getPassword());
-        user.setEmail(userVO.getEmail());
-        user.setFirstName(userVO.getFirstName());
-        user.setLastName(userVO.getLastName());
-        user.setRole(userVO.getRole());
-
-        userRepository.save(user);
-    }
 
     public void deleteTalentCard(Long id) {
         userRepository.deleteById(id);
     }
 
     public User getUserFromToken(String substring) {
-        User user = userRepository.findByTokenCode(substring);
-        System.out.println(user);
-        return user;
+        return userRepository.findByTokenCode(substring);
+    }
+
+    public Login refreshAccess(String refreshToken) {
+        User user = userRepository.findByTokenCode(refreshToken);
+        Token tokenToUpdate = tokenRepository.findByUserId(user.getId());
+        Token newToken = new Token(user, 10L, refreshToken);
+        Login newLogin = new Login(newToken.getToken(), refreshTokenSecret);
+
+        tokenToUpdate.setToken(newToken.getToken());
+        tokenRepository.save(tokenToUpdate);
+
+        return newLogin;
     }
 }

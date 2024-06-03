@@ -47,6 +47,11 @@ public class Token {
     @Column(name = "is_expired")
     private Boolean expired;
 
+    public Token(User user, String accessSecret) {
+        this.user = user;
+        this.token = accessSecret;
+    }
+
     public Token(User user, Long validityInMinutes, String secretKey){
         this.user = user;
         this.token = Jwts.builder()
@@ -57,4 +62,26 @@ public class Token {
                         .encodeToString(secretKey.getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
+
+    public Token(User user, long validityInMinutes, Token refreshToken) {
+        this.user = user;
+        this.token = Jwts.builder()
+                .claim("id_usuario", user.getId())
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(validityInMinutes, ChronoUnit.MINUTES)))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder()
+                        .encodeToString(refreshToken.getToken().getBytes(StandardCharsets.UTF_8)))
+                .compact();
+    }
+
+    public Token(String refreshTokenSecret) {
+        this.token = Jwts.builder()
+                .claim("id_usuario", user.getId())
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(10L, ChronoUnit.MINUTES)))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder()
+                        .encodeToString(refreshTokenSecret.getBytes(StandardCharsets.UTF_8)))
+                .compact();
+    }
+
 }
