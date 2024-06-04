@@ -2,9 +2,8 @@ package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.entity.ForgotRequest;
 import com.ifmg.apipolo.entity.ForgotResponse;
-import com.ifmg.apipolo.entity.Login;
-import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.login.MyCustomUserDetails;
+import com.ifmg.apipolo.record.LoginResponse;
 import com.ifmg.apipolo.service.AuthService;
 import com.ifmg.apipolo.service.CustomUserDetailsService;
 import com.ifmg.apipolo.service.JwtTokenService;
@@ -76,24 +75,10 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String token = jwtTokenService.generateToken(userDetailsService);
-            return new ResponseEntity<>(new LoginResponse(token, userDetailsService), HttpStatus.OK);
+            return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
         }catch(AuthenticationException e){
             return new ResponseEntity<>(new LoginResponse(e.getMessage()), HttpStatus.UNAUTHORIZED);
         }
-
-
-
-//        OLD METHOD
-//        HttpServletResponse response
-//        Login login = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
-//        LoginResponse loginResponse = new LoginResponse(login.getAccessToken().getToken());
-//        Cookie cookie = new Cookie("refresh_token", login.getAccessToken().getToken());
-//
-//        cookie.setMaxAge(3600);
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/api-polo");
-//        response.addCookie(cookie);
-//
     }
 
     @PostMapping("/forgot")
@@ -116,12 +101,6 @@ public class AuthController {
         // TODO: remover o token após logout
 
         return new LogoutResponse("success");
-    }
-
-    @GetMapping("/auth")
-    public UserResponse user(HttpServletRequest request){
-        User user = (User) request.getAttribute("user");
-        return new UserResponse(user);
     }
 
     @GetMapping("/list")

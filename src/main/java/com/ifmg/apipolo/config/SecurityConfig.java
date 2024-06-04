@@ -1,20 +1,16 @@
 package com.ifmg.apipolo.config;
 
-import com.ifmg.apipolo.login.AuthenticationSuccessHandler;
+import com.ifmg.apipolo.error.CustomAccessDeniedHandler;
 import com.ifmg.apipolo.login.JwtAuthenticationFilter;
 import com.ifmg.apipolo.service.CustomUserDetailsService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -43,7 +39,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/user/register", "/user/login", "/user/hello")
+                .requestMatchers(
+                        "/user/register","/user/login","/user/hello",
+                        "/main-new/list","/presenter-card/list",
+                        "/who-we-are/get", "/project/list","/new/get-three",
+                        "/image/get-one/{id}", "/news-card/list",
+                        "/capacitation/list", "/advantages/list",
+                        "/event/list", "/talent/list", "/researcher/list",
+                        "/open-new/{id}", "/new/show-one/{id}", "img/{id}"
+                )
                 .permitAll().anyRequest().authenticated())
             .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler)
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

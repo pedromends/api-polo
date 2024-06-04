@@ -1,4 +1,4 @@
-package com.ifmg.apipolo.config;
+package com.ifmg.apipolo.error;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

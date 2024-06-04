@@ -85,21 +85,6 @@ public class AuthService {
         }
     }
 
-    public Login login(String email, String password){
-        var user = userRepository.findByEmail(email);
-                // .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas"));
-
-        if(!passwordEncoder.matches(password, user.getPassword()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas");
-
-        Token newToken = new Token(user, 10L, accessTokenSecret);
-        Token loggedUser = tokenRepository.findByUserId(newToken.getUser().getId());
-
-        tokenRepository.save(newToken);
-
-        return new Login(loggedUser.getUser(), newToken.getToken(), refreshTokenSecret);
-    }
-
     public Login refreshAccess(String refreshToken) {
         User user = userRepository.findByTokenCode(refreshToken);
         Token tokenToUpdate = tokenRepository.findByUserId(user.getId());
