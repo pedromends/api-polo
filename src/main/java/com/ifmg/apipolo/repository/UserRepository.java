@@ -10,8 +10,11 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.email = :email")
-    Optional<User> findByEmail(@Param("email")String email);
+    User findByEmail(@Param("email")String email);
 
     @Query("select u from User u join Token t on u.id = t.user.id where t.token = :substring ORDER BY u.id LIMIT 1")
-    User findByTokenCode(@Param("substring")String substring);
+    User findByTokenCode(@Param("substring") String substring);
+
+    @Query("select u from User u where u.username = :username")
+    User findByUsername(@Param("username") String username);
 }

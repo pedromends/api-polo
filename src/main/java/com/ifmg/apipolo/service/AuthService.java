@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -58,33 +57,37 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> registerUser(UserVO userVO){
+    public String registerUser(UserVO userVO){
 
         if(!Objects.equals(userVO.getPassword(), userVO.getConfirmPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senhas diferentes");
         } else {
+            try{
+                User user = new User();
 
-            //colocar try catch depois
-            User user = new User();
+                user.setUsername(userVO.getUsername());
+                user.setPassword(passwordEncoder.encode(userVO.getPassword()));
+                user.setEmail(userVO.getEmail());
+                user.setFirstName(userVO.getFirstName());
+                user.setLastName(userVO.getLastName());
+                user.setLocked(true);
+                user.setRole(userVO.getRole());
+                user.setEnabled(false);
+                userRepository.save(user);
+                User savedUser = userRepository.findByEmail(userVO.getEmail());
+                Token newToken = new Token(savedUser, 10L, accessTokenSecret);
 
-            user.setUsername(userVO.getUsername());
-            user.setPassword(passwordEncoder.encode(userVO.getPassword()));
-            user.setEmail(userVO.getEmail());
-            user.setFirstName(userVO.getFirstName());
-            user.setLastName(userVO.getLastName());
-            user.setLocked(true);
-            user.setRole(userVO.getRole());
-            user.setEnabled(false);
-
-            userRepository.save(user);
-
-            return userRepository.findByEmail(user.getEmail());
+                tokenRepository.save(newToken);
+                return newToken.getToken();
+            }catch (Exception e){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            }
         }
     }
 
     public Login login(String email, String password){
-        var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas"));
+        var user = userRepository.findByEmail(email);
+                // .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas"));
 
         if(!passwordEncoder.matches(password, user.getPassword()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Credenciais inválidas");
@@ -113,11 +116,11 @@ public class AuthService {
         var user = userRepository.findByEmail(email);
 
         try{
-            if(user.isPresent()){
+            if(user != null){
                 var token = UUID.randomUUID().toString().replaceAll("-", "");
                 PasswordRecovery passwordRecovery = new PasswordRecovery();
-                passwordRecovery.setUser(user.get());
-                passwordRecovery.setToken(new Token(user.get(), token));
+                passwordRecovery.setUser(user);
+                passwordRecovery.setToken(new Token(user, token));
                 passwordRecoveryRepository.save(passwordRecovery);
                 mailService.sendForgotMessage(email, token, originUrl);
             }
@@ -145,7 +148,4 @@ public class AuthService {
     public User getUserFromToken(String substring) {
         return userRepository.findByTokenCode(substring);
     }
-
-
-
 }

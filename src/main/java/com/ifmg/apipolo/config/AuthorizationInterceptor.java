@@ -9,6 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
+
     private final AuthService authService;
 
     public AuthorizationInterceptor(AuthService authService) {
