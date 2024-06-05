@@ -57,7 +57,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public String registerUser(UserVO userVO){
+    public User registerUser(UserVO userVO){
 
         if(!Objects.equals(userVO.getPassword(), userVO.getConfirmPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senhas diferentes");
@@ -74,11 +74,8 @@ public class AuthService {
                 user.setRole(userVO.getRole());
                 user.setEnabled(false);
                 userRepository.save(user);
-                User savedUser = userRepository.findByEmail(userVO.getEmail());
-                Token newToken = new Token(savedUser, 10L, accessTokenSecret);
 
-                tokenRepository.save(newToken);
-                return newToken.getToken();
+                return userRepository.findByEmail(userVO.getEmail());
             }catch (Exception e){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }

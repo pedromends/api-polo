@@ -2,8 +2,12 @@ package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.entity.ForgotRequest;
 import com.ifmg.apipolo.entity.ForgotResponse;
+import com.ifmg.apipolo.entity.Token;
+import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.login.MyCustomUserDetails;
 import com.ifmg.apipolo.record.LoginResponse;
+import com.ifmg.apipolo.repository.TokenRepository;
+import com.ifmg.apipolo.repository.UserRepository;
 import com.ifmg.apipolo.service.AuthService;
 import com.ifmg.apipolo.service.CustomUserDetailsService;
 import com.ifmg.apipolo.service.JwtTokenService;
@@ -41,18 +45,21 @@ public class AuthController {
     @Autowired
     private JwtTokenService jwtTokenService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TokenRepository tokenRepository;
+
     @GetMapping("/hello")
     public ResponseEntity<String> helloWorld()  {
         return new ResponseEntity<>("Hello World", HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> createUser(@RequestBody UserVO userVO, HttpServletResponse response)  {
-        String currToken = authService.registerUser(userVO);
-
-        Cookie cookie = new Cookie("refresh_token", currToken);
-        response.addCookie(cookie);
-        return new ResponseEntity<>(currToken, HttpStatus.OK);
+    public ResponseEntity<User> createUser(@RequestBody UserVO userVO)  {
+        User newUser = authService.registerUser(userVO);
+        return new ResponseEntity<>(newUser, HttpStatus.OK);
     }
 
     @PostMapping("/refresh")
@@ -74,8 +81,22 @@ public class AuthController {
             MyCustomUserDetails userDetailsService = customUserDetailsService.loadUserByUsername(loginRequest.getEmail());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String token = jwtTokenService.generateToken(userDetailsService);
-            return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
+            String tokenCode = jwtTokenService.generateToken(userDetailsService);
+            User user = userRepository.findByUsername(loginRequest.getEmail());
+
+            //Tem usuário ?
+            var newUserTk = tokenRepository.findByUserId(user.getId());
+
+            //Tem token ?
+            if(newUserTk == null){
+                Token newToken = new Token(user, tokenCode);
+                tokenRepository.save(newToken);
+            } else {
+                newUserTk.setToken(tokenCode);
+                tokenRepository.save(newUserTk);
+            }
+
+            return new ResponseEntity<>(new LoginResponse(tokenCode), HttpStatus.OK);
         }catch(AuthenticationException e){
             return new ResponseEntity<>(new LoginResponse(e.getMessage()), HttpStatus.UNAUTHORIZED);
         }
