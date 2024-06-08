@@ -22,6 +22,8 @@ public class UserVO {
     private String confirmPassword;
     private String locked;
     private String enabled;
+    private ImageVO imageVO;
+    private String token;
 
     public UserVO(User user) {
         this.id = user.getId();

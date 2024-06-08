@@ -57,13 +57,14 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(UserVO userVO){
+    public UserVO registerUser(UserVO userVO){
 
         if(!Objects.equals(userVO.getPassword(), userVO.getConfirmPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senhas diferentes");
         } else {
             try{
                 User user = new User();
+                UserVO userReturn = new UserVO();
 
                 user.setUsername(userVO.getUsername());
                 user.setPassword(passwordEncoder.encode(userVO.getPassword()));
@@ -75,7 +76,14 @@ public class AuthService {
                 user.setEnabled(false);
                 userRepository.save(user);
 
-                return userRepository.findByEmail(userVO.getEmail());
+                User originalUser =  userRepository.findByEmail(userVO.getEmail());
+
+                userReturn.setEmail(originalUser.getEmail());
+                userReturn.setUsername(originalUser.getUsername());
+                userReturn.setFirstName(originalUser.getFirstName());
+                userReturn.setLastName(originalUser.getFirstName());
+
+                return userReturn;
             }catch (Exception e){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             }

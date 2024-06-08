@@ -6,6 +6,7 @@ import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.login.MyCustomUserDetails;
 import com.ifmg.apipolo.record.LoginResponse;
+import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
 import com.ifmg.apipolo.service.AuthService;
@@ -50,6 +51,8 @@ public class AuthController {
 
     @Autowired
     private TokenRepository tokenRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @GetMapping("/hello")
     public ResponseEntity<String> helloWorld()  {
@@ -57,9 +60,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody UserVO userVO)  {
-        User newUser = authService.registerUser(userVO);
-        return new ResponseEntity<>(newUser, HttpStatus.OK);
+    public ResponseEntity<UserVO> createUser(@RequestBody UserVO userVO)  {
+        UserVO newUserVO = authService.registerUser(userVO);
+        return new ResponseEntity<>(newUserVO, HttpStatus.OK);
     }
 
     @PostMapping("/refresh")
@@ -75,6 +78,8 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest)  {
 
         try{
+            UserVO userReturn = new UserVO();
+
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
             Authentication authentication = authenticationManager.authenticate(authToken);
 
@@ -84,10 +89,12 @@ public class AuthController {
             String tokenCode = jwtTokenService.generateToken(userDetailsService);
             User user = userRepository.findByUsername(loginRequest.getEmail());
 
-            //Tem usuário ?
             var newUserTk = tokenRepository.findByUserId(user.getId());
 
-            //Tem token ?
+            userReturn.setEmail(user.getEmail());
+            userReturn.setFirstName(user.getFirstName());
+            userReturn.setLastName(user.getLastName());
+
             if(newUserTk == null){
                 Token newToken = new Token(user, tokenCode);
                 tokenRepository.save(newToken);
@@ -96,7 +103,7 @@ public class AuthController {
                 tokenRepository.save(newUserTk);
             }
 
-            return new ResponseEntity<>(new LoginResponse(tokenCode), HttpStatus.OK);
+            return new ResponseEntity<>(new LoginResponse(userReturn, tokenCode), HttpStatus.OK);
         }catch(AuthenticationException e){
             return new ResponseEntity<>(new LoginResponse(e.getMessage()), HttpStatus.UNAUTHORIZED);
         }

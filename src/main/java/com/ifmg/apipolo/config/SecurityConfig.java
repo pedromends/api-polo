@@ -40,14 +40,13 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                        "/user/register","/user/login","/user/hello",
-                        "/main-new/list","/presenter-card/list",
-                        "/who-we-are/get", "/project/list","/new/get-three",
-                        "/image/get-one/{id}", "/news-card/list",
-                        "/capacitation/list", "/advantages/list",
-                        "/event/list", "/talent/list", "/researcher/list",
-                        "/open-new/{id}", "/new/show-one/{id}", "img/{id}",
-                        "/campus/list"
+                    "/user/register","/user/login","/user/hello",
+                    "/main-new/list","/presenter-card/list", "/new/list",
+                    "/who-we-are/get", "/project/list","/new/get-three",
+                    "/image/get-one/{id}", "/news-card/list", "/event/list",
+                    "/capacitation/list", "/advantages/list", "/talent/list",
+                    "/researcher/list","/open-new/{id}", "/new/show-one/{id}",
+                    "img/{id}","/campus/list"
                 )
                 .permitAll().anyRequest().authenticated())
             .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler)

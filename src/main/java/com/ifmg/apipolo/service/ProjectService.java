@@ -17,10 +17,13 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+
     @Autowired
     private ResearcherRepository researcherRepository;
+
     @Autowired
     private CompanyRepository companyRepository;
+
     @Autowired
     private ModalityRepository modalityRepository;
 
