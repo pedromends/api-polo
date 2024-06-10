@@ -30,10 +30,13 @@ public class ProjectService {
     public void createProject(ProjectVO projectVO) {
 
         Project project = new Project();
+        var modality = modalityRepository.findById(projectVO.getModality().getId());
+        var researcher = researcherRepository.findById(projectVO.getCoordinator().getId());
+        var company = companyRepository.findById(projectVO.getCompany().getId());
 
-        project.setModality(projectVO.getModality());
-        project.setCoordinator(projectVO.getCoordinator());
-        project.setCompany(projectVO.getCompany());
+        project.setModality(modality.get());
+        project.setCoordinator(researcher.get());
+        project.setCompany(company.get());
         project.setModalName(projectVO.getModalName());
         project.setAccordionId(projectVO.getAccordionId());
         project.setHeaderName(projectVO.getHeaderName());
