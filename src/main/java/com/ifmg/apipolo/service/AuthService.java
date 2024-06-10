@@ -131,6 +131,8 @@ public class AuthService {
         userInfo.setAddress(user.getAddress());
         userInfo.setPhone(user.getPhone());
         userInfo.setAboutMe(user.getAboutMe());
+        userInfo.setProfession(user.getProfession());
+        userInfo.setImg(user.getImg());
 
         return userInfo;
     }

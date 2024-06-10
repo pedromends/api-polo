@@ -19,6 +19,10 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
+    private Image img;
+
     @Column(name = "nome")
     private String firstName;
 
@@ -54,4 +58,7 @@ public class User {
 
     @Column(name = "educacao")
     private String education;
+
+    @Column(name = "profissao")
+    private String profession;
 }

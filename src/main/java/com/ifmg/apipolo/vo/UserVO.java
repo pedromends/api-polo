@@ -2,6 +2,7 @@ package com.ifmg.apipolo.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ifmg.apipolo.entity.Image;
 import com.ifmg.apipolo.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class UserVO {
 
     private Long id;
+    private Image img;
     private String firstName;
     private String role;
     private String lastName;
@@ -27,9 +29,11 @@ public class UserVO {
     private String phone;
     private String aboutMe;
     private String education;
+    private String profession;
 
     public UserVO(User user) {
         this.id = user.getId();
+        this.img = user.getImg();
         this.firstName = user.getFirstName();
         this.role = user.getRole();
         this.lastName = user.getLastName();
@@ -40,5 +44,6 @@ public class UserVO {
         this.phone = user.getPhone();
         this.aboutMe = user.getAboutMe();
         this.education = user.getEducation();
+        this.profession = user.getProfession();
     }
 }
