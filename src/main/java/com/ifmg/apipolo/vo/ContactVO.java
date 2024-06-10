@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ifmg.apipolo.entity.Contact;
 import com.ifmg.apipolo.entity.Image;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,18 +16,22 @@ import lombok.NoArgsConstructor;
 public class ContactVO {
 
     private Long id;
-    private Image img;
     private String name;
     private String position;
     private String email;
     private String phoneNumber;
+    private String externalCompany;
+    private String message;
+    private String area;
 
     public ContactVO(Contact contact) {
         this.id = contact.getId();
-        this.img = contact.getImg();
         this.name = contact.getName();
         this.position = contact.getPosition();
         this.email = contact.getEmail();
         this.phoneNumber = contact.getPhoneNumber();
+        this.externalCompany = contact.getExternalCompany();
+        this.message = contact.getMessage();
+        this.area = contact.getArea();
     }
 }

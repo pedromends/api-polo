@@ -119,6 +119,22 @@ public class AuthService {
         }
     }
 
+    public UserVO getOneUser(String email) {
+
+        User user = userRepository.findByEmail(email);
+        UserVO userInfo = new UserVO();
+
+        userInfo.setFirstName(user.getFirstName());
+        userInfo.setLastName(user.getLastName());
+        userInfo.setEmail(user.getEmail());
+        userInfo.setEducation(user.getEducation());
+        userInfo.setAddress(user.getAddress());
+        userInfo.setPhone(user.getPhone());
+        userInfo.setAboutMe(user.getAboutMe());
+
+        return userInfo;
+    }
+
     public List<UserVO> listUser(){
 
         List<UserVO> listVO = new ArrayList<>();

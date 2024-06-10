@@ -22,8 +22,11 @@ public class UserVO {
     private String confirmPassword;
     private String locked;
     private String enabled;
-    private ImageVO imageVO;
     private String token;
+    private String address;
+    private String phone;
+    private String aboutMe;
+    private String education;
 
     public UserVO(User user) {
         this.id = user.getId();
@@ -33,5 +36,9 @@ public class UserVO {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.password = user.getPassword();
+        this.address = user.getAddress();
+        this.phone = user.getPhone();
+        this.aboutMe = user.getAboutMe();
+        this.education = user.getEducation();
     }
 }

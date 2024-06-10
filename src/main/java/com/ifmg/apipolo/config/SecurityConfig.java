@@ -46,7 +46,7 @@ public class SecurityConfig {
                     "/image/get-one/{id}", "/news-card/list", "/event/list",
                     "/capacitation/list", "/advantages/list", "/talent/list",
                     "/researcher/list","/open-new/{id}", "/new/show-one/{id}",
-                    "img/{id}","/campus/list"
+                    "img/{id}","/campus/list", "/contact/create"
                 )
                 .permitAll().anyRequest().authenticated())
             .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler)

@@ -24,7 +24,11 @@ public class ContactService {
         contact.setName(contactVO.getName());
         contact.setEmail(contactVO.getEmail());
         contact.setPosition(contactVO.getPosition());
-        contact.setImg(contactVO.getImg());
+        contact.setPhoneNumber(contactVO.getPhoneNumber());
+        contact.setMessage(contactVO.getMessage());
+        contact.setArea(contactVO.getArea());
+        contact.setExternalCompany(contactVO.getExternalCompany());
+
 
         contactRepository.save(contact);
     }
@@ -47,7 +51,6 @@ public class ContactService {
         contact.setName(contactVO.getName());
         contact.setEmail(contactVO.getEmail());
         contact.setPosition(contactVO.getPosition());
-        contact.setImg(contactVO.getImg());
         contact.setPhoneNumber(contactVO.getPhoneNumber());
 
         contactRepository.save(contact);

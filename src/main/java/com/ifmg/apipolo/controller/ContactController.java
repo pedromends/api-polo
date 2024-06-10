@@ -21,21 +21,4 @@ public class ContactController {
         contactService.createContact(contactVO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
-
-    @PutMapping("/update")
-    public ResponseEntity<Object> updateCard(@RequestBody ContactVO contactVO) {
-        contactService.updateCampus(contactVO);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<Object> listCampus()  {
-        return new ResponseEntity<>(contactService.listContacts(), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteCard(@RequestParam("id") Long id)  {
-        contactService.deleteCampus(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

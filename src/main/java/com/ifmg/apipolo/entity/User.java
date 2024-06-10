@@ -42,4 +42,16 @@ public class User {
 
     @Column(name = "eh_ativo")
     private Boolean enabled;
+
+    @Column(name = "endereco")
+    private String address;
+
+    @Column(name = "telefone")
+    private String phone;
+
+    @Column(name = "sobre")
+    private String aboutMe;
+
+    @Column(name = "educacao")
+    private String education;
 }

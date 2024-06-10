@@ -51,6 +51,7 @@ public class AuthController {
 
     @Autowired
     private TokenRepository tokenRepository;
+
     @Autowired
     private ImageRepository imageRepository;
 
@@ -72,6 +73,12 @@ public class AuthController {
         Cookie cookie = new Cookie("refresh_token", currToken);
         response.addCookie(cookie);
         return new ResponseEntity<>(new RefreshResponse(currToken), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-info")
+    public ResponseEntity<UserVO> getOneUser(@RequestParam String email){
+        UserVO userInfo = authService.getOneUser(email);
+        return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
     @PostMapping("/login")
