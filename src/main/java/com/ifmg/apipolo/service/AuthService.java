@@ -5,6 +5,7 @@ import com.ifmg.apipolo.entity.PasswordRecovery;
 import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
 import com.ifmg.apipolo.error.UserNotFoundError;
+import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.PasswordRecoveryRepository;
 import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
@@ -45,6 +46,8 @@ public class AuthService {
     @Autowired
     @Value("${application.security.refresh-token-secret")
     private String refreshTokenSecret;
+    @Autowired
+    private ImageRepository imageRepository;
 
     public AuthService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -124,6 +127,7 @@ public class AuthService {
         User user = userRepository.findByEmail(email);
         UserVO userInfo = new UserVO();
 
+        userInfo.setId(user.getId());
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
         userInfo.setEmail(user.getEmail());
@@ -133,8 +137,33 @@ public class AuthService {
         userInfo.setAboutMe(user.getAboutMe());
         userInfo.setProfession(user.getProfession());
         userInfo.setImg(user.getImg());
+        userInfo.setCity(user.getCity());
+        userInfo.setDepartment(user.getDepartment());
 
         return userInfo;
+    }
+
+    public void updateUser(UserVO userVO) {
+
+        var user = userRepository.findById(userVO.getId());
+
+        if(userVO.getImg().getId() != null){
+            var image = imageRepository.findById(userVO.getId());
+            image.get().setCode(userVO.getImg().getCode());
+        }
+        user.get().setFirstName(userVO.getFirstName());
+        user.get().setLastName(userVO.getLastName());
+        user.get().setEmail(userVO.getEmail());
+        user.get().setEducation(userVO.getEducation());
+        user.get().setAddress(userVO.getAddress());
+        user.get().setPhone(userVO.getPhone());
+        user.get().setAboutMe(userVO.getAboutMe());
+        user.get().setProfession(userVO.getProfession());
+        user.get().setImg(userVO.getImg());
+        user.get().setCity(userVO.getCity());
+        user.get().setDepartment(userVO.getDepartment());
+
+        userRepository.save(user.get());
     }
 
     public List<UserVO> listUser(){

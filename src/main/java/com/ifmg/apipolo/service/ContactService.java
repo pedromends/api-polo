@@ -29,19 +29,37 @@ public class ContactService {
         contact.setArea(contactVO.getArea());
         contact.setExternalCompany(contactVO.getExternalCompany());
 
-
         contactRepository.save(contact);
     }
 
     public List<ContactVO> listContacts() {
 
         List<ContactVO> listVO = new ArrayList<>();
-        List<Contact> list = contactRepository.findAll();
+        List<Contact> list = contactRepository.findUnreaded();
 
         for(Contact contact : list) {
             listVO.add(new ContactVO(contact));
         }
         return listVO;
+    }
+
+    public List<ContactVO> getAll() {
+
+        List<ContactVO> listVO = new ArrayList<>();
+        List<Contact> list = contactRepository.findAllCustom();
+
+        for(Contact contact : list) {
+            listVO.add(new ContactVO(contact));
+        }
+        return listVO;
+    }
+
+    public void readNotification(Long notificationId) {
+
+        var contact = contactRepository.findById(notificationId);
+
+        contact.get().setReaded(true);
+        contactRepository.save(contact.get());
     }
 
     public void updateCampus(ContactVO contactVO) {

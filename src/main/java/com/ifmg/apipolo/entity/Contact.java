@@ -43,4 +43,7 @@ public class Contact {
 
     @Column(name = "area")
     private String area;
+
+    @Column(name = "lido")
+    private boolean readed;
 }

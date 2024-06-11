@@ -61,4 +61,10 @@ public class User {
 
     @Column(name = "profissao")
     private String profession;
+
+    @Column(name = "cidade")
+    private String city;
+
+    @Column(name = "departamento")
+    private String department;
 }

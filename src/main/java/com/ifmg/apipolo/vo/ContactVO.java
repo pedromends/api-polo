@@ -23,6 +23,7 @@ public class ContactVO {
     private String externalCompany;
     private String message;
     private String area;
+    private Boolean readed;
 
     public ContactVO(Contact contact) {
         this.id = contact.getId();
@@ -33,5 +34,6 @@ public class ContactVO {
         this.externalCompany = contact.getExternalCompany();
         this.message = contact.getMessage();
         this.area = contact.getArea();
+        this.readed = contact.isReaded();
     }
 }

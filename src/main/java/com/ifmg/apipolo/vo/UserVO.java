@@ -30,6 +30,8 @@ public class UserVO {
     private String aboutMe;
     private String education;
     private String profession;
+    private String city;
+    private String department;
 
     public UserVO(User user) {
         this.id = user.getId();
@@ -45,5 +47,7 @@ public class UserVO {
         this.aboutMe = user.getAboutMe();
         this.education = user.getEducation();
         this.profession = user.getProfession();
+        this.city = user.getCity();
+        this.department = user.getDepartment();
     }
 }

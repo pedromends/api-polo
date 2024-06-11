@@ -138,6 +138,12 @@ public class AuthController {
         return new LogoutResponse("success");
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateUser(@RequestBody UserVO userVO)  {
+        authService.updateUser(userVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listUser()  {
         return new ResponseEntity<>(authService.listUser(), HttpStatus.OK);
