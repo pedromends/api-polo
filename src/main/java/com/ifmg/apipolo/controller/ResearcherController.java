@@ -31,7 +31,6 @@ public class ResearcherController {
 
     @GetMapping("/get-by-email")
     public ResponseEntity<Object> getByEmail(@RequestParam("email") String email)  {
-        System.out.println(email);
         return new ResponseEntity<>(researcherService.getByEmail(email), HttpStatus.OK);
     }
 

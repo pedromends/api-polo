@@ -31,7 +31,7 @@ public class ResearcherService {
     public void createResearcher(ResearcherVO researcherVO) {
 
         Researcher newResearcher = new Researcher();
-        System.out.println(researcherVO);
+
         newResearcher.setImg(researcherVO.getImg());
         newResearcher.setCampus(researcherVO.getCampus());
         newResearcher.setFirstName(researcherVO.getFirstName());
@@ -87,8 +87,9 @@ public class ResearcherService {
         Optional<Researcher> researcher = researcherRepository.findById(id);
         researcher.get().setCampus(null);
         researcher.get().setImg(null);
+
         researcherRepository.save(researcher.get());
-        researcherRepository.deleteById(id);
+        researcherRepository.delete(researcher.get());
     }
 
 }

@@ -14,4 +14,12 @@ public interface ResearcherRepository extends JpaRepository<Researcher, Long> {
 
     @Query("select r from Researcher r where r.email = :email")
     Researcher getByEmail(@Param("email") String email);
+
+    @Modifying
+    @Query("UPDATE Researcher r SET r.img = null WHERE r.id = :id")
+    void resetImg(@Param("id") Long id);
+
+    @Modifying
+    @Query("UPDATE Researcher r SET r.campus = null WHERE r.id = :id")
+    void resetCampus(@Param("id") Long id);
 }

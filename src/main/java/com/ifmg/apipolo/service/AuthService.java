@@ -46,6 +46,7 @@ public class AuthService {
     @Autowired
     @Value("${application.security.refresh-token-secret")
     private String refreshTokenSecret;
+
     @Autowired
     private ImageRepository imageRepository;
 
