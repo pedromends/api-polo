@@ -25,11 +25,12 @@ public class CompanyService {
         Image newImage = new Image();
 
         newImage.setCode(companyVO.getImage().getCode());
-        company.setImg(newImage);
+        imageRepository.save(newImage);
+
+        company.setImg(imageRepository.getlastInserted());
         company.setName(companyVO.getName());
         company.setClassification(companyVO.getClassification());
         company.setCnpj(companyVO.getCnpj());
-        company.setImg(companyVO.getImage());
 
         companyRepository.save(company);
     }
