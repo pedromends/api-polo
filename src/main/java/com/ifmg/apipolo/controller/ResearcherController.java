@@ -29,6 +29,12 @@ public class ResearcherController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @GetMapping("/get-by-email")
+    public ResponseEntity<Object> getByEmail(@RequestParam("email") String email)  {
+        System.out.println(email);
+        return new ResponseEntity<>(researcherService.getByEmail(email), HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listAdvantages()  {
         return new ResponseEntity<>(researcherService.list(), HttpStatus.OK);

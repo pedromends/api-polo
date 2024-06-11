@@ -75,6 +75,11 @@ public class ResearcherService {
         return listVO;
     }
 
+    public ResearcherVO getByEmail(String email) {
+        Researcher researcher = researcherRepository.getByEmail(email);
+        return new ResearcherVO(researcher);
+    }
+
     @Transactional
     public void deleteResearcher(Long id) {
 
@@ -85,4 +90,5 @@ public class ResearcherService {
         researcherRepository.save(researcher.get());
         researcherRepository.deleteById(id);
     }
+
 }
