@@ -46,7 +46,6 @@ public class ResearcherService {
 
     public void updateResearcher(ResearcherVO researcherVO) {
 
-        Image cardImage = imageRepository.getReferenceById(researcherVO.getImg().getId());
         Researcher researcher = researcherRepository.getReferenceById(researcherVO.getId());
         Campus campus = campusRepository.getReferenceById(researcherVO.getCampus().getId());
 
@@ -58,9 +57,7 @@ public class ResearcherService {
         researcher.setLevel(researcherVO.getLevel());
         researcher.setSex(researcherVO.getSex());
 
-        cardImage.setCode(researcherVO.getImg().getCode());
-
-        imageRepository.save(cardImage);
+        imageRepository.updateCodeById(researcherVO.getImg().getId(),researcherVO.getImg().getCode());
         researcherRepository.save(researcher);
     }
 

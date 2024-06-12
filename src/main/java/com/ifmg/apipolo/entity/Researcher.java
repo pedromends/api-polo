@@ -44,4 +44,19 @@ public class Researcher {
 
     @Column(name = "sexo")
     private String sex;
+
+    @Column(name = "endereco")
+    private String address;
+
+    @Column(name = "telefone")
+    private String phone;
+
+    @Column(name = "sobre")
+    private String about;
+
+    @Column(name = "departamento")
+    private String department;
+
+    @Column(name = "cidade")
+    private String city;
 }

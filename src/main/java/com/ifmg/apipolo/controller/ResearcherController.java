@@ -23,6 +23,7 @@ public class ResearcherController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+
     @PutMapping("/update")
     public ResponseEntity<Object> updateCard(@RequestBody ResearcherVO researcherVO) {
         researcherService.updateResearcher(researcherVO);
