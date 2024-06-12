@@ -31,8 +31,14 @@ public class ResearcherService {
     public void createResearcher(ResearcherVO researcherVO) {
 
         Researcher newResearcher = new Researcher();
+        Image newImage = new Image();
 
-        newResearcher.setImg(researcherVO.getImg());
+        newImage.setCode(researcherVO.getImg().getCode());
+        imageRepository.save(newImage);
+
+        Image returnImage = imageRepository.getlastInserted();
+
+        newResearcher.setImg(returnImage);
         newResearcher.setCampus(researcherVO.getCampus());
         newResearcher.setFirstName(researcherVO.getFirstName());
         newResearcher.setLastName(researcherVO.getLastName());

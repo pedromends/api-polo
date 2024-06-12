@@ -17,7 +17,7 @@ public class ImageService {
     private ImageRepository imageRepository;
 
     public void createImage(ImageVO imageVO) {
-        Image image = imageRepository.getReferenceById(imageVO.getId());
+        Image image = new Image();
         image.setCode(imageVO.getCode());
         imageRepository.save(image);
     }

@@ -22,21 +22,21 @@ public class CapacitationCardService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public void createMainNew(CapacitationCardVO capacitationCardVO) {
-
-        Image cardImage = new Image();
-        CapacitationCard capacitationCard = new CapacitationCard();
-
-        cardImage.setName(capacitationCardVO.getImg().getName());
-        cardImage.setCode(capacitationCardVO.getImg().getCode());
-
-        capacitationCard.setTitle(capacitationCardVO.getTitle());
-        capacitationCard.setSubtitle(capacitationCardVO.getSubtitle());
-        cardImage.setCode(capacitationCardVO.getImg().getCode());
-
-        imageRepository.save(cardImage);
-        capacitationCardRepository.save(capacitationCard);
-    }
+//    public void createMainNew(CapacitationCardVO capacitationCardVO) {
+//
+//        Image cardImage = new Image();
+//        CapacitationCard capacitationCard = new CapacitationCard();
+//
+//        cardImage.setName(capacitationCardVO.getImg().getName());
+//        cardImage.setCode(capacitationCardVO.getImg().getCode());
+//
+//        capacitationCard.setTitle(capacitationCardVO.getTitle());
+//        capacitationCard.setSubtitle(capacitationCardVO.getSubtitle());
+//        cardImage.setCode(capacitationCardVO.getImg().getCode());
+//
+//        imageRepository.save(cardImage);
+//        capacitationCardRepository.save(capacitationCard);
+//    }
 
     public List<CapacitationCardVO> list(){
 
@@ -62,7 +62,7 @@ public class CapacitationCardService {
         capacitationCardRepository.save(capacitationCard);
     }
 
-    public void deleteCapacitation(Long id) {
-        capacitationCardRepository.deleteById(id);
-    }
+//    public void deleteCapacitation(Long id) {
+//        capacitationCardRepository.deleteById(id);
+//    }
 }
