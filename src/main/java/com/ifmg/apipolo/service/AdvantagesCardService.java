@@ -20,28 +20,24 @@ public class AdvantagesCardService {
     @Autowired
     private ImageRepository imageRepository;
 
-//    public void createCard(AdvantagesCardVO advantagesCardVO) {
-//
-//        Image cardImage = imageRepository.getReferenceById(advantagesCardVO.getImg().getId());
-//        AdvantagesCard advantagesCard = advantagesCardRepository.getReferenceById(advantagesCardVO.getId());
-//
-//        advantagesCard.setDifferential(advantagesCardVO.getDifferential());
-//        advantagesCard.setDescription(advantagesCardVO.getDescription());
-//        cardImage.setCode(advantagesCardVO.getImg().getCode());
-//
-//        imageRepository.save(cardImage);
-//        advantagesCardRepository.save(advantagesCard);
-//    }
-
     public void updateCard(AdvantagesCardVO advantagesCardVO) {
-        Image cardImage = imageRepository.getReferenceById(advantagesCardVO.getImg().getId());
+
         AdvantagesCard advantagesCard = advantagesCardRepository.getReferenceById(advantagesCardVO.getId());
 
-        advantagesCard.setDifferential(advantagesCardVO.getDifferential());
-        advantagesCard.setDescription(advantagesCardVO.getDescription());
-        cardImage.setCode(advantagesCardVO.getImg().getCode());
+        if(advantagesCardVO.getImg().getId() != null){
+            Image cardImage = imageRepository.getReferenceById(advantagesCardVO.getImg().getId());
 
-        imageRepository.save(cardImage);
+            cardImage.setCode(advantagesCardVO.getImg().getCode());
+
+            imageRepository.save(cardImage);
+        }
+
+        if(advantagesCardVO.getDifferential() != null)
+            advantagesCard.setDifferential(advantagesCardVO.getDifferential());
+
+        if(advantagesCardVO.getDescription() != null)
+            advantagesCard.setDescription(advantagesCardVO.getDescription());
+
         advantagesCardRepository.save(advantagesCard);
     }
 

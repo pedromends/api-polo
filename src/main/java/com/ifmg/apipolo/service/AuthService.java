@@ -152,17 +152,35 @@ public class AuthService {
             var image = imageRepository.findById(userVO.getId());
             image.get().setCode(userVO.getImg().getCode());
         }
-        user.get().setFirstName(userVO.getFirstName());
-        user.get().setLastName(userVO.getLastName());
-        user.get().setEmail(userVO.getEmail());
-        user.get().setEducation(userVO.getEducation());
-        user.get().setAddress(userVO.getAddress());
-        user.get().setPhone(userVO.getPhone());
-        user.get().setAboutMe(userVO.getAboutMe());
-        user.get().setProfession(userVO.getProfession());
-        user.get().setImg(userVO.getImg());
-        user.get().setCity(userVO.getCity());
-        user.get().setDepartment(userVO.getDepartment());
+
+        if(userVO.getFirstName() != null && userVO.getLastName() != null){
+            user.get().setFirstName(userVO.getFirstName());
+            user.get().setLastName(userVO.getLastName());
+        }
+
+        if(userVO.getEducation() != null)
+            user.get().setEducation(userVO.getEducation());
+
+        if(userVO.getAddress() != null)
+            user.get().setAddress(userVO.getAddress());
+
+        if(userVO.getPhone() != null)
+            user.get().setPhone(userVO.getPhone());
+
+        if(userVO.getAboutMe() != null)
+            user.get().setAboutMe(userVO.getAboutMe());
+
+        if(userVO.getProfession() != null)
+            user.get().setProfession(userVO.getProfession());
+
+        if(userVO.getImg() != null)
+            user.get().setImg(userVO.getImg());
+
+        if(userVO.getCity() != null)
+            user.get().setCity(userVO.getCity());
+
+        if(userVO.getDepartment() != null)
+            user.get().setDepartment(userVO.getDepartment());
 
         userRepository.save(user.get());
     }

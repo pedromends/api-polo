@@ -22,22 +22,6 @@ public class CapacitationCardService {
     @Autowired
     private ImageRepository imageRepository;
 
-//    public void createMainNew(CapacitationCardVO capacitationCardVO) {
-//
-//        Image cardImage = new Image();
-//        CapacitationCard capacitationCard = new CapacitationCard();
-//
-//        cardImage.setName(capacitationCardVO.getImg().getName());
-//        cardImage.setCode(capacitationCardVO.getImg().getCode());
-//
-//        capacitationCard.setTitle(capacitationCardVO.getTitle());
-//        capacitationCard.setSubtitle(capacitationCardVO.getSubtitle());
-//        cardImage.setCode(capacitationCardVO.getImg().getCode());
-//
-//        imageRepository.save(cardImage);
-//        capacitationCardRepository.save(capacitationCard);
-//    }
-
     public List<CapacitationCardVO> list(){
 
         List<CapacitationCardVO> listVO = new ArrayList<>();
@@ -51,18 +35,21 @@ public class CapacitationCardService {
 
     public void updateMainNew(CapacitationCardVO capacitationCardVO) {
 
-        Image cardImage = imageRepository.getReferenceById(capacitationCardVO.getImg().getId());
         CapacitationCard capacitationCard = capacitationCardRepository.getReferenceById(capacitationCardVO.getId());
 
-        capacitationCard.setTitle(capacitationCardVO.getTitle());
-        capacitationCard.setSubtitle(capacitationCardVO.getSubtitle());
-        cardImage.setCode(capacitationCardVO.getImg().getCode());
+        if(capacitationCardVO.getTitle() != null)
+            capacitationCard.setTitle(capacitationCardVO.getTitle());
 
-        imageRepository.save(cardImage);
+        if(capacitationCardVO.getImg().getId() != null){
+            Image cardImage = imageRepository.getReferenceById(capacitationCardVO.getImg().getId());
+            cardImage.setCode(capacitationCardVO.getImg().getCode());
+
+            imageRepository.save(cardImage);
+        }
+
+        if(capacitationCardVO.getSubtitle() != null)
+            capacitationCard.setSubtitle(capacitationCardVO.getSubtitle());
+
         capacitationCardRepository.save(capacitationCard);
     }
-
-//    public void deleteCapacitation(Long id) {
-//        capacitationCardRepository.deleteById(id);
-//    }
 }

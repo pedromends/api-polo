@@ -53,17 +53,30 @@ public class ResearcherService {
     public void updateResearcher(ResearcherVO researcherVO) {
 
         Researcher researcher = researcherRepository.getReferenceById(researcherVO.getId());
-        Campus campus = campusRepository.getReferenceById(researcherVO.getCampus().getId());
 
-        researcher.setCampus(campus);
-        researcher.setFirstName(researcherVO.getFirstName());
-        researcher.setLastName(researcherVO.getLastName());
-        researcher.setEmail(researcherVO.getEmail());
-        researcher.setCourse(researcherVO.getCourse());
-        researcher.setLevel(researcherVO.getLevel());
-        researcher.setSex(researcherVO.getSex());
+        if(researcherVO.getCampus().getId() != null) {
+            Campus campus = campusRepository.getReferenceById(researcherVO.getCampus().getId());
+            researcher.setCampus(campus);
+        }
 
-        imageRepository.updateCodeById(researcherVO.getImg().getId(),researcherVO.getImg().getCode());
+        if(researcherVO.getFirstName() != null && researcherVO.getLastName() != null) {
+            researcher.setFirstName(researcherVO.getFirstName());
+            researcher.setLastName(researcherVO.getLastName());
+        }
+
+        if(researcherVO.getEmail() != null)
+            researcher.setEmail(researcherVO.getEmail());
+
+        if(researcherVO.getCourse() != null)
+            researcher.setCourse(researcherVO.getCourse());
+
+        if(researcherVO.getLevel() != null)
+            researcher.setLevel(researcherVO.getLevel());
+
+        if(researcherVO.getSex() != null)
+            researcher.setSex(researcherVO.getSex());
+
+        imageRepository.updateCodeById(researcherVO.getImg().getId(), researcherVO.getImg().getCode());
         researcherRepository.save(researcher);
     }
 

@@ -36,10 +36,11 @@ public class ModalityService {
 
     public void updateModality(ModalityVO modalityVO) {
         Modality modality = modalityRepository.getReferenceById(modalityVO.getId());
+        if(modalityVO.getId() != null){
+            modality.setName(modalityVO.getName());
 
-        modality.setName(modalityVO.getName());
-
-        modalityRepository.save(modality);
+            modalityRepository.save(modality);
+        }
     }
 
     public void deleteModality(Long id) {

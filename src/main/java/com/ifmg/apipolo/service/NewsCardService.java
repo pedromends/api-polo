@@ -36,17 +36,27 @@ public class NewsCardService {
     }
 
     public void updateCard(NewsCardVO newsCardVO) {
-
-        Image cardImage = imageRepository.getReferenceById(newsCardVO.getImg().getId());
         NewsCard newsCard = newsCardRepository.getReferenceById(newsCardVO.getId());
+        Image cardImage = imageRepository.getReferenceById(newsCardVO.getImg().getId());
 
-        newsCard.setTip(newsCardVO.getTip());
-        newsCard.setTitle(newsCardVO.getTitle());
-        newsCard.setRead(newsCardVO.getRead());
-        newsCard.setDate(newsCardVO.getDate());
-        cardImage.setCode(newsCardVO.getImg().getCode());
+        if(newsCardVO.getImg().getId() != null){
+            cardImage.setCode(newsCardVO.getImg().getCode());
 
-        imageRepository.save(cardImage);
+            imageRepository.save(cardImage);
+        }
+
+        if(newsCardVO.getRead() != null)
+            newsCard.setRead(newsCardVO.getRead());
+
+        if(newsCardVO.getTip() != null)
+            newsCard.setTip(newsCardVO.getTip());
+
+        if(newsCardVO.getTitle() != null)
+            newsCard.setTitle(newsCardVO.getTitle());
+
+        if(newsCardVO.getRead() != null)
+            newsCard.setDate(newsCardVO.getDate());
+
         newsCardRepository.save(newsCard);
     }
 

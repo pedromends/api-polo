@@ -43,15 +43,28 @@ public class NewService {
         Image image2 = imageRepository.getReferenceById(newVO.getImg2().getId());
         New newNew = newRepository.getReferenceById(newVO.getId());
 
-        newNew.setTitle(newVO.getTitle());
-        newNew.setParagraph1(newVO.getParagraph1());
-        newNew.setParagraph1(newVO.getParagraph2());
-        newNew.setDate(newNew.getDate());
-        image1.setCode(newVO.getImg1().getCode());
-        image2.setCode(newVO.getImg2().getCode());
+        if (newVO.getImg1().getId() != null) {
+            image1.setCode(newVO.getImg1().getCode());
+            imageRepository.save(image1);
+        }
 
-        imageRepository.save(image1);
-        imageRepository.save(image2);
+        if (newVO.getImg2().getId() != null) {
+            image2.setCode(newVO.getImg2().getCode());
+            imageRepository.save(image2);
+        }
+
+        if(newVO.getTitle() != null)
+            newNew.setTitle(newVO.getTitle());
+
+        if(newVO.getParagraph1() != null)
+            newNew.setParagraph1(newVO.getParagraph1());
+
+        if(newVO.getParagraph2() != null)
+            newNew.setParagraph1(newVO.getParagraph2());
+
+        if(newNew.getDate() != null)
+            newNew.setDate(newNew.getDate());
+
         newRepository.save(newNew);
     }
 

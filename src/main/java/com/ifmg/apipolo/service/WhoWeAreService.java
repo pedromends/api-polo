@@ -16,8 +16,13 @@ public class WhoWeAreService {
 
     public void updateAboutUs(WhoWeAreVO whoWeAreVO) {
         WhoWeAre whoWeAre = whoWeAreRepository.getReferenceById(whoWeAreVO.getId());
-        whoWeAre.setTitle(whoWeAreVO.getTitle());
-        whoWeAre.setParag(whoWeAreVO.getParag());
+
+        if(whoWeAreVO.getTitle() != null)
+            whoWeAre.setTitle(whoWeAreVO.getTitle());
+
+        if(whoWeAreVO.getParag() != null)
+            whoWeAre.setParag(whoWeAreVO.getParag());
+
         whoWeAreRepository.save(whoWeAre);
     }
 

@@ -61,20 +61,4 @@ public class ContactService {
         contact.get().setReaded(true);
         contactRepository.save(contact.get());
     }
-
-    public void updateCampus(ContactVO contactVO) {
-
-        Contact contact = contactRepository.getReferenceById(contactVO.getId());
-
-        contact.setName(contactVO.getName());
-        contact.setEmail(contactVO.getEmail());
-        contact.setPosition(contactVO.getPosition());
-        contact.setPhoneNumber(contactVO.getPhoneNumber());
-
-        contactRepository.save(contact);
-    }
-
-    public void deleteCampus(Long id) {
-        contactRepository.deleteById(id);
-    }
 }

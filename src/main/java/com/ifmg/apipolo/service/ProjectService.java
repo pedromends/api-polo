@@ -8,6 +8,8 @@ import com.ifmg.apipolo.repository.ResearcherRepository;
 import com.ifmg.apipolo.vo.ProjectVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +35,15 @@ public class ProjectService {
         var modality = modalityRepository.findById(projectVO.getModality().getId());
         var researcher = researcherRepository.findById(projectVO.getCoordinator().getId());
         var company = companyRepository.findById(projectVO.getCompany().getId());
+        String aux = projectVO.getName().toLowerCase().replace(" ","");
 
         project.setModality(modality.get());
         project.setCoordinator(researcher.get());
         project.setCompany(company.get());
-        project.setModalName(projectVO.getModalName());
-        project.setAccordionId(projectVO.getAccordionId());
-        project.setHeaderName(projectVO.getHeaderName());
-        project.setHeaderBody(projectVO.getHeaderBody());
+        project.setModalName("modal_" + aux);
+        project.setAccordionId("accordion_" + aux);
+        project.setHeaderName("header_" + aux);
+        project.setHeaderBody("heading_" + aux);
         project.setName(projectVO.getName());
         project.setResume(projectVO.getResume());
         project.setSituation(projectVO.getSituation());
@@ -49,17 +52,31 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
+    @Transactional(propagation=Propagation.REQUIRES_NEW)
     public void updateProject(ProjectVO projectVO) {
 
         Project project = projectRepository.getReferenceById(projectVO.getId());
 
-        project.setModality(modalityRepository.getReferenceById(projectVO.getModality().getId()));
-        project.setCoordinator(researcherRepository.getReferenceById(projectVO.getCoordinator().getId()));
-        project.setCompany(companyRepository.getReferenceById(projectVO.getCompany().getId()));
-        project.setName(projectVO.getName());
-        project.setResume(projectVO.getResume());
-        project.setSituation(projectVO.getSituation());
-        project.setValue(projectVO.getValue());
+        if(projectVO.getModality().getId() != null)
+            project.setModality(modalityRepository.getReferenceById(projectVO.getModality().getId()));
+
+        if(projectVO.getCoordinator().getId() != null)
+            project.setCoordinator(researcherRepository.getReferenceById(projectVO.getCoordinator().getId()));
+
+        if(projectVO.getCompany().getId() != null)
+            project.setCompany(companyRepository.getReferenceById(projectVO.getCompany().getId()));
+
+        if(projectVO.getName() != null)
+            project.setName(projectVO.getName());
+
+        if(projectVO.getResume() != null)
+            project.setResume(projectVO.getResume());
+
+        if(projectVO.getSituation() != null)
+            project.setSituation(projectVO.getSituation());
+
+        if(projectVO.getValue() != null)
+            project.setValue(projectVO.getValue());
 
         projectRepository.save(project);
     }
@@ -67,7 +84,7 @@ public class ProjectService {
     public List<ProjectVO> list(){
 
         List<ProjectVO> listVO = new ArrayList<>();
-        List<Project> list = projectRepository.findAll();
+        List<Project> list = projectRepository.findActives();
 
         for(Project project : list)
             listVO.add(new ProjectVO(project));
@@ -75,7 +92,12 @@ public class ProjectService {
         return listVO;
     }
 
-    public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+    @Transactional
+    public void deleteProject(Long id) { // não é possível fazer deleção física, apenas virtual
+        Project project = projectRepository.getReferenceById(id);
+
+        project.setActive(false);
+
+        projectRepository.save(project);
     }
 }

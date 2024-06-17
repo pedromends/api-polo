@@ -45,15 +45,24 @@ public class TalentCardService {
 
     public void updateTalentCard(TalentCardVO talentCardVO) {
 
-        Image cardImage = imageRepository.getReferenceById(talentCardVO.getImg().getId());
         TalentCard talentCard = talentCardRepository.getReferenceById(talentCardVO.getId());
 
-        talentCard.setName(talentCardVO.getName());
-        talentCard.setProfession(talentCardVO.getProfession());
-        talentCard.setDetails(talentCardVO.getDetails());
-        cardImage.setCode(talentCardVO.getImg().getCode());
+        if(talentCardVO.getImg().getId() != null){
+            Image cardImage = imageRepository.getReferenceById(talentCardVO.getImg().getId());
+            cardImage.setCode(talentCardVO.getImg().getCode());
 
-        imageRepository.save(cardImage);
+            imageRepository.save(cardImage);
+        }
+
+        if(talentCardVO.getProfession() != null)
+            talentCard.setProfession(talentCardVO.getProfession());
+
+        if(talentCardVO.getDetails() != null)
+            talentCard.setName(talentCardVO.getName());
+
+        if(talentCardVO.getDetails() != null)
+            talentCard.setDetails(talentCardVO.getDetails());
+
         talentCardRepository.save(talentCard);
     }
 

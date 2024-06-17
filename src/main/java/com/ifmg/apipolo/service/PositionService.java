@@ -33,7 +33,8 @@ public class PositionService {
     public void updatePosition(PositionVO positionVO){
         Position position = positionRepository.getReferenceById(positionVO.getId());
 
-        position.setDescription(positionVO.getDescription());
+        if(positionVO.getDescription() != null)
+            position.setDescription(positionVO.getDescription());
 
         positionRepository.save(position);
     }

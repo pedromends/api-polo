@@ -43,12 +43,22 @@ public class StudentService {
     public void updateStudent(StudentVO studentVO) {
         Student student = studentRepository.getReferenceById(studentVO.getId());
 
-        student.setAge(studentVO.getAge());
-        student.setRegister(studentVO.getRegister());
-        student.setCampus(studentVO.getCampus());
-        student.setFirstName(studentVO.getFirstName());
-        student.setLastName(studentVO.getLastName());
-        student.setSex(student.getSex());
+        if(studentVO.getAge() != null)
+            student.setAge(studentVO.getAge());
+
+        if(studentVO.getRegister() != null)
+            student.setRegister(studentVO.getRegister());
+
+        if(studentVO.getCampus() != null)
+            student.setCampus(studentVO.getCampus());
+
+        if(studentVO.getFirstName() != null && studentVO.getLastName() != null){
+            student.setFirstName(studentVO.getFirstName());
+            student.setLastName(studentVO.getLastName());
+        }
+
+        if(student.getSex() != null)
+            student.setSex(student.getSex());
 
         studentRepository.save(student);
     }

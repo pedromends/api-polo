@@ -38,8 +38,13 @@ public class PresentationCardService {
 
     public void updatePresentationCard(PresentationCardVO presentationCardVO) {
         PresentationCard presentationCard = presentationCardRepository.getReferenceById(presentationCardVO.getId());
-        presentationCard.setNum(presentationCardVO.getNum());
-        presentationCard.setText(presentationCardVO.getText());
+
+        if(presentationCardVO.getNum() > 0)
+            presentationCard.setNum(presentationCardVO.getNum());
+
+        if(presentationCardVO.getText() != null)
+            presentationCard.setText(presentationCardVO.getText());
+
         presentationCardRepository.save(presentationCard);
     }
 
