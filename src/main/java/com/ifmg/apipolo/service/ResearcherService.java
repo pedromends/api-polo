@@ -101,11 +101,9 @@ public class ResearcherService {
 
         // fazer deleção virtual
         Optional<Researcher> researcher = researcherRepository.findById(id);
-        researcher.get().setCampus(null);
-        researcher.get().setImg(null);
+        researcher.get().setEhAtivo(false);
 
         researcherRepository.save(researcher.get());
-        researcherRepository.delete(researcher.get());
     }
 
 }

@@ -5,14 +5,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtTokenService {
@@ -58,6 +59,10 @@ public class JwtTokenService {
 
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        claims.put("role", authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()));
         return createToken(claims, userDetails.getUsername());
     }
     // END OF GENERATE TOKEN METHOD.
@@ -72,6 +77,15 @@ public class JwtTokenService {
                 .compact();
     }
     // END OF CREATE JWT TOKEN METHOD.
+
+    // Extrair authorities (roles) do token JWT
+    public Collection<GrantedAuthority> extractAuthorities(String token) {
+        Claims claims = extractAllClaims(token);
+        List<String> roles = claims.get("role", List.class);
+        return roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
 
     public Boolean validateToken(String token, UserDetails userDetails){
         final String username = extractUsername(token);

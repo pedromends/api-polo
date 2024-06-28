@@ -52,8 +52,10 @@ public class SecurityConfig {
                     "/researcher/list","/open-new/{id}", "/new/show-one/{id}",
                     "img/{id}","/campus/list", "/contact/create",
                     "/researcher/get-by-email"
-                )
-                .permitAll().anyRequest().authenticated())
+                ).permitAll()
+                .requestMatchers("/user/change-permissions", "/user/list")
+                .hasAnyRole("CODEMASTER","ADMIN").anyRequest().authenticated()
+            )
             .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler)
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .formLogin(AbstractHttpConfigurer::disable)

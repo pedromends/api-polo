@@ -185,6 +185,16 @@ public class AuthService {
         userRepository.save(user.get());
     }
 
+    public void changeUserPermissions(UserVO userVO, String permission) {
+
+        var user = userRepository.findById(userVO.getId());
+
+        if(user.isPresent())
+            user.get().setRole(permission);
+
+        userRepository.save(user.get());
+    }
+
     public List<UserVO> listUser(){
 
         List<UserVO> listVO = new ArrayList<>();

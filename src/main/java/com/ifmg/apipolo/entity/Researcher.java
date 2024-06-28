@@ -59,4 +59,7 @@ public class Researcher {
 
     @Column(name = "cidade")
     private String city;
+
+    @Column(name = "eh_ativo")
+    private Boolean ehAtivo;
 }

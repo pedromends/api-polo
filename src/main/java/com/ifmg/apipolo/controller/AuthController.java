@@ -101,6 +101,7 @@ public class AuthController {
             userReturn.setEmail(user.getEmail());
             userReturn.setFirstName(user.getFirstName());
             userReturn.setLastName(user.getLastName());
+            userReturn.setRole(user.getRole());
 
             if(newUserTk == null){
                 Token newToken = new Token(user, tokenCode);
@@ -141,6 +142,12 @@ public class AuthController {
     @PutMapping("/update")
     public ResponseEntity<Object> updateUser(@RequestBody UserVO userVO)  {
         authService.updateUser(userVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PutMapping("/change-permissions")
+    public ResponseEntity<Object> changePermissions(@RequestBody UserVO userVO, String permission)  {
+        authService.changeUserPermissions(userVO, permission);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

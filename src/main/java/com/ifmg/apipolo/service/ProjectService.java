@@ -78,6 +78,8 @@ public class ProjectService {
         if(projectVO.getValue() != null)
             project.setValue(projectVO.getValue());
 
+        project.setActive(true);
+
         projectRepository.save(project);
     }
 

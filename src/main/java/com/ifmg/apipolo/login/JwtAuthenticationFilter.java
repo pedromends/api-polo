@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collection;
 
 @Service
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -41,6 +43,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             MyCustomUserDetails myCustomUserDetails =  myCustomUserDetailService.loadUserByUsername(userEmail);
+            //Collection<? extends GrantedAuthority> authorities = jwtTokenService.extractAuthorities(jwtToken);
+
+            // UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(myCustomUserDetails, null, authorities);
+            // SecurityContextHolder.getContext().setAuthentication(auth);
 
             if(jwtTokenService.validateToken(jwtToken, myCustomUserDetails)){
                 UsernamePasswordAuthenticationToken userAuthToken =
