@@ -145,11 +145,11 @@ public class AuthController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping("/change-permissions")
-    public ResponseEntity<Object> changePermissions(@RequestBody UserVO userVO, String permission)  {
-        authService.changeUserPermissions(userVO, permission);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
+//    @PutMapping("/change-permissions")
+//    public ResponseEntity<Object> changePermissions(@RequestBody UserVO userVO, String permission)  {
+//        authService.changeUserPermissions(userVO, permission);
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
 
     @GetMapping("/list")
     public ResponseEntity<Object> listUser()  {

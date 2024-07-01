@@ -1,18 +1,21 @@
 package com.ifmg.apipolo.login;
 
 import com.ifmg.apipolo.entity.User;
+import com.ifmg.apipolo.enums.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-public class MyCustomUserDetails implements UserDetails {
+public class MyCustomUserDetails extends User implements UserDetails  {
 
-    @Autowired
-    private User user;
+    private final User user;
 
     public MyCustomUserDetails(User user){
         this.user = user;
@@ -20,7 +23,20 @@ public class MyCustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        System.out.println(this.user);
+        if(this.user.getRole().equals(Roles.CODEMASTER.toString())){
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_CODEMASTER");
+            List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+            updatedAuthorities.add(authority);
+            return updatedAuthorities;
+        }
+
+
+        else if(this.user.getRole().equals(Roles.ADMIN))
+            return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
+
+        else
+            return List.of(new SimpleGrantedAuthority("USER"));
     }
 
     @Override

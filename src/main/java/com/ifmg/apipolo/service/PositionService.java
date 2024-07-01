@@ -3,6 +3,7 @@ package com.ifmg.apipolo.service;
 import com.ifmg.apipolo.entity.Position;
 import com.ifmg.apipolo.repository.PositionRepository;
 import com.ifmg.apipolo.vo.PositionVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 public class PositionService {
 
+    @Autowired
     PositionRepository positionRepository;
 
     public void createPosition(PositionVO positionVO){

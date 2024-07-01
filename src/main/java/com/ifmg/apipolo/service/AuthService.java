@@ -4,6 +4,7 @@ import com.ifmg.apipolo.entity.Login;
 import com.ifmg.apipolo.entity.PasswordRecovery;
 import com.ifmg.apipolo.entity.Token;
 import com.ifmg.apipolo.entity.User;
+import com.ifmg.apipolo.enums.Roles;
 import com.ifmg.apipolo.error.UserNotFoundError;
 import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.PasswordRecoveryRepository;
@@ -76,7 +77,13 @@ public class AuthService {
                 user.setFirstName(userVO.getFirstName());
                 user.setLastName(userVO.getLastName());
                 user.setLocked(true);
-                user.setRole(userVO.getRole());
+
+                if(userVO.getRole().equals("ADMIN"))
+                    user.setRole(Roles.ADMIN.toString());
+
+                else if(userVO.getRole().equals("CODEMASTER"))
+                    user.setRole(Roles.CODEMASTER.toString());
+
                 user.setEnabled(false);
                 userRepository.save(user);
 
@@ -185,15 +192,15 @@ public class AuthService {
         userRepository.save(user.get());
     }
 
-    public void changeUserPermissions(UserVO userVO, String permission) {
-
-        var user = userRepository.findById(userVO.getId());
-
-        if(user.isPresent())
-            user.get().setRole(permission);
-
-        userRepository.save(user.get());
-    }
+//    public void changeUserPermissions(UserVO userVO, String permission) {
+//
+//        var user = userRepository.findById(userVO.getId());
+//
+//        if(user.isPresent())
+//            user.get().setRole(permission);
+//
+//        userRepository.save(user.get());
+//    }
 
     public List<UserVO> listUser(){
 
