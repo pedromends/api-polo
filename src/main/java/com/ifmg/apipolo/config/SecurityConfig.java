@@ -55,8 +55,11 @@ public class SecurityConfig {
                     "img/{id}","/campus/list", "/contact/create",
                     "/researcher/get-by-email"
                 ).permitAll()
-                .requestMatchers("test/codemaster").hasRole("CODEMASTER")
-                .requestMatchers("test/admin").hasRole("ADMIN")
+
+
+
+//                .requestMatchers("test/codemaster").hasRole("CODEMASTER")
+//                .requestMatchers("test/admin").hasRole("ADMIN")
                 .requestMatchers("/user/change-permissions", "/user/list")
                 .hasAnyRole("CODEMASTER","ADMIN").anyRequest().authenticated()
 

@@ -23,20 +23,22 @@ public class MyCustomUserDetails extends User implements UserDetails  {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(this.user);
+
+        List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+
         if(this.user.getRole().equals(Roles.CODEMASTER.toString())){
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_CODEMASTER");
-            List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
             updatedAuthorities.add(authority);
-            return updatedAuthorities;
+        }
+        else if(this.user.getRole().equals(Roles.ADMIN.toString())){
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
+            updatedAuthorities.add(authority);
+        } else {
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+            updatedAuthorities.add(authority);
         }
 
-
-        else if(this.user.getRole().equals(Roles.ADMIN))
-            return List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER"));
-
-        else
-            return List.of(new SimpleGrantedAuthority("USER"));
+        return updatedAuthorities;
     }
 
     @Override
