@@ -32,8 +32,8 @@ public class FAQController {
         return new ResponseEntity<>(faqService.listFAQ(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteFaq(@RequestParam("id") Long id)  {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteFaq(@PathVariable("id") Long id)  {
         faqService.deleteFAQ(id);
         return new ResponseEntity(HttpStatus.OK);
     }

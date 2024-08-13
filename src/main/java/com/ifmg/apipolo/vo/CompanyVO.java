@@ -17,6 +17,7 @@ public class CompanyVO {
     private String name;
     private String classification;
     private String cnpj;
+    private Boolean active;
 
     public CompanyVO(Company company) {
         this.id = company.getId();
@@ -24,5 +25,6 @@ public class CompanyVO {
         this.name = company.getName();
         this.classification = company.getClassification();
         this.cnpj = company.getCnpj();
+        this.active = company.getActive();
     }
 }

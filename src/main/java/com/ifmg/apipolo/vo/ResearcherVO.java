@@ -29,6 +29,7 @@ public class ResearcherVO {
     private String about;
     private String department;
     private String city;
+    private Boolean active;
 
     public ResearcherVO(Researcher researcher) {
         this.id = researcher.getId();
@@ -45,5 +46,6 @@ public class ResearcherVO {
         this.about = researcher.getAbout();
         this.department = researcher.getDepartment();
         this.city = researcher.getCity();
+        this.active = researcher.getActive();
     }
 }

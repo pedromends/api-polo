@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
-    @Query("select i from Image i order by i.id asc limit 1")
+    @Query("select i from Image i order by i.id desc limit 1")
     Image getlastInserted();
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)

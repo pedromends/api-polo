@@ -7,6 +7,8 @@ import org.apache.catalina.connector.Connector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,9 +57,6 @@ public class SecurityConfig {
                     "img/{id}","/campus/list", "/contact/create",
                     "/researcher/get-by-email"
                 ).permitAll()
-
-
-
 //                .requestMatchers("test/codemaster").hasRole("CODEMASTER")
 //                .requestMatchers("test/admin").hasRole("ADMIN")
                 .requestMatchers("/user/change-permissions", "/user/list")
@@ -111,4 +110,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 }

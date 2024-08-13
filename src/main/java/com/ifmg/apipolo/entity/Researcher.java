@@ -61,5 +61,5 @@ public class Researcher {
     private String city;
 
     @Column(name = "eh_ativo")
-    private Boolean ehAtivo;
+    private Boolean active;
 }

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ResearcherRepository extends JpaRepository<Researcher, Long> {
 
     @Modifying
@@ -22,4 +24,7 @@ public interface ResearcherRepository extends JpaRepository<Researcher, Long> {
     @Modifying
     @Query("UPDATE Researcher r SET r.campus = null WHERE r.id = :id")
     void resetCampus(@Param("id") Long id);
+
+    @Query("select r from Researcher r where r.active = true")
+    List<Researcher> activeOnes();
 }

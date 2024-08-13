@@ -46,6 +46,7 @@ public class ResearcherService {
         newResearcher.setCourse(researcherVO.getCourse());
         newResearcher.setLevel(researcherVO.getLevel());
         newResearcher.setSex(researcherVO.getSex());
+        newResearcher.setActive(researcherVO.getActive());
 
         researcherRepository.save(newResearcher);
     }
@@ -83,7 +84,7 @@ public class ResearcherService {
     public List<ResearcherVO> list(){
 
         List<ResearcherVO> listVO = new ArrayList<>();
-        List<Researcher> list = researcherRepository.findAll();
+        List<Researcher> list = researcherRepository.activeOnes();
 
         for(Researcher researcher : list)
             listVO.add(new ResearcherVO(researcher));
@@ -96,12 +97,17 @@ public class ResearcherService {
         return new ResearcherVO(researcher);
     }
 
+    public ResearcherVO getById(Long id) {
+        Researcher researcher = researcherRepository.getReferenceById(id);
+        return new ResearcherVO(researcher);
+    }
+
     @Transactional
     public void deleteResearcher(Long id) {
 
         // fazer deleção virtual
         Optional<Researcher> researcher = researcherRepository.findById(id);
-        researcher.get().setEhAtivo(false);
+        researcher.get().setActive(false);
 
         researcherRepository.save(researcher.get());
     }

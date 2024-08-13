@@ -40,14 +40,17 @@ public class ProjectService {
         project.setModality(modality.get());
         project.setCoordinator(researcher.get());
         project.setCompany(company.get());
+
         project.setModalName("modal_" + aux);
         project.setAccordionId("accordion_" + aux);
         project.setHeaderName("header_" + aux);
         project.setHeaderBody("heading_" + aux);
+
         project.setName(projectVO.getName());
         project.setResume(projectVO.getResume());
         project.setSituation(projectVO.getSituation());
         project.setValue(projectVO.getValue());
+        project.setActive(projectVO.getActive());
 
         projectRepository.save(project);
     }

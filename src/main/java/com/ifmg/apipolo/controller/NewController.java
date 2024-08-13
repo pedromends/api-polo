@@ -42,8 +42,8 @@ public class NewController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteNew(@RequestParam("id") Long id)  {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteNew(@PathVariable("id") Long id)  {
         newService.deleteNew(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

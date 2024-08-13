@@ -33,6 +33,7 @@ public class CompanyService {
         company.setName(companyVO.getName());
         company.setClassification(companyVO.getClassification());
         company.setCnpj(companyVO.getCnpj());
+        company.setActive(companyVO.getActive());
 
         companyRepository.save(company);
     }
@@ -53,8 +54,8 @@ public class CompanyService {
 
         Company company = companyRepository.getReferenceById(companyVO.getId());
 
-        if(companyVO.getImage().getId() != null) {
-            Image cardImage = imageRepository.getReferenceById(companyVO.getImage().getId());
+        if(companyVO.getImage().getCode() != null) {
+            Image cardImage = imageRepository.getReferenceById(company.getImg().getId());
             cardImage.setCode(companyVO.getImage().getCode());
 
             if(companyVO.getImage() != null)

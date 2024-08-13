@@ -27,6 +27,7 @@ public class ProjectVO {
     private String accordionId;
     private String headerName;
     private String headerBody;
+    private Boolean active;
 
     public ProjectVO(Project project) {
         this.id = project.getId();
@@ -41,5 +42,6 @@ public class ProjectVO {
         this.accordionId = project.getAccordionId();
         this.headerName = project.getHeaderName();
         this.headerBody = project.getHeaderBody();
+        this.active = project.getActive();
     }
 }
