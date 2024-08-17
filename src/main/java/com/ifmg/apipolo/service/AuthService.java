@@ -180,7 +180,7 @@ public class AuthService {
         if(userVO.getProfession() != null)
             user.get().setProfession(userVO.getProfession());
 
-        if(userVO.getImg() != null)
+        if(userVO.getImg().getCode() != null)
             user.get().setImg(userVO.getImg());
 
         if(userVO.getCity() != null)
@@ -192,15 +192,14 @@ public class AuthService {
         userRepository.save(user.get());
     }
 
-//    public void changeUserPermissions(UserVO userVO, String permission) {
-//
-//        var user = userRepository.findById(userVO.getId());
-//
-//        if(user.isPresent())
-//            user.get().setRole(permission);
-//
-//        userRepository.save(user.get());
-//    }
+    public void changeUserPermissions(List<UserVO> userVO) {
+
+        for (UserVO userVO1 : userVO){
+            var user = userRepository.findById(userVO1.getId());
+            user.get().setRole(userVO1.getRole());
+            userRepository.save(user.get());
+        }
+    }
 
     public List<UserVO> listUser(){
 

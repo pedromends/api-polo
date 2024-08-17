@@ -55,20 +55,12 @@ public class SecurityConfig {
                     "/capacitation/list", "/advantages/list", "/talent/list",
                     "/researcher/list","/open-new/{id}", "/new/show-one/{id}",
                     "img/{id}","/campus/list", "/contact/create",
-                    "/researcher/get-by-email"
+                    "/researcher/get-by-email", "/edicts/list", "/docs/list", "/FAQ/list"
                 ).permitAll()
-//                .requestMatchers("test/codemaster").hasRole("CODEMASTER")
-//                .requestMatchers("test/admin").hasRole("ADMIN")
                 .requestMatchers("/user/change-permissions", "/user/list")
                 .hasAnyRole("CODEMASTER","ADMIN").anyRequest().authenticated()
-
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//            .exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler)
-//                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-//                .formLogin(AbstractHttpConfigurer::disable)
-
-//            .authenticationProvider(authenticationProvider())
 
         .build();
     }

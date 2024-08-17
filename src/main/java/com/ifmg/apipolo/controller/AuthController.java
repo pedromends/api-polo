@@ -28,6 +28,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @CrossOrigin("*")
 @RestController
@@ -145,11 +147,11 @@ public class AuthController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-//    @PutMapping("/change-permissions")
-//    public ResponseEntity<Object> changePermissions(@RequestBody UserVO userVO, String permission)  {
-//        authService.changeUserPermissions(userVO, permission);
-//        return ResponseEntity.ok(HttpStatus.OK);
-//    }
+    @PutMapping("/change-permissions")
+    public ResponseEntity<Object> changePermissions(@RequestBody List<UserVO> userVO, String permission)  {
+        authService.changeUserPermissions(userVO);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
 
     @GetMapping("/list")
     public ResponseEntity<Object> listUser()  {
