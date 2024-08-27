@@ -7,6 +7,8 @@ import com.ifmg.apipolo.repository.MainNewCardRepository;
 import com.ifmg.apipolo.repository.NewRepository;
 import com.ifmg.apipolo.vo.NewVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,7 +74,7 @@ public class NewService {
         return new NewVO(newRepository.getReferenceById(id));
     }
 
-    public List<NewVO> listThree(){
+    public List<NewVO> listPosts(Pageable pageable){
 
         List<NewVO> listVO = new ArrayList<>();
         List<New> list = newRepository.getLatestThree();
@@ -83,15 +85,9 @@ public class NewService {
         return listVO;
     }
 
-    public List<NewVO> list(){
+    public Page<New> list(Pageable pageable){
 
-        List<NewVO> listVO = new ArrayList<>();
-        List<New> list = newRepository.findAllDesc();
-
-        for(New newNew : list)
-            listVO.add(new NewVO(newNew));
-
-        return listVO;
+        return newRepository.findAllDesc(pageable);
     }
 
     public void deleteNew(Long id) {

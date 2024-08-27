@@ -1,6 +1,8 @@
 package com.ifmg.apipolo.repository;
 
 import com.ifmg.apipolo.entity.New;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,5 +14,5 @@ public interface NewRepository extends JpaRepository<New, Long> {
     List<New> getLatestThree();
 
     @Query("select n from New n ORDER BY n.id DESC")
-    List<New> findAllDesc();
+    Page<New> findAllDesc(Pageable pageable);
 }

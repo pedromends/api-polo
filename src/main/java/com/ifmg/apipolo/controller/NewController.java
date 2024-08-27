@@ -3,6 +3,7 @@ package com.ifmg.apipolo.controller;
 import com.ifmg.apipolo.service.NewService;
 import com.ifmg.apipolo.vo.NewVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class NewController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Object> listNew()  {
-        return new ResponseEntity<>(newService.list(), HttpStatus.OK);
+    public ResponseEntity<Object> listNew(Pageable pageable)  {
+        return new ResponseEntity<>(newService.list(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/show-one/{id}")
@@ -31,10 +32,10 @@ public class NewController {
         return new ResponseEntity<>(newService.getOne(id), HttpStatus.OK);
     }
 
-    @GetMapping("/get-three")
-    public ResponseEntity<Object> listThree()  {
-        return new ResponseEntity<>(newService.listThree(), HttpStatus.OK);
-    }
+//    @GetMapping("/get-three")
+//    public ResponseEntity<Object> listThree()  {
+//        return new ResponseEntity<>(newService.listThree(), HttpStatus.OK);
+//    }
 
     @PutMapping("/update")
     public ResponseEntity<Object> updateNew(@RequestBody NewVO newVO)  {
