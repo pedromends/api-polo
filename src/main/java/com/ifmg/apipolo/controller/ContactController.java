@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/contact")
@@ -22,20 +24,20 @@ public class ContactController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Object> updateCard(@RequestBody ContactVO contactVO) {
-        contactService.updateCampus(contactVO);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
     @GetMapping("/list")
-    public ResponseEntity<Object> listCampus()  {
-        return new ResponseEntity<>(contactService.listContacts(), HttpStatus.OK);
+    public ResponseEntity<List<ContactVO>> getContacts() {
+        contactService.listContacts();
+        return new ResponseEntity<>(contactService.listContacts() ,HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteCard(@RequestParam("id") Long id)  {
-        contactService.deleteCampus(id);
-        return new ResponseEntity(HttpStatus.OK);
+    @GetMapping("/get-all")
+    public ResponseEntity<List<ContactVO>> findAll() {
+        return new ResponseEntity<>(contactService.getAll() ,HttpStatus.OK);
+    }
+
+    @PutMapping("/read-notification")
+    public ResponseEntity<Object> readNotification(@RequestBody String id) {
+        contactService.readNotification(Long.parseLong(id));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

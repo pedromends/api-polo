@@ -17,12 +17,6 @@ public class CapacitationCardController {
     @Autowired
     CapacitationCardService capacitationCardService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Object> createCard(@RequestBody CapacitationCardVO capacitationCardVO) {
-        capacitationCardService.createMainNew(capacitationCardVO);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<Object> updateCard(@RequestBody CapacitationCardVO capacitationCardVO) {
         capacitationCardService.updateMainNew(capacitationCardVO);
@@ -34,9 +28,4 @@ public class CapacitationCardController {
         return new ResponseEntity<>(capacitationCardService.list(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteCapacitation(@RequestParam("id") Long id) {
-        capacitationCardService.deleteCapacitation(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

@@ -31,4 +31,7 @@ public class Company {
 
     @Column(name = "cnpj")
     private String cnpj;
+
+    @Column(name = "eh_ativo")
+    private Boolean active;
 }

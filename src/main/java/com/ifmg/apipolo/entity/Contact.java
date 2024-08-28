@@ -19,9 +19,9 @@ public class Contact {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
-    private Image img;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
+//    private Image img;
 
     @Column(name = "nome")
     private String name;
@@ -34,4 +34,16 @@ public class Contact {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "empresaExterna")
+    private String externalCompany;
+
+    @Column(name = "mensagem")
+    private String message;
+
+    @Column(name = "area")
+    private String area;
+
+    @Column(name = "lido")
+    private boolean readed;
 }

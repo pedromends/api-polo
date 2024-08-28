@@ -19,6 +19,10 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
+    private Image img;
+
     @Column(name = "nome")
     private String firstName;
 
@@ -38,8 +42,29 @@ public class User {
     private String password;
 
     @Column(name = "eh_travado")
-    private String locked;
+    private Boolean locked;
 
     @Column(name = "eh_ativo")
-    private String enabled;
+    private Boolean enabled;
+
+    @Column(name = "endereco")
+    private String address;
+
+    @Column(name = "telefone")
+    private String phone;
+
+    @Column(name = "sobre")
+    private String aboutMe;
+
+    @Column(name = "educacao")
+    private String education;
+
+    @Column(name = "profissao")
+    private String profession;
+
+    @Column(name = "cidade")
+    private String city;
+
+    @Column(name = "departamento")
+    private String department;
 }

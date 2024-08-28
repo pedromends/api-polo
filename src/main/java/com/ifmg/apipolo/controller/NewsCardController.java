@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/news-card")
 public class NewsCardController {
 
-    // mínimo 3 cards, apenas atualização
 
     @Autowired
     NewsCardService newsCardService;

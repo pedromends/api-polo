@@ -54,4 +54,7 @@ public class Project {
 
     @Column(name = "header_body")
     private String headerBody;
+
+    @Column(name = "eh_ativo")
+    private Boolean active;
 }

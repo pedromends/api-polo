@@ -33,8 +33,8 @@ public class CompanyController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteCompany(@RequestParam("id") Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteCompany(@PathVariable("id") Long id) {
         companyService.deleteCompany(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

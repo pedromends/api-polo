@@ -33,8 +33,8 @@ public class TalentCardController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteAdvantages(@RequestParam("id") Long id)  {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteAdvantages(@PathVariable("id") Long id)  {
         talentCardService.deleteTalentCard(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }

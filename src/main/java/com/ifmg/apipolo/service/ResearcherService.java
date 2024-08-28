@@ -8,11 +8,13 @@ import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.ResearcherRepository;
 import com.ifmg.apipolo.vo.NewsCardVO;
 import com.ifmg.apipolo.vo.ResearcherVO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResearcherService {
@@ -29,8 +31,14 @@ public class ResearcherService {
     public void createResearcher(ResearcherVO researcherVO) {
 
         Researcher newResearcher = new Researcher();
+        Image newImage = new Image();
 
-        newResearcher.setImg(researcherVO.getImg());
+        newImage.setCode(researcherVO.getImg().getCode());
+        imageRepository.save(newImage);
+
+        Image returnImage = imageRepository.getlastInserted();
+
+        newResearcher.setImg(returnImage);
         newResearcher.setCampus(researcherVO.getCampus());
         newResearcher.setFirstName(researcherVO.getFirstName());
         newResearcher.setLastName(researcherVO.getLastName());
@@ -38,34 +46,45 @@ public class ResearcherService {
         newResearcher.setCourse(researcherVO.getCourse());
         newResearcher.setLevel(researcherVO.getLevel());
         newResearcher.setSex(researcherVO.getSex());
+        newResearcher.setActive(researcherVO.getActive());
 
         researcherRepository.save(newResearcher);
     }
 
     public void updateResearcher(ResearcherVO researcherVO) {
 
-        Image cardImage = imageRepository.getReferenceById(researcherVO.getImg().getId());
         Researcher researcher = researcherRepository.getReferenceById(researcherVO.getId());
-        Campus campus = campusRepository.getReferenceById(researcherVO.getCampus().getId());
 
-        researcher.setCampus(campus);
-        researcher.setFirstName(researcherVO.getFirstName());
-        researcher.setLastName(researcherVO.getLastName());
-        researcher.setEmail(researcherVO.getEmail());
-        researcher.setCourse(researcherVO.getCourse());
-        researcher.setLevel(researcherVO.getLevel());
-        researcher.setSex(researcherVO.getSex());
+        if(researcherVO.getCampus().getId() != null) {
+            Campus campus = campusRepository.getReferenceById(researcherVO.getCampus().getId());
+            researcher.setCampus(campus);
+        }
 
-        cardImage.setCode(researcherVO.getImg().getCode());
+        if(researcherVO.getFirstName() != null && researcherVO.getLastName() != null) {
+            researcher.setFirstName(researcherVO.getFirstName());
+            researcher.setLastName(researcherVO.getLastName());
+        }
 
-        imageRepository.save(cardImage);
+        if(researcherVO.getEmail() != null)
+            researcher.setEmail(researcherVO.getEmail());
+
+        if(researcherVO.getCourse() != null)
+            researcher.setCourse(researcherVO.getCourse());
+
+        if(researcherVO.getLevel() != null)
+            researcher.setLevel(researcherVO.getLevel());
+
+        if(researcherVO.getSex() != null)
+            researcher.setSex(researcherVO.getSex());
+
+        imageRepository.updateCodeById(researcherVO.getImg().getId(), researcherVO.getImg().getCode());
         researcherRepository.save(researcher);
     }
 
     public List<ResearcherVO> list(){
 
         List<ResearcherVO> listVO = new ArrayList<>();
-        List<Researcher> list = researcherRepository.findAll();
+        List<Researcher> list = researcherRepository.activeOnes();
 
         for(Researcher researcher : list)
             listVO.add(new ResearcherVO(researcher));
@@ -73,7 +92,24 @@ public class ResearcherService {
         return listVO;
     }
 
-    public void deleteResearcher(Long id) {
-        researcherRepository.deleteById(id);
+    public ResearcherVO getByEmail(String email) {
+        Researcher researcher = researcherRepository.getByEmail(email);
+        return new ResearcherVO(researcher);
     }
+
+    public ResearcherVO getById(Long id) {
+        Researcher researcher = researcherRepository.getReferenceById(id);
+        return new ResearcherVO(researcher);
+    }
+
+    @Transactional
+    public void deleteResearcher(Long id) {
+
+        // fazer deleção virtual
+        Optional<Researcher> researcher = researcherRepository.findById(id);
+        researcher.get().setActive(false);
+
+        researcherRepository.save(researcher.get());
+    }
+
 }

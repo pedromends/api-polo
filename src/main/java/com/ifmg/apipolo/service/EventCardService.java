@@ -43,11 +43,20 @@ public class EventCardService {
 
         EventCard eventCard = eventCardRepository.getReferenceById(eventCardVO.getId());
 
-        eventCard.setDay(eventCardVO.getDay());
-        eventCard.setMonth(eventCardVO.getMonth());
-        eventCard.setTitle(eventCardVO.getTitle());
-        eventCard.setHour(eventCardVO.getHour());
-        eventCard.setLocal(eventCardVO.getLocal());
+        if(eventCardVO.getDay() != null)
+            eventCard.setDay(eventCardVO.getDay());
+
+        if(eventCardVO.getMonth() != null)
+            eventCard.setMonth(eventCardVO.getMonth());
+
+        if(eventCardVO.getTitle() != null)
+            eventCard.setTitle(eventCardVO.getTitle());
+
+        if(eventCardVO.getHour() != null)
+            eventCard.setHour(eventCardVO.getHour());
+
+        if(eventCardVO.getLocal() != null)
+            eventCard.setLocal(eventCardVO.getLocal());
 
         eventCardRepository.save(eventCard);
     }

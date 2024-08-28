@@ -2,6 +2,7 @@ package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.ResearcherService;
 import com.ifmg.apipolo.vo.ResearcherVO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,21 @@ public class ResearcherController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+
     @PutMapping("/update")
     public ResponseEntity<Object> updateCard(@RequestBody ResearcherVO researcherVO) {
         researcherService.updateResearcher(researcherVO);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/get-by-email")
+    public ResponseEntity<Object> getByEmail(@RequestParam("email") String email)  {
+        return new ResponseEntity<>(researcherService.getByEmail(email), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-one/{id}")
+    public ResponseEntity<Object> getById(@PathVariable("id") Long id)  {
+        return new ResponseEntity<>(researcherService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping("/list")
@@ -33,8 +45,9 @@ public class ResearcherController {
         return new ResponseEntity<>(researcherService.list(), HttpStatus.OK);
     }
 
-    @DeleteMapping("delete")
-    public void deleteProject(Long id){
+    @Transactional
+    @DeleteMapping("delete/{id}")
+    public void deleteProject(@PathVariable("id") Long id){
         researcherService.deleteResearcher(id);
     }
 }

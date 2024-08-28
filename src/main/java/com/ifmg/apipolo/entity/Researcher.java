@@ -19,11 +19,11 @@ public class Researcher {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "id_imagem", referencedColumnName = "id")
     private Image img;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "id_campus", referencedColumnName = "id")
     private Campus campus;
 
@@ -44,4 +44,22 @@ public class Researcher {
 
     @Column(name = "sexo")
     private String sex;
+
+    @Column(name = "endereco")
+    private String address;
+
+    @Column(name = "telefone")
+    private String phone;
+
+    @Column(name = "sobre")
+    private String about;
+
+    @Column(name = "departamento")
+    private String department;
+
+    @Column(name = "cidade")
+    private String city;
+
+    @Column(name = "eh_ativo")
+    private Boolean active;
 }

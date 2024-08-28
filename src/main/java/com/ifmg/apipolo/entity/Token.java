@@ -1,10 +1,19 @@
 package com.ifmg.apipolo.entity;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Base64;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "token", schema = "ifmg-polo")
@@ -19,7 +28,11 @@ public class Token {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "token")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
+    private User user;
+
+    @Column(name = "token_code")
     private String token;
 
     @Column(name = "token_type")
@@ -31,9 +44,33 @@ public class Token {
     @Column(name = "expires_at")
     private String expiresAt;
 
-    @Column(name = "expired")
-    private String expired;
+    @Column(name = "is_expired")
+    private Boolean expired;
 
-    @Column(name = "user")
-    private String user;
+    public Token(User user, String accessSecret) {
+        this.user = user;
+        this.token = accessSecret;
+    }
+
+    public Token(User user, Long validityInMinutes, String secretKey){
+        this.user = user;
+        this.token = Jwts.builder()
+                .claim("id_usuario", user.getId())
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(validityInMinutes, ChronoUnit.MINUTES)))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder()
+                        .encodeToString(secretKey.getBytes(StandardCharsets.UTF_8)))
+                .compact();
+    }
+
+
+    public Token(String refreshTokenSecret) {
+        this.token = Jwts.builder()
+                .claim("id_usuario", user.getId())
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(10L, ChronoUnit.MINUTES)))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder()
+                        .encodeToString(refreshTokenSecret.getBytes(StandardCharsets.UTF_8)))
+                .compact();
+    }
 }

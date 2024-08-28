@@ -24,7 +24,10 @@ public class ContactService {
         contact.setName(contactVO.getName());
         contact.setEmail(contactVO.getEmail());
         contact.setPosition(contactVO.getPosition());
-        contact.setImg(contactVO.getImg());
+        contact.setPhoneNumber(contactVO.getPhoneNumber());
+        contact.setMessage(contactVO.getMessage());
+        contact.setArea(contactVO.getArea());
+        contact.setExternalCompany(contactVO.getExternalCompany());
 
         contactRepository.save(contact);
     }
@@ -32,7 +35,7 @@ public class ContactService {
     public List<ContactVO> listContacts() {
 
         List<ContactVO> listVO = new ArrayList<>();
-        List<Contact> list = contactRepository.findAll();
+        List<Contact> list = contactRepository.findUnreaded();
 
         for(Contact contact : list) {
             listVO.add(new ContactVO(contact));
@@ -40,20 +43,22 @@ public class ContactService {
         return listVO;
     }
 
-    public void updateCampus(ContactVO contactVO) {
+    public List<ContactVO> getAll() {
 
-        Contact contact = contactRepository.getReferenceById(contactVO.getId());
+        List<ContactVO> listVO = new ArrayList<>();
+        List<Contact> list = contactRepository.findAllCustom();
 
-        contact.setName(contactVO.getName());
-        contact.setEmail(contactVO.getEmail());
-        contact.setPosition(contactVO.getPosition());
-        contact.setImg(contactVO.getImg());
-        contact.setPhoneNumber(contactVO.getPhoneNumber());
-
-        contactRepository.save(contact);
+        for(Contact contact : list) {
+            listVO.add(new ContactVO(contact));
+        }
+        return listVO;
     }
 
-    public void deleteCampus(Long id) {
-        contactRepository.deleteById(id);
+    public void readNotification(Long notificationId) {
+
+        var contact = contactRepository.findById(notificationId);
+
+        contact.get().setReaded(true);
+        contactRepository.save(contact.get());
     }
 }
