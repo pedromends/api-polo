@@ -45,10 +45,10 @@ public class MainNewCardService {
 
     public void updateMainNew(MainNewCardVO mainNewCardVO) {
 
-        MainNewCard mainNewCard = mainNewCardRepository.getReferenceById(mainNewCardVO.getId());
+        MainNewCard mainNewCard = mainNewCardRepository.getReferenceById(1L);
 
         if(mainNewCardVO.getImage().getId() != null){
-            Image cardImage = imageRepository.getReferenceById(mainNewCardVO.getImage().getId());
+            Image cardImage = imageRepository.getReferenceById(26L);
             cardImage.setCode(mainNewCardVO.getImage().getCode());
 
             imageRepository.save(cardImage);
@@ -61,7 +61,7 @@ public class MainNewCardService {
             mainNewCard.setTitle(mainNewCardVO.getTitle());
 
         if(mainNewCardVO.getParagraph() != null)
-            mainNewCard.setParagraph(mainNewCardVO.getParagraph());
+            mainNewCard.setParagraph(mainNewCardVO.getParagraph().substring(0, 299));
 
         mainNewCardRepository.save(mainNewCard);
     }

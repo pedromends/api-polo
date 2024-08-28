@@ -5,6 +5,7 @@ import com.ifmg.apipolo.entity.New;
 import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.MainNewCardRepository;
 import com.ifmg.apipolo.repository.NewRepository;
+import com.ifmg.apipolo.vo.MainNewCardVO;
 import com.ifmg.apipolo.vo.NewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,8 +23,9 @@ public class NewService {
 
     @Autowired
     private ImageRepository imageRepository;
+
     @Autowired
-    private MainNewCardRepository mainNewCardRepository;
+    private MainNewCardService mainNewCardService;
 
     public void createNew(NewVO newVO) {
 
@@ -64,17 +66,31 @@ public class NewService {
         if(newVO.getParagraph2() != null)
             newNew.setParagraph1(newVO.getParagraph2());
 
-        if(newNew.getDate() != null)
+        if(newVO.getDate() != null)
             newNew.setDate(newNew.getDate());
 
+        if(newVO.getIsMain())
+            this.setMainNew(newVO);
+
         newRepository.save(newNew);
+    }
+
+    private void setMainNew(NewVO newVO) {
+        MainNewCardVO mainNewCardVO = new MainNewCardVO();
+
+        mainNewCardVO.setTitle(newVO.getTitle());
+        mainNewCardVO.setParagraph(newVO.getParagraph1());
+        mainNewCardVO.setTip(newVO.getTip());
+        mainNewCardVO.setImage(newVO.getImg1());
+
+        mainNewCardService.updateMainNew(mainNewCardVO);
     }
 
     public NewVO getOne(Long id){
         return new NewVO(newRepository.getReferenceById(id));
     }
 
-    public List<NewVO> listPosts(Pageable pageable){
+    public List<NewVO> listThree(){
 
         List<NewVO> listVO = new ArrayList<>();
         List<New> list = newRepository.getLatestThree();

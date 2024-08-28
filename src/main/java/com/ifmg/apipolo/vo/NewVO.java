@@ -21,6 +21,8 @@ public class NewVO {
     private String date;
     private String paragraph1;
     private String paragraph2;
+    private String tip;
+    private Boolean isMain;
 
     public NewVO(New newNew) {
         this.id = newNew.getId();
@@ -29,6 +31,9 @@ public class NewVO {
         this.title = newNew.getTitle();
         this.date = newNew.getDate();
         this.paragraph1 = newNew.getParagraph1();
+        this.isMain = null;
+        this.tip = null;
         this.paragraph2 = newNew.getParagraph2();
     }
 }
+

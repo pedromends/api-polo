@@ -32,10 +32,10 @@ public class NewController {
         return new ResponseEntity<>(newService.getOne(id), HttpStatus.OK);
     }
 
-//    @GetMapping("/get-three")
-//    public ResponseEntity<Object> listThree()  {
-//        return new ResponseEntity<>(newService.listThree(), HttpStatus.OK);
-//    }
+    @GetMapping("/get-three")
+    public ResponseEntity<Object> listThree()  {
+        return new ResponseEntity<>(newService.listThree(), HttpStatus.OK);
+    }
 
     @PutMapping("/update")
     public ResponseEntity<Object> updateNew(@RequestBody NewVO newVO)  {
