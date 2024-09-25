@@ -60,6 +60,14 @@ public class ResearcherService {
             researcher.setCampus(campus);
         }
 
+        if(researcherVO.getImg().getId() != null) {
+            Image image = imageRepository.getReferenceById(researcherVO.getImg().getId());
+            researcher.setImg(image);
+        } else {
+            Image image = imageRepository.getReferenceById(38L);
+            researcher.setImg(image);
+        }
+
         if(researcherVO.getFirstName() != null && researcherVO.getLastName() != null) {
             researcher.setFirstName(researcherVO.getFirstName());
             researcher.setLastName(researcherVO.getLastName());

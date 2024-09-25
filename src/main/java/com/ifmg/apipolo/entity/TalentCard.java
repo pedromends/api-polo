@@ -31,4 +31,7 @@ public class TalentCard {
 
     @Column(name = "detalhes")
     private String details;
+
+    @Column(name = "eh_ativo")
+    private Boolean active;
 }
