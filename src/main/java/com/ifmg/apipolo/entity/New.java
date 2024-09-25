@@ -38,4 +38,7 @@ public class New {
 
     @Column(name = "paragrafo2")
     private String paragraph2;
+
+    @Column(name = "eh_ativo")
+    private Boolean active;
 }

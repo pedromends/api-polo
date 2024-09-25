@@ -13,6 +13,6 @@ public interface NewRepository extends JpaRepository<New, Long> {
     @Query("select mn from New mn ORDER BY mn.id DESC LIMIT 3")
     List<New> getLatestThree();
 
-    @Query("select n from New n ORDER BY n.id DESC")
+    @Query("select n from New n WHERE n.active = true ORDER BY n.id DESC")
     Page<New> findAllDesc(Pageable pageable);
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NewService {
@@ -107,6 +108,10 @@ public class NewService {
     }
 
     public void deleteNew(Long id) {
-        newRepository.deleteById(id);
+        Optional<New> newDel = newRepository.findById(id);
+
+        newDel.get().setActive(false);
+
+        newRepository.save(newDel.get());
     }
 }

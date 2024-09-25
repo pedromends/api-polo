@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ifmg.apipolo.entity.Image;
 import com.ifmg.apipolo.entity.New;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ public class NewVO {
     private String paragraph2;
     private String tip;
     private Boolean isMain;
+    private Boolean active;
 
     public NewVO(New newNew) {
         this.id = newNew.getId();
@@ -34,6 +36,7 @@ public class NewVO {
         this.isMain = null;
         this.tip = null;
         this.paragraph2 = newNew.getParagraph2();
+        this.active = newNew.getActive();
     }
 }
 
