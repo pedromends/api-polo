@@ -6,6 +6,9 @@ import com.ifmg.apipolo.vo.DocsVO;
 import com.ifmg.apipolo.vo.EdictsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,32 +30,48 @@ public class DocsController {
     DocsService docsService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createDocs(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> createDocs(@RequestParam("file") MultipartFile file, @RequestParam("title") String title) {
         if (file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Por favor, selecione um arquivo para upload.");
         }
 
         try {
-            // Define o caminho para a pasta de uploads
+            DocsVO docVO = new DocsVO();
+
             Path uploadsPath = Paths.get("C:\\ProgramData\\Kimeratech\\uploads");
 
-            // Obtenha o arquivo de destino
             File uploadsDir = uploadsPath.toFile();
 
-            // Criar a pasta se ela não existir
             if (!uploadsDir.exists()) {
                 uploadsDir.mkdirs();
             }
 
-            // Define o caminho completo para o novo arquivo (com o nome do arquivo original)
             Path filePath = uploadsPath.resolve(file.getOriginalFilename());
-
-            // Escreve o arquivo no diretório uploads
             Files.write(filePath, file.getBytes());
+
+            docVO.setFilename(file.getOriginalFilename());
+            docVO.setTitle(title);
+
+            docsService.createDocs(docVO);
             return ResponseEntity.ok("Arquivo enviado com sucesso: " + file.getOriginalFilename());
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao enviar o arquivo.");
         }
+    }
+
+    @GetMapping("/download/{filename}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) throws IOException {
+        Path filePath = Paths.get("C:\\ProgramData\\Kimeratech\\uploads").resolve(filename);
+        Resource resource = new PathResource(filePath);
+
+        if (!resource.exists()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF) // Define o tipo de arquivo
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"") // Define o cabeçalho para download
+                .body(resource);
     }
 
     @PutMapping("/update")

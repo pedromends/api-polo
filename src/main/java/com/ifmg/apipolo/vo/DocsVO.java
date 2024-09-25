@@ -15,10 +15,12 @@ public class DocsVO {
     private Long id;
     private String title;
     private String link;
+    private String filename;
 
     public DocsVO(Docs docs) {
         this.id = docs.getId();
         this.title = docs.getTitle();
+        this.filename = docs.getFilename();
         this.link = docs.getLink();
     }
 }

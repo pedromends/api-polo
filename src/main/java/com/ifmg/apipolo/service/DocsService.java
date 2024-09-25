@@ -15,11 +15,12 @@ public class DocsService {
     @Autowired
     private DocsRepository docsRepository;
 
-    public void createDocs(DocsVO DocsVO) {
+    public void createDocs(DocsVO docsVO) {
         Docs docs = new Docs();
 
-        docs.setLink(DocsVO.getLink());
-        docs.setTitle(DocsVO.getTitle());
+        docs.setLink(docsVO.getLink());
+        docs.setTitle(docsVO.getTitle());
+        docs.setFilename(docsVO.getFilename());
 
         docsRepository.save(docs);
     }
