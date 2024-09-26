@@ -15,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -31,32 +29,7 @@ public class DocsController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createDocs(@RequestParam("file") MultipartFile file, @RequestParam("title") String title) {
-        if (file.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Por favor, selecione um arquivo para upload.");
-        }
-
-        try {
-            DocsVO docVO = new DocsVO();
-
-            Path uploadsPath = Paths.get("C:\\ProgramData\\Kimeratech\\uploads");
-
-            File uploadsDir = uploadsPath.toFile();
-
-            if (!uploadsDir.exists()) {
-                uploadsDir.mkdirs();
-            }
-
-            Path filePath = uploadsPath.resolve(file.getOriginalFilename());
-            Files.write(filePath, file.getBytes());
-
-            docVO.setFilename(file.getOriginalFilename());
-            docVO.setTitle(title);
-
-            docsService.createDocs(docVO);
-            return ResponseEntity.ok("Arquivo enviado com sucesso: " + file.getOriginalFilename());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Falha ao enviar o arquivo.");
-        }
+        return docsService.uploadFile(file, title);
     }
 
     @GetMapping("/download/{filename}")
@@ -75,9 +48,8 @@ public class DocsController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Object> updateDocs(@RequestBody DocsVO docsVO) {
-        docsService.updateDocs(docsVO);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<String> updateDocs(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @RequestParam("id") Long id) {
+        return docsService.updateFile(file, title, id);
     }
 
     @GetMapping("/list")
