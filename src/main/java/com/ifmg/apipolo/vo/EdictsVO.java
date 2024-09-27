@@ -16,10 +16,12 @@ public class EdictsVO {
     private Long id;
     private String title;
     private String link;
+    private String filename;
 
     public EdictsVO(Edicts edicts) {
         this.id = edicts.getId();
         this.title = edicts.getTitle();
         this.link = edicts.getLink();
+        this.filename = edicts.getFilename();
     }
 }

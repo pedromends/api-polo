@@ -1,5 +1,6 @@
 package com.ifmg.apipolo.controller;
 
+import com.ifmg.apipolo.entity.New;
 import com.ifmg.apipolo.service.NewService;
 import com.ifmg.apipolo.vo.NewVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -30,6 +33,11 @@ public class NewController {
     @GetMapping("/show-one/{id}")
     public ResponseEntity<Object> getOne(@PathVariable("id") Long id)  {
         return new ResponseEntity<>(newService.getOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<NewVO>> searchItems(@RequestParam String query) {
+        return new ResponseEntity<>(newService.searchItems(query), HttpStatus.OK);
     }
 
     @GetMapping("/get-three")

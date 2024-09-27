@@ -24,4 +24,7 @@ public class Edicts {
 
     @Column(name = "link")
     private String link;
+
+    @Column(name = "filename")
+    private String filename;
 }

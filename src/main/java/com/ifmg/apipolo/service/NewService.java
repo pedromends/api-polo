@@ -102,6 +102,18 @@ public class NewService {
         return listVO;
     }
 
+    public List<NewVO> searchItems(String query){
+        List<NewVO> listVO = new ArrayList<>();
+        List<New> list = newRepository.searchItems(query);
+
+        for(New newNew : list)
+            listVO.add(new NewVO(newNew));
+
+        return listVO;
+    }
+
+
+
     public Page<New> list(Pageable pageable){
 
         return newRepository.findAllDesc(pageable);

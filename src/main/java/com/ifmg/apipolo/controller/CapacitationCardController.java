@@ -26,7 +26,7 @@ public class CapacitationCardController {
     }
 
     @PutMapping("/update-text")
-    public ResponseEntity<Object> updateText(@RequestBody String newText) {
+    public ResponseEntity<Object> updateText(@RequestParam String newText) {
         capacitationCardService.updateParag(newText);
         return ResponseEntity.ok(HttpStatus.OK);
     }
