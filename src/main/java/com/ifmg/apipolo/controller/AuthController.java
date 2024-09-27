@@ -136,8 +136,6 @@ public class AuthController {
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
 
-        // TODO: remover o token após logout
-
         return new LogoutResponse("success");
     }
 
