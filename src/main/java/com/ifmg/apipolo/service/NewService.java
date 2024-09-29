@@ -34,38 +34,16 @@ public class NewService {
 
         newNew.setTitle(newVO.getTitle());
         newNew.setDate(newVO.getDate());
-        newNew.setImg1(newVO.getImg1());
-        newNew.setImg2(newVO.getImg2());
-        newNew.setParagraph1(newVO.getParagraph1());
-        newNew.setParagraph2(newVO.getParagraph2());
+        newNew.setIsMain(newVO.getIsMain());
+        newNew.setCode(newVO.getCode());
+        newNew.setActive(true);
 
         newRepository.save(newNew);
     }
 
     public void updateNew(NewVO newVO) {
 
-        Image image1 = imageRepository.getReferenceById(newVO.getImg1().getId());
-        Image image2 = imageRepository.getReferenceById(newVO.getImg2().getId());
         New newNew = newRepository.getReferenceById(newVO.getId());
-
-        if (newVO.getImg1().getId() != null) {
-            image1.setCode(newVO.getImg1().getCode());
-            imageRepository.save(image1);
-        }
-
-        if (newVO.getImg2().getId() != null) {
-            image2.setCode(newVO.getImg2().getCode());
-            imageRepository.save(image2);
-        }
-
-        if(newVO.getTitle() != null)
-            newNew.setTitle(newVO.getTitle());
-
-        if(newVO.getParagraph1() != null)
-            newNew.setParagraph1(newVO.getParagraph1());
-
-        if(newVO.getParagraph2() != null)
-            newNew.setParagraph1(newVO.getParagraph2());
 
         if(newVO.getDate() != null)
             newNew.setDate(newNew.getDate());
@@ -79,10 +57,7 @@ public class NewService {
     private void setMainNew(NewVO newVO) {
         MainNewCardVO mainNewCardVO = new MainNewCardVO();
 
-        mainNewCardVO.setTitle(newVO.getTitle());
-        mainNewCardVO.setParagraph(newVO.getParagraph1());
-        mainNewCardVO.setTip(newVO.getTip());
-        mainNewCardVO.setImage(newVO.getImg1());
+
 
         mainNewCardService.updateMainNew(mainNewCardVO);
     }
