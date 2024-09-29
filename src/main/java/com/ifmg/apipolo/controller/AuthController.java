@@ -83,6 +83,11 @@ public class AuthController {
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
+    @GetMapping("/handshake")
+    public ResponseEntity<String> handshake(){
+        return new ResponseEntity<>("Shall we start ?", HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest)  {
 

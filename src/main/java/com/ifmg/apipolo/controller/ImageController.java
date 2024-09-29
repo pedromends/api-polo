@@ -2,7 +2,6 @@ package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.ImageService;
 import com.ifmg.apipolo.vo.ImageVO;
-import com.ifmg.apipolo.vo.WhoWeAreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -23,6 +22,11 @@ public class ImageController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PostMapping("/news")
+    public ResponseEntity<ImageVO> newImage(@RequestBody ImageVO imageVO) {
+        return new ResponseEntity<>(imageService.newImage(imageVO), HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listImages()  {
         return new ResponseEntity<>(imageService.list(), HttpStatus.OK);
@@ -41,7 +45,7 @@ public class ImageController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteImage(@RequestParam("id") Long id) {
-        imageService.deleteCapacitation(id);
+        imageService.deleteImage(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
