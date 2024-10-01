@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "noticia", schema = "ifmg-polo")
 @Getter
@@ -19,8 +21,12 @@ public class New {
     @Column(name = "id")
     private Long id;
 
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "id_imagem", referencedColumnName = "id")
+    private Image img;
+
     @Column(name = "data")
-    private String date;
+    private Date date;
 
     @Column(name = "titulo")
     private String title;

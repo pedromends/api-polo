@@ -12,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,9 +33,17 @@ public class NewService {
     public void createNew(NewVO newVO) {
 
         New newNew = new New();
+        if(newVO.getImg() != null){
+            Image image = new Image(newVO.getImg());
+            imageRepository.save(image);
+
+            newNew.setImg(imageRepository.getlastInserted());
+        } else {
+            newNew.setImg(imageRepository.getReferenceById(60L));
+        }
 
         newNew.setTitle(newVO.getTitle());
-        newNew.setDate(newVO.getDate());
+        newNew.setDate(Date.from(Instant.now()));
         newNew.setIsMain(newVO.getIsMain());
         newNew.setCode(newVO.getCode());
         newNew.setActive(true);

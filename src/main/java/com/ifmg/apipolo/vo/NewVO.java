@@ -9,6 +9,8 @@ import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -16,7 +18,8 @@ import lombok.NoArgsConstructor;
 public class NewVO {
 
     private Long id;
-    private String date;
+    private Image img;
+    private Date date;
     private String title;
     private String code;
     private Boolean active;
@@ -24,6 +27,7 @@ public class NewVO {
 
     public NewVO(New newNew) {
         this.id = newNew.getId();
+        this.img = newNew.getImg();
         this.title = newNew.getTitle();
         this.code = newNew.getCode();
         this.date = newNew.getDate();
@@ -31,4 +35,3 @@ public class NewVO {
         this.active = newNew.getActive();
     }
 }
-

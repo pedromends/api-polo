@@ -1,16 +1,15 @@
 package com.ifmg.apipolo.entity;
 
+import com.ifmg.apipolo.vo.ImageVO;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Table(name = "imagem", schema = "ifmg-polo")
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @RequiredArgsConstructor
 public class Image {
 
@@ -24,4 +23,10 @@ public class Image {
 
     @Column(name = "codigo")
     private String code;
+
+    public Image(Image img) {
+        this.id = img.getId();
+        this.name = img.getName();
+        this.code = img.getCode();
+    }
 }
