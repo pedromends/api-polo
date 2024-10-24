@@ -55,9 +55,10 @@ public class SecurityConfig {
                     "/capacitation/list", "/advantages/list", "/talent/list",
                     "/researcher/list","/open-new/{id}", "/new/show-one/{id}",
                     "img/{id}","/campus/list", "/contact/create",
-                    "/researcher/get-by-email", "/edicts/list", "/docs/list", "/FAQ/list",
-                    "/docs/download/{filename}", "/edicts/download/{filename}", "/new/search",
-                    "/capacitation/get-text", "/user/handshake"
+                    "/researcher/get-by-email", "/edicts/list", "/docs/list",
+                    "/FAQ/list", "/docs/download/{filename}", "/edicts/download/{filename}",
+                    "/new/search", "/capacitation/get-text", "/user/handshake", "/email/send-register",
+                    "/researcher/search"
                 ).permitAll()
                 .requestMatchers("/user/change-permissions", "/user/list")
                 .hasAnyRole("CODEMASTER","ADMIN").anyRequest().authenticated()

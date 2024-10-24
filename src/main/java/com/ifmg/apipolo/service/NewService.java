@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class NewService {
     public void createNew(NewVO newVO) {
 
         New newNew = new New();
+        New oldMainNew = newRepository.findMainNew();
+
         if(newVO.getImg() != null){
             Image image = new Image(newVO.getImg());
             imageRepository.save(image);
@@ -44,33 +47,18 @@ public class NewService {
 
         newNew.setTitle(newVO.getTitle());
         newNew.setDate(Date.from(Instant.now()));
-        newNew.setIsMain(newVO.getIsMain());
         newNew.setCode(newVO.getCode());
         newNew.setActive(true);
-
+        newNew.setIsMain(newVO.getIsMain());
         newRepository.save(newNew);
+
+        if(newVO.getIsMain()){
+            oldMainNew.setIsMain(false);
+        }
+
+        newRepository.save(oldMainNew);
     }
 
-    public void updateNew(NewVO newVO) {
-
-        New newNew = newRepository.getReferenceById(newVO.getId());
-
-        if(newVO.getDate() != null)
-            newNew.setDate(newNew.getDate());
-
-        if(newVO.getIsMain())
-            this.setMainNew(newVO);
-
-        newRepository.save(newNew);
-    }
-
-    private void setMainNew(NewVO newVO) {
-        MainNewCardVO mainNewCardVO = new MainNewCardVO();
-
-
-
-        mainNewCardService.updateMainNew(mainNewCardVO);
-    }
 
     public NewVO getOne(Long id){
         return new NewVO(newRepository.getReferenceById(id));
@@ -97,7 +85,35 @@ public class NewService {
         return listVO;
     }
 
+    @Transactional
+    public void updateNew(NewVO newVO) {
 
+        Optional<New> newNew = newRepository.findById(newVO.getId());
+        New oldMainNew = newRepository.findMainNew();
+
+        if(newVO.getImg() != null){
+            Image image = new Image(newVO.getImg());
+            imageRepository.save(image);
+
+            newNew.get().setImg(imageRepository.getlastInserted());
+        } else {
+            newNew.get().setImg(imageRepository.getReferenceById(60L));
+        }
+
+        newNew.get().setTitle(newVO.getTitle());
+        newNew.get().setDate(Date.from(Instant.now()));
+        newNew.get().setCode(newVO.getCode());
+        newNew.get().setActive(true);
+        newNew.get().setIsMain(newVO.getIsMain());
+
+        newRepository.save(newNew.get());
+
+        if(newVO.getIsMain()){
+            oldMainNew.setIsMain(false);
+        }
+
+        newRepository.save(oldMainNew);
+    }
 
     public Page<New> list(Pageable pageable){
 

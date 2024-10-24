@@ -53,8 +53,8 @@ public class EdictsController {
         return new ResponseEntity<>(edictsService.listEdicts(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteEdicts(@RequestParam("id") Long id)  {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteEdicts(@PathVariable("id") Long id)  {
         edictsService.deleteEdicts(id);
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -71,7 +71,7 @@ public class AuthService {
                 User user = new User();
                 UserVO userReturn = new UserVO();
 
-                user.setUsername(userVO.getUsername());
+                user.setUsername(userVO.getEmail());
                 user.setPassword(passwordEncoder.encode(userVO.getPassword()));
                 user.setEmail(userVO.getEmail());
                 user.setFirstName(userVO.getFirstName());
@@ -83,6 +83,9 @@ public class AuthService {
 
                 else if(userVO.getRole().equals("CODEMASTER"))
                     user.setRole(Roles.CODEMASTER.toString());
+
+                else
+                    user.setRole(Roles.USER.toString());
 
                 user.setEnabled(false);
                 userRepository.save(user);
@@ -213,7 +216,7 @@ public class AuthService {
     }
 
 
-    public void deleteTalentCard(Long id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 

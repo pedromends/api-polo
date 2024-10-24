@@ -162,9 +162,9 @@ public class AuthController {
     }
 
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteUser(@RequestParam("id") Long id)  {
-        authService.deleteTalentCard(id);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable("id") Long id)  {
+        authService.deleteUser(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

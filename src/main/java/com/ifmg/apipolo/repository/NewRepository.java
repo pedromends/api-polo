@@ -4,6 +4,7 @@ import com.ifmg.apipolo.entity.New;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,4 +20,12 @@ public interface NewRepository extends JpaRepository<New, Long> {
 
     @Query("SELECT n FROM New n WHERE n.code LIKE %:searchTerm% AND n.active = true ORDER BY n.id DESC" )
     List<New> searchItems(@Param("searchTerm") String searchTerm);
+
+    @Query("SELECT n FROM New n WHERE n.isMain = true ORDER BY n.id DESC LIMIT 1" )
+    New findMainNew();
+
+    @Modifying
+    @Query("UPDATE New n SET n.isMain = false " )
+    void resetMainNew();
 }
+// UPDATE `ifmg-polo`.`noticia` SET `principal` = '1' WHERE (`id` = '53');

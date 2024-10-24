@@ -57,8 +57,8 @@ public class DocsController {
         return new ResponseEntity<>(docsService.listDocs(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteEdicts(@RequestParam("id") Long id)  {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteEdicts(@PathVariable("id") Long id)  {
         docsService.deleteDocs(id);
         return new ResponseEntity(HttpStatus.OK);
     }

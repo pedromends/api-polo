@@ -27,4 +27,7 @@ public interface ResearcherRepository extends JpaRepository<Researcher, Long> {
 
     @Query("SELECT r from Researcher r where r.active = true ORDER BY r.id DESC")
     List<Researcher> activeOnes();
+
+    @Query("SELECT r FROM Researcher r WHERE r.firstName LIKE %:searchTerm% AND r.active = true ORDER BY r.id DESC" )
+    List<Researcher> searchItems(@Param("searchTerm") String searchTerm);
 }

@@ -1,6 +1,7 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.ResearcherService;
+import com.ifmg.apipolo.vo.NewVO;
 import com.ifmg.apipolo.vo.ResearcherVO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -23,11 +26,15 @@ public class ResearcherController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
     @PutMapping("/update")
     public ResponseEntity<Object> updateCard(@RequestBody ResearcherVO researcherVO) {
         researcherService.updateResearcher(researcherVO);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ResearcherVO>> searchItems(@RequestParam String query) {
+        return new ResponseEntity<>(researcherService.searchItems(query), HttpStatus.OK);
     }
 
     @GetMapping("/get-by-email")
