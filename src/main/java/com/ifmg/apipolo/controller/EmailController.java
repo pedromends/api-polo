@@ -1,12 +1,12 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.record.EmailMessage;
-import com.ifmg.apipolo.service.EmailService;
+import com.ifmg.apipolo.service.BrevoEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sendinblue.ApiException;
 
 @CrossOrigin("*")
 @RestController
@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class EmailController {
 
     @Autowired
-    EmailService emailSenderService;
+    BrevoEmailService brevoEmailService;
 
     @PostMapping("/send-register")
-    public ResponseEntity<Object> sendEmail(@RequestBody EmailMessage emailMessage) {
-        emailSenderService.sendRegisterEmail(emailMessage.getTo(), emailMessage.getSubject(), emailMessage.getMessage());
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<String> sendEmail(@RequestBody EmailMessage email) throws ApiException {
+        return new ResponseEntity<>(brevoEmailService.sendEmail(email), HttpStatus.OK);
     }
 }

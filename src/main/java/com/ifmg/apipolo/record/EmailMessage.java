@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 public class EmailMessage {
 
-    private String to;
-    private String subject;
-    private String message;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String token;
 }

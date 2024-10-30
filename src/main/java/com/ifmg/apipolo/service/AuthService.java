@@ -1,23 +1,31 @@
 package com.ifmg.apipolo.service;
 
-import com.ifmg.apipolo.entity.Login;
-import com.ifmg.apipolo.entity.PasswordRecovery;
-import com.ifmg.apipolo.entity.Token;
-import com.ifmg.apipolo.entity.User;
+import com.ifmg.apipolo.entity.*;
 import com.ifmg.apipolo.enums.Roles;
 import com.ifmg.apipolo.error.UserNotFoundError;
+import com.ifmg.apipolo.login.MyCustomUserDetails;
+import com.ifmg.apipolo.record.LoginResponse;
 import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.PasswordRecoveryRepository;
 import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
+import com.ifmg.apipolo.vo.ImageVO;
+import com.ifmg.apipolo.vo.LoginRequest;
 import com.ifmg.apipolo.vo.UserVO;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import sendinblue.ApiException;
 
 import java.util.*;
 
@@ -41,12 +49,24 @@ public class AuthService {
     private MailService mailService;
 
     @Autowired
+    private JwtTokenService jwtTokenService;
+
+    @Autowired
+    BrevoEmailService brevoEmailService;
+
+    @Autowired
     @Value("${application.security.access-token-secret")
     private String accessTokenSecret;
 
     @Autowired
     @Value("${application.security.refresh-token-secret")
     private String refreshTokenSecret;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -62,45 +82,77 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public UserVO registerUser(UserVO userVO){
+    public LoginResponse registerUser(UserVO userVO) throws ApiException {
 
         if(!Objects.equals(userVO.getPassword(), userVO.getConfirmPassword())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senhas diferentes");
         } else {
-            try{
-                User user = new User();
-                UserVO userReturn = new UserVO();
+            LoginRequest loginRequest = new LoginRequest();
+            LoginResponse loginResponse = new LoginResponse();
+            User user = generateUser(userVO);
 
-                user.setUsername(userVO.getEmail());
-                user.setPassword(passwordEncoder.encode(userVO.getPassword()));
-                user.setEmail(userVO.getEmail());
-                user.setFirstName(userVO.getFirstName());
-                user.setLastName(userVO.getLastName());
-                user.setLocked(true);
+            loginRequest.setEmail(user.getEmail());
+            loginRequest.setPassword(user.getPassword());
+            String token = generateToken(loginRequest);
+            loginResponse.setToken(token);
+            loginResponse.setUserVO(new UserVO(user));
 
-                if(userVO.getRole().equals("ADMIN"))
-                    user.setRole(Roles.ADMIN.toString());
+            return loginResponse;
+        }
+    }
 
-                else if(userVO.getRole().equals("CODEMASTER"))
-                    user.setRole(Roles.CODEMASTER.toString());
+    public User generateUser(UserVO userVO){
 
-                else
-                    user.setRole(Roles.USER.toString());
+        try{
+            User user = new User();
 
-                user.setEnabled(false);
-                userRepository.save(user);
+            user.setUsername(userVO.getEmail());
+            user.setPassword(passwordEncoder.encode(userVO.getPassword()));
+            user.setEmail(userVO.getEmail());
+            user.setFirstName(userVO.getFirstName());
+            user.setLastName(userVO.getLastName());
+            user.setLocked(true);
 
-                User originalUser =  userRepository.findByEmail(userVO.getEmail());
+            if(userVO.getRole().equals("ADMIN"))
+                user.setRole(Roles.ADMIN.toString());
 
-                userReturn.setEmail(originalUser.getEmail());
-                userReturn.setUsername(originalUser.getUsername());
-                userReturn.setFirstName(originalUser.getFirstName());
-                userReturn.setLastName(originalUser.getFirstName());
+            else if(userVO.getRole().equals("CODEMASTER"))
+                user.setRole(Roles.CODEMASTER.toString());
 
-                return userReturn;
-            }catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            else
+                user.setRole(Roles.USER.toString());
+
+            user.setEnabled(false);
+            userRepository.save(user);
+
+            return user;
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    public String generateToken(LoginRequest loginRequest) {
+
+        try{
+            User user = userRepository.findByUsername(loginRequest.getEmail());
+            var newUserTk = tokenRepository.findByUserId(user.getId());
+
+            if(newUserTk == null) {
+                MyCustomUserDetails userDetailsService = customUserDetailsService.loadByEmail(loginRequest.getEmail());
+
+                String tokenCode = jwtTokenService.generateToken(userDetailsService);
+                Token newToken = new Token(user, tokenCode);
+
+                tokenRepository.save(newToken);
+                return newToken.getToken();
+            } else {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+                Authentication authentication = authenticationManager.authenticate(authToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                return newUserTk.getToken();
             }
+        }catch(AuthenticationException e){
+            return e.getMessage();
         }
     }
 
@@ -142,14 +194,19 @@ public class AuthService {
         userInfo.setFirstName(user.getFirstName());
         userInfo.setLastName(user.getLastName());
         userInfo.setEmail(user.getEmail());
+        userInfo.setRole(user.getRole());
         userInfo.setEducation(user.getEducation());
         userInfo.setAddress(user.getAddress());
         userInfo.setPhone(user.getPhone());
         userInfo.setAboutMe(user.getAboutMe());
         userInfo.setProfession(user.getProfession());
-        userInfo.setImg(user.getImg());
         userInfo.setCity(user.getCity());
         userInfo.setDepartment(user.getDepartment());
+
+        if(user.getImg() != null){
+            var image = imageRepository.findById(user.getImg().getId());
+            userInfo.setImg(image.get());
+        }
 
         return userInfo;
     }
@@ -159,7 +216,7 @@ public class AuthService {
         var user = userRepository.findById(userVO.getId());
 
         if(userVO.getImg().getId() != null){
-            var image = imageRepository.findById(userVO.getId());
+            var image = imageRepository.findById(userVO.getImg().getId());
             image.get().setCode(userVO.getImg().getCode());
         }
 
@@ -214,7 +271,6 @@ public class AuthService {
 
         return listVO;
     }
-
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
