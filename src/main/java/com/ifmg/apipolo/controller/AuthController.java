@@ -60,7 +60,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> loginRequest(@RequestBody LoginRequest loginRequest)  {
-        return new ResponseEntity<>(authService.generateToken(loginRequest), HttpStatus.OK);
+        return new ResponseEntity<String>(authService.generateToken(loginRequest).getBody(), HttpStatus.OK);
     }
 
     @PostMapping("/forgot")

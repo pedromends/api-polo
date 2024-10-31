@@ -9,9 +9,9 @@ import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.PasswordRecoveryRepository;
 import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
-import com.ifmg.apipolo.vo.ImageVO;
 import com.ifmg.apipolo.vo.LoginRequest;
 import com.ifmg.apipolo.vo.UserVO;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,9 +52,6 @@ public class AuthService {
     private JwtTokenService jwtTokenService;
 
     @Autowired
-    BrevoEmailService brevoEmailService;
-
-    @Autowired
     @Value("${application.security.access-token-secret")
     private String accessTokenSecret;
 
@@ -93,7 +90,7 @@ public class AuthService {
 
             loginRequest.setEmail(user.getEmail());
             loginRequest.setPassword(user.getPassword());
-            String token = generateToken(loginRequest);
+            String token = String.valueOf(generateToken(loginRequest));
             loginResponse.setToken(token);
             loginResponse.setUserVO(new UserVO(user));
 
@@ -131,7 +128,7 @@ public class AuthService {
         }
     }
 
-    public String generateToken(LoginRequest loginRequest) {
+    public ResponseEntity<String> generateToken(LoginRequest loginRequest) {
 
         try{
             User user = userRepository.findByUsername(loginRequest.getEmail());
@@ -142,18 +139,47 @@ public class AuthService {
 
                 String tokenCode = jwtTokenService.generateToken(userDetailsService);
                 Token newToken = new Token(user, tokenCode);
+                newToken.setExpired(false);
 
                 tokenRepository.save(newToken);
-                return newToken.getToken();
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(newToken.getToken());
             } else {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
-                Authentication authentication = authenticationManager.authenticate(authToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                return newUserTk.getToken();
+                try {
+                    if (isNotExpired(newUserTk)) {
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+                        Authentication authentication = authenticationManager.authenticate(authToken);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        return ResponseEntity.status(HttpStatus.OK)
+                                .body(newUserTk.getToken());
+                    }
+                } catch (ExpiredJwtException e) {
+                    Token token = tokenRepository.findByUserId(user.getId());
+                    token.setExpired(true);
+                    tokenRepository.save(token);
+
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body("403");
+                }
             }
-        }catch(AuthenticationException e){
-            return e.getMessage();
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("403");
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("403");
+    }
+
+
+    public boolean isNotExpired(Token token) {
+        if (token == null) {
+            return false;
+        }
+
+        String tokenCode = token.getToken();
+        Date expirationDate = jwtTokenService.extractExpiration(tokenCode); // Pega a data de expiração do token JWT
+
+        return expirationDate != null && expirationDate.after(new Date()); // Retorna true se a data de expiração for posterior à data atual
     }
 
     public Login refreshAccess(String refreshToken) {
