@@ -11,9 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NewService {
@@ -30,61 +34,31 @@ public class NewService {
     public void createNew(NewVO newVO) {
 
         New newNew = new New();
+        New oldMainNew = newRepository.findMainNew();
+
+        if(newVO.getImg() != null){
+            Image image = new Image(newVO.getImg());
+            imageRepository.save(image);
+
+            newNew.setImg(imageRepository.getlastInserted());
+        } else {
+            newNew.setImg(imageRepository.getReferenceById(60L));
+        }
 
         newNew.setTitle(newVO.getTitle());
-        newNew.setDate(newVO.getDate());
-        newNew.setImg1(newVO.getImg1());
-        newNew.setImg2(newVO.getImg2());
-        newNew.setParagraph1(newVO.getParagraph1());
-        newNew.setParagraph2(newVO.getParagraph2());
-
+        newNew.setDate(Date.from(Instant.now()));
+        newNew.setCode(newVO.getCode());
+        newNew.setActive(true);
+        newNew.setIsMain(newVO.getIsMain());
         newRepository.save(newNew);
-    }
 
-    public void updateNew(NewVO newVO) {
-
-        Image image1 = imageRepository.getReferenceById(newVO.getImg1().getId());
-        Image image2 = imageRepository.getReferenceById(newVO.getImg2().getId());
-        New newNew = newRepository.getReferenceById(newVO.getId());
-
-        if (newVO.getImg1().getId() != null) {
-            image1.setCode(newVO.getImg1().getCode());
-            imageRepository.save(image1);
+        if(newVO.getIsMain()){
+            oldMainNew.setIsMain(false);
         }
 
-        if (newVO.getImg2().getId() != null) {
-            image2.setCode(newVO.getImg2().getCode());
-            imageRepository.save(image2);
-        }
-
-        if(newVO.getTitle() != null)
-            newNew.setTitle(newVO.getTitle());
-
-        if(newVO.getParagraph1() != null)
-            newNew.setParagraph1(newVO.getParagraph1());
-
-        if(newVO.getParagraph2() != null)
-            newNew.setParagraph1(newVO.getParagraph2());
-
-        if(newVO.getDate() != null)
-            newNew.setDate(newNew.getDate());
-
-        if(newVO.getIsMain())
-            this.setMainNew(newVO);
-
-        newRepository.save(newNew);
+        newRepository.save(oldMainNew);
     }
 
-    private void setMainNew(NewVO newVO) {
-        MainNewCardVO mainNewCardVO = new MainNewCardVO();
-
-        mainNewCardVO.setTitle(newVO.getTitle());
-        mainNewCardVO.setParagraph(newVO.getParagraph1());
-        mainNewCardVO.setTip(newVO.getTip());
-        mainNewCardVO.setImage(newVO.getImg1());
-
-        mainNewCardService.updateMainNew(mainNewCardVO);
-    }
 
     public NewVO getOne(Long id){
         return new NewVO(newRepository.getReferenceById(id));
@@ -101,12 +75,56 @@ public class NewService {
         return listVO;
     }
 
+    public List<NewVO> searchItems(String query){
+        List<NewVO> listVO = new ArrayList<>();
+        List<New> list = newRepository.searchItems(query);
+
+        for(New newNew : list)
+            listVO.add(new NewVO(newNew));
+
+        return listVO;
+    }
+
+    @Transactional
+    public void updateNew(NewVO newVO) {
+
+        Optional<New> newNew = newRepository.findById(newVO.getId());
+        New oldMainNew = newRepository.findMainNew();
+
+        if(newVO.getImg() != null){
+            Image image = new Image(newVO.getImg());
+            imageRepository.save(image);
+
+            newNew.get().setImg(imageRepository.getlastInserted());
+        } else {
+            newNew.get().setImg(imageRepository.getReferenceById(60L));
+        }
+
+        newNew.get().setTitle(newVO.getTitle());
+        newNew.get().setDate(Date.from(Instant.now()));
+        newNew.get().setCode(newVO.getCode());
+        newNew.get().setActive(true);
+        newNew.get().setIsMain(newVO.getIsMain());
+
+        newRepository.save(newNew.get());
+
+        if(newVO.getIsMain()){
+            oldMainNew.setIsMain(false);
+        }
+
+        newRepository.save(oldMainNew);
+    }
+
     public Page<New> list(Pageable pageable){
 
         return newRepository.findAllDesc(pageable);
     }
 
     public void deleteNew(Long id) {
-        newRepository.deleteById(id);
+        Optional<New> newDel = newRepository.findById(id);
+
+        newDel.get().setActive(false);
+
+        newRepository.save(newDel.get());
     }
 }

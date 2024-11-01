@@ -1,7 +1,9 @@
 package com.ifmg.apipolo.controller;
 
+import com.ifmg.apipolo.entity.CapacitationText;
 import com.ifmg.apipolo.service.CapacitationCardService;
 import com.ifmg.apipolo.vo.CapacitationCardVO;
+import com.ifmg.apipolo.vo.CapacitationTextVO;
 import com.ifmg.apipolo.vo.MainNewCardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,9 +25,19 @@ public class CapacitationCardController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PutMapping("/update-text")
+    public ResponseEntity<Object> updateText(@RequestParam String newText) {
+        capacitationCardService.updateParag(newText);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @GetMapping("/list")
     public ResponseEntity<Object> listCapacitations()  {
         return new ResponseEntity<>(capacitationCardService.list(), HttpStatus.OK);
     }
 
+    @GetMapping("/get-text")
+    public ResponseEntity<CapacitationTextVO> getParag()  {
+        return new ResponseEntity<>(capacitationCardService.getParagraph(), HttpStatus.OK);
+    }
 }

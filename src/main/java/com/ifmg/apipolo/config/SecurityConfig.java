@@ -28,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableWebSecurity
@@ -55,7 +56,10 @@ public class SecurityConfig {
                     "/capacitation/list", "/advantages/list", "/talent/list",
                     "/researcher/list","/open-new/{id}", "/new/show-one/{id}",
                     "img/{id}","/campus/list", "/contact/create",
-                    "/researcher/get-by-email", "/edicts/list", "/docs/list", "/FAQ/list"
+                    "/researcher/get-by-email", "/edicts/list", "/docs/list",
+                    "/FAQ/list", "/docs/download/{filename}", "/edicts/download/{filename}",
+                    "/new/search", "/capacitation/get-text", "/user/handshake", "/email/send-register",
+                    "/researcher/search","/user/confirm"
                 ).permitAll()
                 .requestMatchers("/user/change-permissions", "/user/list")
                 .hasAnyRole("CODEMASTER","ADMIN").anyRequest().authenticated()
@@ -101,6 +105,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
 }

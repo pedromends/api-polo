@@ -22,6 +22,14 @@ public class ImageService {
         imageRepository.save(image);
     }
 
+    public ImageVO newImage(ImageVO imageVO) {
+        Image image = new Image();
+        image.setCode(imageVO.getCode());
+        imageRepository.save(image);
+
+        return new ImageVO(imageRepository.getlastInserted());
+    }
+
     public ImageVO getOne(Long id){
 
         Optional<Image> image = imageRepository.findById(id);
@@ -49,7 +57,7 @@ public class ImageService {
         imageRepository.save(image);
     }
 
-    public void deleteCapacitation(Long id) {
+    public void deleteImage(Long id) {
         imageRepository.deleteById(id);
     }
 }

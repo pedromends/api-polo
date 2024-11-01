@@ -1,0 +1,19 @@
+<!-- emailTemplate.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<img width="200" height="auto" style="display: block; margin: 0 auto;" src="https://www.ifmg.edu.br/portal/imagens/logovertical.jpg"/>
+<h1 style="text-align: center" xmlns:th="http://www.w3.org/1999/xhtml">Polo de Inovação IFMG</h1>
+<p></p>
+<h2>Confirme seu cadastro</h2>
+<h3>Olá, <span th:text="${firstName}"></span> <span th:text="${lastName}"></span>!</h3>
+<p>Obrigado por se cadastrar em nossa plataforma. Para ativar sua conta e ter acesso completo, acesse o link abaixo para confirmar seu cadastro:&nbsp;</p>
+<p>
+    <a th:href="@{|http://localhost:8443/api-polo/user/confirm?token=${token}|}" target="_blank"><u>Confirmar Cadastro</u></a>
+</p>
+<p>Ou, se preferir, copie e cole o link abaixo em seu navegador:</p>
+<span th:text="@{'http://localhost:8443/api-polo/user/confirm?token=' + ${token}}"></span>
+<p>Se você não se cadastrou em nossa plataforma, por favor, ignore esta mensagem.</p>
+<p>Atenciosamente,<br>Polo de Inovação IFMG.</p>
+</body>
+</html>

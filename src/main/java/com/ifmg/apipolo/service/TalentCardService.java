@@ -21,21 +21,28 @@ public class TalentCardService {
     private ImageRepository imageRepository;
 
     public void createMainNew(TalentCardVO talentCardVO) {
-
+        Image image;
         TalentCard talentCard = new TalentCard();
 
         talentCard.setName(talentCardVO.getName());
         talentCard.setProfession(talentCardVO.getProfession());
         talentCard.setDetails(talentCardVO.getDetails());
-        talentCard.setImg(talentCardVO.getImg());
+        talentCard.setActive(true);
 
+        if(talentCardVO.getImg().getId() == null){
+            image = imageRepository.getReferenceById(38L);
+        } else {
+            image = new Image();
+            image.setCode(talentCardVO.getImg().getCode());
+        }
+        talentCard.setImg(image);
         talentCardRepository.save(talentCard);
     }
 
     public List<TalentCardVO> list(){
 
         List<TalentCardVO> listVO = new ArrayList<>();
-        List<TalentCard> list = talentCardRepository.findAll();
+        List<TalentCard> list = talentCardRepository.activeOnes();
 
         for(TalentCard talentCard : list)
             listVO.add(new TalentCardVO(talentCard));
@@ -67,6 +74,8 @@ public class TalentCardService {
     }
 
     public void deleteTalentCard(Long id) {
-        talentCardRepository.deleteById(id);
+        TalentCard talentCard = talentCardRepository.getReferenceById(id);
+        talentCard.setActive(false);
+        talentCardRepository.save(talentCard);
     }
 }

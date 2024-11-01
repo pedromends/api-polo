@@ -1,11 +1,19 @@
 package com.ifmg.apipolo.controller;
 
 import com.ifmg.apipolo.service.EdictsService;
-import com.ifmg.apipolo.vo.EdictsVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @CrossOrigin("*")
 @RestController
@@ -16,15 +24,28 @@ public class EdictsController {
     EdictsService edictsService;
 
     @PostMapping("/create")
-    public ResponseEntity<Object> createEdicts(@RequestBody EdictsVO EdictsVO) {
-        edictsService.createEdict(EdictsVO);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<String> createEdicts(@RequestParam("file") MultipartFile file, @RequestParam("title") String title) {
+        return edictsService.uploadFile(file, title);
+    }
+
+    @GetMapping("/download/{filename}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) throws IOException {
+        Path filePath = Paths.get("C:\\ProgramData\\Kimeratech\\uploads").resolve(filename);
+        Resource resource = new PathResource(filePath);
+
+        if (!resource.exists()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF) // Define o tipo de arquivo
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"") // Define o cabeçalho para download
+                .body(resource);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Object> updateEdicts(@RequestBody EdictsVO EdictsVO) {
-        edictsService.updateEdicts(EdictsVO);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<String> updateEdicts(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @RequestParam("id") Long id) {
+        return edictsService.updateFile(file, title, id);
     }
 
     @GetMapping("/list")
@@ -32,8 +53,8 @@ public class EdictsController {
         return new ResponseEntity<>(edictsService.listEdicts(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteEdicts(@RequestParam("id") Long id)  {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteEdicts(@PathVariable("id") Long id)  {
         edictsService.deleteEdicts(id);
         return new ResponseEntity(HttpStatus.OK);
     }

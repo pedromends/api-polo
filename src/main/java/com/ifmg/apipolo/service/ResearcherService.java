@@ -2,10 +2,12 @@ package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.entity.Campus;
 import com.ifmg.apipolo.entity.Image;
+import com.ifmg.apipolo.entity.New;
 import com.ifmg.apipolo.entity.Researcher;
 import com.ifmg.apipolo.repository.CampusRepository;
 import com.ifmg.apipolo.repository.ImageRepository;
 import com.ifmg.apipolo.repository.ResearcherRepository;
+import com.ifmg.apipolo.vo.NewVO;
 import com.ifmg.apipolo.vo.NewsCardVO;
 import com.ifmg.apipolo.vo.ResearcherVO;
 import jakarta.transaction.Transactional;
@@ -42,6 +44,11 @@ public class ResearcherService {
         newResearcher.setCampus(researcherVO.getCampus());
         newResearcher.setFirstName(researcherVO.getFirstName());
         newResearcher.setLastName(researcherVO.getLastName());
+        newResearcher.setAddress(researcherVO.getAddress());
+        newResearcher.setCity(researcherVO.getCity());
+        newResearcher.setDepartment(researcherVO.getDepartment());
+        newResearcher.setPhone(researcherVO.getPhone());
+        newResearcher.setAbout(researcherVO.getAbout());
         newResearcher.setEmail(researcherVO.getEmail());
         newResearcher.setCourse(researcherVO.getCourse());
         newResearcher.setLevel(researcherVO.getLevel());
@@ -51,6 +58,16 @@ public class ResearcherService {
         researcherRepository.save(newResearcher);
     }
 
+    public List<ResearcherVO> searchItems(String query){
+        List<ResearcherVO> listVO = new ArrayList<>();
+        List<Researcher> list = researcherRepository.searchItems(query);
+
+        for(Researcher researcher : list)
+            listVO.add(new ResearcherVO(researcher));
+
+        return listVO;
+    }
+
     public void updateResearcher(ResearcherVO researcherVO) {
 
         Researcher researcher = researcherRepository.getReferenceById(researcherVO.getId());
@@ -58,6 +75,14 @@ public class ResearcherService {
         if(researcherVO.getCampus().getId() != null) {
             Campus campus = campusRepository.getReferenceById(researcherVO.getCampus().getId());
             researcher.setCampus(campus);
+        }
+
+        if(researcherVO.getImg().getId() != null) {
+            Image image = imageRepository.getReferenceById(researcherVO.getImg().getId());
+            researcher.setImg(image);
+        } else {
+            Image image = imageRepository.getReferenceById(38L);
+            researcher.setImg(image);
         }
 
         if(researcherVO.getFirstName() != null && researcherVO.getLastName() != null) {
@@ -76,6 +101,21 @@ public class ResearcherService {
 
         if(researcherVO.getSex() != null)
             researcher.setSex(researcherVO.getSex());
+
+        if(researcherVO.getPhone() != null)
+            researcher.setPhone(researcherVO.getPhone());
+
+        if(researcherVO.getAddress() != null)
+            researcher.setAddress(researcherVO.getAddress());
+
+        if(researcherVO.getCity() != null)
+            researcher.setCity(researcherVO.getCity());
+
+        if(researcherVO.getDepartment() != null)
+            researcher.setDepartment(researcherVO.getDepartment());
+
+        if(researcherVO.getAbout() != null)
+            researcher.setAbout(researcherVO.getAbout());
 
         imageRepository.updateCodeById(researcherVO.getImg().getId(), researcherVO.getImg().getCode());
         researcherRepository.save(researcher);

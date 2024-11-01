@@ -11,10 +11,10 @@ import java.util.List;
 public interface ResearcherRepository extends JpaRepository<Researcher, Long> {
 
     @Modifying
-    @Query("delete from Researcher r where r.id = :id")
+    @Query("DELETE from Researcher r where r.id = :id")
     void myDeleteById(@Param("id") Long id);
 
-    @Query("select r from Researcher r where r.email = :email")
+    @Query("SELECT r from Researcher r where r.email = :email")
     Researcher getByEmail(@Param("email") String email);
 
     @Modifying
@@ -25,6 +25,9 @@ public interface ResearcherRepository extends JpaRepository<Researcher, Long> {
     @Query("UPDATE Researcher r SET r.campus = null WHERE r.id = :id")
     void resetCampus(@Param("id") Long id);
 
-    @Query("select r from Researcher r where r.active = true")
+    @Query("SELECT r from Researcher r where r.active = true ORDER BY r.id DESC")
     List<Researcher> activeOnes();
+
+    @Query("SELECT r FROM Researcher r WHERE r.firstName LIKE %:searchTerm% AND r.active = true ORDER BY r.id DESC" )
+    List<Researcher> searchItems(@Param("searchTerm") String searchTerm);
 }

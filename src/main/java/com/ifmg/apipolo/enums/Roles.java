@@ -8,7 +8,7 @@ public enum Roles {
     ADMIN("ADMIN"),
     RESEARCHER("researcher"),
     STUDENT("student"),
-    CLIENT("client");
+    USER("user");
 
     private String role;
 

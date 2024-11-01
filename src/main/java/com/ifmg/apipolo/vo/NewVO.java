@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ifmg.apipolo.entity.Image;
 import com.ifmg.apipolo.entity.New;
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -15,25 +18,20 @@ import lombok.NoArgsConstructor;
 public class NewVO {
 
     private Long id;
-    private Image img1;
-    private Image img2;
+    private Image img;
+    private Date date;
     private String title;
-    private String date;
-    private String paragraph1;
-    private String paragraph2;
-    private String tip;
+    private String code;
+    private Boolean active;
     private Boolean isMain;
 
     public NewVO(New newNew) {
         this.id = newNew.getId();
-        this.img1 = newNew.getImg1();
-        this.img2 = newNew.getImg2();
+        this.img = newNew.getImg();
         this.title = newNew.getTitle();
+        this.code = newNew.getCode();
         this.date = newNew.getDate();
-        this.paragraph1 = newNew.getParagraph1();
         this.isMain = null;
-        this.tip = null;
-        this.paragraph2 = newNew.getParagraph2();
+        this.active = newNew.getActive();
     }
 }
-
