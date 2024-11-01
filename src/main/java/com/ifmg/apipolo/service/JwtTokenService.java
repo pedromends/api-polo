@@ -20,7 +20,7 @@ public class JwtTokenService {
 
     public String SECRET_KEY = "33743677397A24432646294A404E635266556A576E5A7234753778214125442A";
     private Date CURRENT_TIME = new Date(System.currentTimeMillis());
-    private Date EXPIRATION_TIME = new Date(System.currentTimeMillis() + 1000 * 60);
+    private Date EXPIRATION_TIME = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24);
 
 
     public String extractUsername(String token){

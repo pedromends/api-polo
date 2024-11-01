@@ -1,6 +1,7 @@
 package com.ifmg.apipolo.service;
 
 import com.ifmg.apipolo.record.EmailMessage;
+import com.ifmg.apipolo.repository.TokenRepository;
 import com.ifmg.apipolo.repository.UserRepository;
 import com.ifmg.apipolo.vo.LoginRequest;
 import com.ifmg.apipolo.vo.UserVO;
@@ -24,12 +25,16 @@ public class BrevoEmailService {
     UserRepository userRepository;
 
     @Autowired
+    TokenRepository tokenRepository;
+
+    @Autowired
     private TemplateEngine templateEngine;
 
     private static final String API_KEY = "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";
 
     public String sendEmail(EmailMessage email) throws ApiException {
         UserVO userVO = new UserVO(userRepository.findByEmail(email.getEmail()));
+
         SendSmtpEmailReplyTo sendSmtpEmailReplyTo = new SendSmtpEmailReplyTo();
         TransactionalEmailsApi api = new TransactionalEmailsApi();
         SendSmtpEmailSender sender = new SendSmtpEmailSender();
@@ -60,7 +65,7 @@ public class BrevoEmailService {
         sendSmtpEmail.setSender(sender);
         sendSmtpEmail.setTo(toList);
         sendSmtpEmail.setHeaders(headers);
-        sendSmtpEmail.setHtmlContent(buildEmailTemplate(userVO.getFirstName(), userVO.getFirstName(), email.getToken()));
+        sendSmtpEmail.setHtmlContent(buildEmailTemplate(userVO.getFirstName(), userVO.getLastName(), tokenRepository.findByUserId(userVO.getId()).getToken()));
         sendSmtpEmail.setSubject("Confirmação de Cadastro");
         sendSmtpEmail.setReplyTo(sendSmtpEmailReplyTo);
 

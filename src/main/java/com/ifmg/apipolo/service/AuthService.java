@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sendinblue.ApiException;
 
+import java.time.Instant;
 import java.util.*;
 
 @NoArgsConstructor
@@ -68,66 +69,6 @@ public class AuthService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public AuthService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, String accessTokenSecret, String refreshTokenSecret) {
-        this.passwordEncoder = passwordEncoder;
-        this.accessTokenSecret = accessTokenSecret;
-        this.refreshTokenSecret = refreshTokenSecret;
-        this.userRepository = userRepository;
-    }
-
-    public LoginResponse registerUser(UserVO userVO) throws ApiException {
-
-        if(!Objects.equals(userVO.getPassword(), userVO.getConfirmPassword())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senhas diferentes");
-        } else {
-            LoginRequest loginRequest = new LoginRequest();
-            LoginResponse loginResponse = new LoginResponse();
-            User user = generateUser(userVO);
-
-            loginRequest.setEmail(user.getEmail());
-            loginRequest.setPassword(user.getPassword());
-            String token = String.valueOf(generateToken(loginRequest));
-            loginResponse.setToken(token);
-            loginResponse.setUserVO(new UserVO(user));
-
-            return loginResponse;
-        }
-    }
-
-    public User generateUser(UserVO userVO){
-
-        try{
-            User user = new User();
-
-            user.setUsername(userVO.getEmail());
-            user.setPassword(passwordEncoder.encode(userVO.getPassword()));
-            user.setEmail(userVO.getEmail());
-            user.setFirstName(userVO.getFirstName());
-            user.setLastName(userVO.getLastName());
-            user.setLocked(true);
-
-            if(userVO.getRole().equals("ADMIN"))
-                user.setRole(Roles.ADMIN.toString());
-
-            else if(userVO.getRole().equals("CODEMASTER"))
-                user.setRole(Roles.CODEMASTER.toString());
-
-            else
-                user.setRole(Roles.USER.toString());
-
-            user.setEnabled(false);
-            userRepository.save(user);
-
-            return user;
-        } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-    }
-
     public ResponseEntity<String> generateToken(LoginRequest loginRequest) {
 
         try{
@@ -136,105 +77,34 @@ public class AuthService {
 
             if(newUserTk == null) {
                 MyCustomUserDetails userDetailsService = customUserDetailsService.loadByEmail(loginRequest.getEmail());
-
                 String tokenCode = jwtTokenService.generateToken(userDetailsService);
                 Token newToken = new Token(user, tokenCode);
+
                 newToken.setExpired(false);
 
                 tokenRepository.save(newToken);
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(newToken.getToken());
+                return ResponseEntity.status(HttpStatus.OK).body(newToken.getToken());
             } else {
                 try {
                     if (isNotExpired(newUserTk)) {
                         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
                         Authentication authentication = authenticationManager.authenticate(authToken);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        return ResponseEntity.status(HttpStatus.OK)
-                                .body(newUserTk.getToken());
+                        return ResponseEntity.status(HttpStatus.OK).body(newUserTk.getToken());
                     }
                 } catch (ExpiredJwtException e) {
                     Token token = tokenRepository.findByUserId(user.getId());
-                    token.setExpired(true);
-                    tokenRepository.save(token);
 
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                            .body("403");
+                    token.setExpired(true);
+
+                    tokenRepository.save(token);
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("403");
                 }
             }
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("403");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("403");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("403");
-    }
-
-
-    public boolean isNotExpired(Token token) {
-        if (token == null) {
-            return false;
-        }
-
-        String tokenCode = token.getToken();
-        Date expirationDate = jwtTokenService.extractExpiration(tokenCode); // Pega a data de expiração do token JWT
-
-        return expirationDate != null && expirationDate.after(new Date()); // Retorna true se a data de expiração for posterior à data atual
-    }
-
-    public Login refreshAccess(String refreshToken) {
-        User user = userRepository.findByTokenCode(refreshToken);
-        Token tokenToUpdate = tokenRepository.findByUserId(user.getId());
-        Token newToken = new Token(user, 10L, refreshToken);
-        Login newLogin = new Login(newToken.getToken(), refreshTokenSecret);
-
-        tokenToUpdate.setToken(newToken.getToken());
-        tokenRepository.save(tokenToUpdate);
-
-        return newLogin;
-    }
-
-    public void forgot(String email, String originUrl) {
-        var user = userRepository.findByEmail(email);
-
-        try{
-            if(user != null){
-                var token = UUID.randomUUID().toString().replaceAll("-", "");
-                PasswordRecovery passwordRecovery = new PasswordRecovery();
-                passwordRecovery.setUser(user);
-                passwordRecovery.setToken(new Token(user, token));
-                passwordRecoveryRepository.save(passwordRecovery);
-                mailService.sendForgotMessage(email, token, originUrl);
-            }
-        } catch (Exception e) {
-            throw new UserNotFoundError();
-        }
-    }
-
-    public UserVO getOneUser(String email) {
-
-        User user = userRepository.findByEmail(email);
-        UserVO userInfo = new UserVO();
-
-        userInfo.setId(user.getId());
-        userInfo.setFirstName(user.getFirstName());
-        userInfo.setLastName(user.getLastName());
-        userInfo.setEmail(user.getEmail());
-        userInfo.setRole(user.getRole());
-        userInfo.setEducation(user.getEducation());
-        userInfo.setAddress(user.getAddress());
-        userInfo.setPhone(user.getPhone());
-        userInfo.setAboutMe(user.getAboutMe());
-        userInfo.setProfession(user.getProfession());
-        userInfo.setCity(user.getCity());
-        userInfo.setDepartment(user.getDepartment());
-
-        if(user.getImg() != null){
-            var image = imageRepository.findById(user.getImg().getId());
-            userInfo.setImg(image.get());
-        }
-
-        return userInfo;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("403");
     }
 
     public void updateUser(UserVO userVO) {
@@ -278,13 +148,128 @@ public class AuthService {
         userRepository.save(user.get());
     }
 
-    public void changeUserPermissions(List<UserVO> userVO) {
+    public User generateUser(UserVO userVO){
 
-        for (UserVO userVO1 : userVO){
-            var user = userRepository.findById(userVO1.getId());
-            user.get().setRole(userVO1.getRole());
-            userRepository.save(user.get());
+        try{
+            User user = new User();
+
+            user.setUsername(userVO.getEmail());
+            if(userRepository.countUsers(userVO.getEmail()) == 0){
+
+                user.setPassword(passwordEncoder.encode(userVO.getPassword()));
+                user.setEmail(userVO.getEmail());
+                user.setFirstName(userVO.getFirstName());
+                user.setLastName(userVO.getLastName());
+                user.setLocked(true);
+                user.setEnabled(false);
+
+                if(userVO.getRole().equals("ADMIN"))
+                    user.setRole(Roles.ADMIN.toString());
+
+                else if(userVO.getRole().equals("CODEMASTER"))
+                    user.setRole(Roles.CODEMASTER.toString());
+
+                else
+                    user.setRole(Roles.USER.toString());
+
+                userRepository.save(user);
+                return user;
+            }
+
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+        return null;
+    }
+
+    public UserVO getOneUser(String email) {
+
+        UserVO userInfo = new UserVO();
+        User user = userRepository.findByEmail(email);
+
+        userInfo.setId(user.getId());
+        userInfo.setFirstName(user.getFirstName());
+        userInfo.setLastName(user.getLastName());
+        userInfo.setEmail(user.getEmail());
+        userInfo.setRole(user.getRole());
+        userInfo.setEducation(user.getEducation());
+        userInfo.setAddress(user.getAddress());
+        userInfo.setPhone(user.getPhone());
+        userInfo.setAboutMe(user.getAboutMe());
+        userInfo.setProfession(user.getProfession());
+        userInfo.setCity(user.getCity());
+        userInfo.setDepartment(user.getDepartment());
+
+        if(user.getImg() != null){
+            var image = imageRepository.findById(user.getImg().getId());
+            userInfo.setImg(image.get());
+        }
+
+        return userInfo;
+    }
+
+    public LoginResponse registerUser(UserVO userVO) {
+
+        if(!Objects.equals(userVO.getPassword(), userVO.getConfirmPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senhas diferentes");
+        } else {
+            LoginRequest loginRequest = new LoginRequest();
+            LoginResponse loginResponse = new LoginResponse();
+            User user = generateUser(userVO);
+
+            if(user != null){
+                loginRequest.setEmail(user.getEmail());
+                loginRequest.setPassword(user.getPassword());
+                String token = String.valueOf(generateToken(loginRequest));
+                loginResponse.setToken(token);
+                loginResponse.setUserVO(new UserVO(user));
+            }
+            return loginResponse;
+        }
+    }
+
+    public void forgot(String email, String originUrl) {
+        var user = userRepository.findByEmail(email);
+
+        try{
+            if(user != null){
+                var token = UUID.randomUUID().toString().replaceAll("-", "");
+                PasswordRecovery passwordRecovery = new PasswordRecovery();
+                passwordRecovery.setUser(user);
+                passwordRecovery.setToken(new Token(user, token));
+                passwordRecoveryRepository.save(passwordRecovery);
+                mailService.sendForgotMessage(email, token, originUrl);
+            }
+        } catch (Exception e) {
+            throw new UserNotFoundError();
+        }
+    }
+
+    public Login refreshAccess(String refreshToken) {
+        User user = userRepository.findByTokenCode(refreshToken);
+        Token tokenToUpdate = tokenRepository.findByUserId(user.getId());
+        Token newToken = new Token(user, 10L, refreshToken);
+        Login newLogin = new Login(newToken.getToken(), refreshTokenSecret);
+
+        tokenToUpdate.setToken(newToken.getToken());
+        tokenRepository.save(tokenToUpdate);
+
+        return newLogin;
+    }
+
+    public int confirmUser(String tokenCode) {
+        Token token = tokenRepository.findByTokenCode(tokenCode);
+        if(tokenRepository.existsById(token.getId())){
+            User user = userRepository.findByTokenCode(token.getToken());
+
+            token.setConfirmedAt(String.valueOf(Date.from(Instant.now())));
+            user.setEnabled(true);
+            user.setLocked(false);
+
+            userRepository.save(user);
+            return 200;
+        }
+        return 404;
     }
 
     public List<UserVO> listUser(){
@@ -298,11 +283,31 @@ public class AuthService {
         return listVO;
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void changeUserPermissions(List<UserVO> userVO) {
+
+        for (UserVO userVO1 : userVO){
+            var user = userRepository.findById(userVO1.getId());
+            user.get().setRole(userVO1.getRole());
+            userRepository.save(user.get());
+        }
+    }
+
+    public boolean isNotExpired(Token token) {
+
+        if (token == null)
+            return false;
+
+        String tokenCode = token.getToken();
+        Date expirationDate = jwtTokenService.extractExpiration(tokenCode);
+
+        return expirationDate != null && expirationDate.after(new Date());
     }
 
     public User getUserFromToken(String substring) {
         return userRepository.findByTokenCode(substring);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }

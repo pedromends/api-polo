@@ -37,6 +37,11 @@ public class AuthController {
         return new ResponseEntity<>(authService.registerUser(userVO), HttpStatus.OK);
     }
 
+    @GetMapping("/confirm")
+    public ResponseEntity<Integer> confirmToken(@RequestParam("token") String tokenCode){
+        return new ResponseEntity<>(authService.confirmUser(tokenCode), HttpStatus.OK);
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<RefreshResponse> refresh(@CookieValue("refresh_token") String refreshToken, HttpServletResponse response){
         String currToken = authService.refreshAccess(refreshToken).getCurrentAccess();

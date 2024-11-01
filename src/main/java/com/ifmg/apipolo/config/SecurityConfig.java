@@ -59,7 +59,7 @@ public class SecurityConfig {
                     "/researcher/get-by-email", "/edicts/list", "/docs/list",
                     "/FAQ/list", "/docs/download/{filename}", "/edicts/download/{filename}",
                     "/new/search", "/capacitation/get-text", "/user/handshake", "/email/send-register",
-                    "/researcher/search"
+                    "/researcher/search","/user/confirm"
                 ).permitAll()
                 .requestMatchers("/user/change-permissions", "/user/list")
                 .hasAnyRole("CODEMASTER","ADMIN").anyRequest().authenticated()
